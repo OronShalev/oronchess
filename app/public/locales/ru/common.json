@@ -1,0 +1,25 @@
+{
+    "loading": "Загрузка...",
+    "back": "Назад",
+    "settings": "Настройки",
+    "error": "Ошибка",
+    "reset": "Сброс",
+    "enabled": "Включено",
+    "disabled": "Отключено",
+    "gameListing": {
+        "gameResults": {
+            "unopinionated": {
+                "win": "Белые победили",
+                "draw": "Ничья",
+                "lose": "Черные победили",
+                "unknown": "Неизвестно"
+            },
+            "opinionated": {
+                "win": "Победа",
+                "draw": "Ничья",
+                "lose": "Поражение",
+                "unknown": "Неизвестно"
+            }
+        }
+    }
+}

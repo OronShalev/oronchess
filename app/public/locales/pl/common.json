@@ -1,0 +1,23 @@
+{
+    "loading": "Wczytywanie...",
+    "back": "Wstecz",
+    "settings": "Ustawienia",
+    "error": "Błąd",
+    "reset": "Zresetuj",
+    "gameListing": {
+        "gameResults": {
+            "unopinionated": {
+                "win": "Wygrana białych",
+                "draw": "Remis",
+                "lose": "Wygrana czarnych",
+                "unknown": "Nieznane"
+            },
+            "opinionated": {
+                "win": "Wygrana",
+                "draw": "Remis",
+                "lose": "Porażka",
+                "unknown": "Nieznane"
+            }
+        }
+    }
+}

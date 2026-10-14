@@ -1,0 +1,23 @@
+{
+    "loading": "Cargando...",
+    "back": "Volver",
+    "settings": "Configuraciones",
+    "error": "Error",
+    "reset": "Restaurar",
+    "gameListing": {
+        "gameResults": {
+            "unopinionated": {
+                "win": "Victoria del Blanco",
+                "draw": "Tablas",
+                "lose": "Victoria del Negro",
+                "unknown": "Desconocido"
+            },
+            "opinionated": {
+                "win": "Victoria",
+                "draw": "Tablas",
+                "lose": "Derrota",
+                "unknown": "Desconocido"
+            }
+        }
+    }
+}

@@ -21,16 +21,19 @@
 
 ## 📂 Project
 
-The WintrChess repository is a monorepo made up of three packages:
+Everything lives in a single TypeScript app under `app/`:
 
-#### `client`
-The frontend for the website built with React and TypeScript.
+#### `app/src/client`
+The frontend for the website built with React. Import with `@client/...`.
 
-#### `server`
-The backend for the website where the website content is served, and where any API endpoints will live.
+#### `app/src/server`
+The Express backend where the website content is served, and where any API endpoints will live. Import with `@server/...`.
 
-#### `shared`
-Libraries, some types and common logic is stored here and can be accessed by both other packages.
+#### `app/src/shared`
+Libraries, types and common logic (like the move classifier) used by both the client and the server. Import with `@shared/...`.
+
+#### `app/public`
+Static files: HTML pages, images, translations and the Stockfish engines.
 
 ## 📚 Documentation
 

@@ -1,0 +1,25 @@
+{
+    "loading": "Đang tải...",
+    "back": "Trở lại",
+    "settings": "Cài đặt",
+    "error": "Lỗi",
+    "reset": "Thiết lập lại",
+    "enabled": "Bật",
+    "disabled": "Tắt",
+    "gameListing": {
+        "gameResults": {
+            "unopinionated": {
+                "win": "Trắng thắng",
+                "draw": "Hòa",
+                "lose": "Đen thắng",
+                "unknown": "Không rõ"
+            },
+            "opinionated": {
+                "win": "Thắng",
+                "draw": "Hòa",
+                "lose": "Thua",
+                "unknown": "Không rõ"
+            }
+        }
+    }
+}

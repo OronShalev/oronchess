@@ -1,0 +1,23 @@
+{
+    "loading": "लोड हो रहा है...",
+    "back": "वापस जाएं",
+    "settings": "सेटिंग्स",
+    "error": "एरर ",
+    "reset": "रीसेट करें",
+    "gameListing": {
+        "gameResults": {
+            "unopinionated": {
+                "win": "सफेद जीता",
+                "draw": "बाँध",
+                "lose": "काला जीत गया",
+                "unknown": "अनजान"
+            },
+            "opinionated": {
+                "win": "जीत गया",
+                "draw": "बाँध",
+                "lose": "हार गया",
+                "unknown": "अनजान"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "loading": "लोड होत आहे...",
+    "back": "परत जा",
+    "settings": "सेटिंग्स",
+    "error": "काहीतरी चूक झाली",
+    "reset": "रीसेट करा",
+    "gameListing": {
+        "gameResults": {
+            "unopinionated": {
+                "win": "व्हाईट जिंकला",
+                "draw": "बांधलेले",
+                "lose": "ब्लॅक जिंकला",
+                "unknown": "अज्ञात"
+            },
+            "opinionated": {
+                "win": "जिंकले",
+                "draw": "बांधलेले",
+                "lose": "हरवले",
+                "unknown": "अज्ञात"
+            }
+        }
+    }
+}

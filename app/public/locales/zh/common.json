@@ -1,0 +1,25 @@
+{
+    "loading": "正在加载……",
+    "back": "返回",
+    "settings": "设置",
+    "error": "错误",
+    "reset": "重置",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "gameListing": {
+        "gameResults": {
+            "unopinionated": {
+                "win": "白方获胜",
+                "draw": "和棋",
+                "lose": "黑方获胜",
+                "unknown": "未知"
+            },
+            "opinionated": {
+                "win": "获胜",
+                "draw": "和棋",
+                "lose": "落败",
+                "unknown": "未知的"
+            }
+        }
+    }
+}

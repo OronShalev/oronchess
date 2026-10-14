@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "jsx": "preserve",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "paths": {
+            "@client/*": ["./src/client/*"],
+            "@server/*": ["./src/server/*"],
+            "@shared/*": ["./src/shared/*"],
+            "@analysis/*": ["./src/client/apps/features/analysis/*"],
+            "@assets/*": ["./public/*"]
+        },
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true
+    },
+    "include": ["src", "index.d.ts"]
+}

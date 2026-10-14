@@ -10,12 +10,9 @@ I think I've left the project in an *okay...* state, but there are still a lot o
 
 - Algorithm that estimates a player's performance rating "Elo" in a game.
 - A better accuracy algorithm; I still receive a lot of feedback saying it's too high.
-- The news article editor in the internal dashboard kind of sucks. The system for adding images is super duct tape.
-- Some actual piece themes for the settings page, since we only have the default one right now.
 - Performance metrics (accuracies etc.) for each stage of the game; opening, middlegame, endgame...
 - Ability to explore a Chess masters database when analysing opening moves.
 - Flipping the board to match the viewpoint of the user, when selecting games from Chess.com / Lichess.
-- More documentational content for the Help Center page. Currently, the only tutorial is on loading a game for analysis.
 
 One thing that I left in the code but never had time to implement is the "Risky" classification, which is given to moves that have good win rates in the database, but are objectively dubious according to the engine. The icon and constant values are already there, but the classifier does not distribute it.
 
@@ -42,9 +39,9 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Chess } from "chess.js";
 
-// Then imports from shared, and elsewhere in the same package
-import { PieceColour } from "shared/constants/PieceColour";
-import { archiveGame } from "@/lib/gameArchive";
+// Then imports from shared, and elsewhere in the app
+import { PieceColour } from "@shared/constants/PieceColour";
+import displayToast from "@client/lib/toast";
 
 // Then props for component & CSS modules
 import AwesomeThingProps from "./AwesomeThingProps";
@@ -75,7 +72,7 @@ feat(fe): add cool new feature
 docs: add funny message
 ```
 
-The scopes are `fe` (Frontend), `be` (Backend), and `sh` (Shared). You can omit the scope if multiple packages or root-level files are substantially changed.
+The scopes are `fe` (Frontend), `be` (Backend), and `sh` (Shared). You can omit the scope if multiple areas or root-level files are substantially changed.
 
 If your changes deal in personal information, please make sure you describe what kind of data is collected, and what security considerations you've taken into account. This makes it easier to make any necessary amendments to the privacy policy thereafter.
 

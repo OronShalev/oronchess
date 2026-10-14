@@ -1,0 +1,25 @@
+{
+    "loading": "Carregando...",
+    "back": "Voltar",
+    "settings": "Configurações",
+    "error": "Erro",
+    "reset": "Restaurar",
+    "enabled": "Ativado",
+    "disabled": "Desativado",
+    "gameListing": {
+        "gameResults": {
+            "unopinionated": {
+                "win": "Brancas Vencem",
+                "draw": "Empate",
+                "lose": "Pretas Vencem",
+                "unknown": "Unknown"
+            },
+            "opinionated": {
+                "win": "Ganhou",
+                "draw": "Empate",
+                "lose": "Perdido",
+                "unknown": "Desconhecido"
+            }
+        }
+    }
+}

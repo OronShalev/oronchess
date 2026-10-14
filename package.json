@@ -1,13 +1,10 @@
 {
     "workspaces": [
-        "./shared",
-        "./server",
-        "./client"
+        "./app"
     ],
     "scripts": {
-        "start": "node server/dist/index.js",
-        "build": "npm run build --workspaces --if-present",
-        "bbuild": "npm run build -w shared && npm run build -w server",
+        "start": "npm start -w app",
+        "build": "npm run build -w app",
         "dev": "npm run build && npm start",
         "lint": "eslint ."
     },
