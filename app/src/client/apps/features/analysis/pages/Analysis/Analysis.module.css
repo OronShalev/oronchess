@@ -13,6 +13,19 @@
     }
 }
 
+/* Leave room for the move traverser fixed to the bottom on small screens */
+@media (max-width: 900px) {
+    .wrapper {
+        padding-bottom: 80px;
+    }
+}
+
+@media (max-width: 350px) {
+    .wrapper {
+        padding-bottom: 60px;
+    }
+}
+
 .analysisSection {
     display: flex;
     justify-content: space-evenly;

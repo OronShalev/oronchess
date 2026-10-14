@@ -49,6 +49,9 @@ function Board({
     const boardContainerRef = useRef<HTMLDivElement | null>(null);
     const { fullWidth: boardWidth } = useResizeObserver(boardContainerRef, 1);
 
+    // Negative until the container has been measured
+    const chessboardWidth = boardWidth - (evaluation ? 40 : 0);
+
     const topProfile = flipped ? whiteProfile : blackProfile;
     const bottomProfile = flipped ? blackProfile : whiteProfile;
 
@@ -129,7 +132,7 @@ function Board({
                 flipped={flipped}
             />}
 
-            <SquaresContext.Provider value={squares}>
+            {chessboardWidth > 0 && <SquaresContext.Provider value={squares}>
                 <Chessboard
                     position={node.state.fen}
                     boardOrientation={flipped ? "black" : "white"}
@@ -161,9 +164,9 @@ function Board({
                     showPromotionDialog={!!heldPromotion}
                     promotionToSquare={heldPromotion?.to}
                     promotionDialogVariant="vertical"
-                    boardWidth={boardWidth - (evaluation ? 40 : 0)}
+                    boardWidth={chessboardWidth}
                 />
-            </SquaresContext.Provider>
+            </SquaresContext.Provider>}
         </div>
 
         {bottomProfile && <div
