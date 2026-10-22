@@ -14,7 +14,10 @@
         "copyFEN": "Copy FEN",
         "copyFENToast": "Copied FEN!",
         "copyPGN": "Copy PGN",
-        "copyPGNToast": "Copied PGN!"
+        "copyPGNToast": "Copied PGN!",
+        "copyReviewedPGN": "Copy reviewed PGN",
+        "copyReviewedPGNToast": "Copied reviewed PGN!",
+        "shareReview": "Share review"
     },
     "gameListing": {
         "gameResults": {

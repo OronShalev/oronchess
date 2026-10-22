@@ -9,6 +9,7 @@ import android.graphics.Insets;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowInsets;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -101,6 +102,10 @@ public class MainActivity extends Activity {
         settings.setDatabaseEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
 
+        // The WebView has no Web Share API, so sharing goes through the
+        // system share sheet. Only the bundled app is ever loaded.
+        webView.addJavascriptInterface(new ShareBridge(), "AndroidShare");
+
         WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
             .setDomain(HOST)
             .addPathHandler("/", this::loadAsset)
@@ -165,6 +170,17 @@ public class MainActivity extends Activity {
             webView.restoreState(savedInstanceState);
         } else {
             webView.loadUrl(START_URL);
+        }
+    }
+
+    private class ShareBridge {
+        @JavascriptInterface
+        public void shareText(String text) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, text);
+
+            runOnUiThread(() -> startActivity(Intent.createChooser(intent, null)));
         }
     }
 

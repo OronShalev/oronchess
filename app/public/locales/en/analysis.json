@@ -2,7 +2,8 @@
     "title": "Game Analysis",
     "optionsToolbar": {
         "flipBoard": "Flip Board",
-        "share": "Share Game"
+        "share": "Share Game",
+        "shareReview": "Share Review"
     },
     "settings": {
         "title": "Analysis Settings",
@@ -54,6 +55,7 @@
         },
         "searchGamesButton": "Search Games",
         "uploadPGNButton": "Upload PGN File",
+        "importReviewButton": "Import Reviewed Game",
         "statusMessages": {
             "fetchingLatest": "Loading the latest game..."
         },
@@ -61,6 +63,17 @@
             "noGameSelected": "Please select a Chess game.",
             "invalidGame": "Failed to parse invalid game."
         }
+    },
+    "shareReview": {
+        "title": "Share Review",
+        "description": "Send this to anyone. They can open it with Import Reviewed Game to see the full review instantly, without analysing it again."
+    },
+    "importReview": {
+        "title": "Import Reviewed Game",
+        "description": "Paste a game review shared from WintrChess to open it already reviewed.",
+        "placeholder": "Paste the reviewed game...",
+        "openButton": "Open Review",
+        "invalid": "This is not a reviewed game from WintrChess, or it was changed after sharing."
     },
     "gameSearchMenu": {
         "title": "Select a game",

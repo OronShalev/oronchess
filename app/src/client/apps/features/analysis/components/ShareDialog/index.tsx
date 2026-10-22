@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import renderStateTree from "@shared/lib/stateTree/render";
+import { stripReviewTag } from "@analysis/lib/reviewShare";
 import Dialog from "@client/components/common/Dialog";
 import TextField from "@client/components/common/TextField";
 
@@ -40,7 +41,7 @@ function ShareDialog({ game, currentNode, onClose }: ShareDialogProps) {
                     wrapperStyle={{ width: "100%", height: "300px" }}
                     className={styles.field}
                     copyClassName={styles.areaFieldCopy}
-                    value={renderStateTree(game.stateTree, game)}
+                    value={stripReviewTag(renderStateTree(game.stateTree, game))}
                     multiline
                     readOnly
                     copyable

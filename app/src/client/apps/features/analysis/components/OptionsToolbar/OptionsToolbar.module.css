@@ -26,3 +26,23 @@
 
     background-color: var(--ui-shade-4);
 }
+
+/* Share icon over a faded WintrChess logo */
+.shareReviewButton {
+    position: relative;
+
+    background-color: var(--ui-blue);
+}
+
+.shareReviewButton::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+
+    background: var(--logo) center / contain no-repeat;
+    opacity: 0.35;
+}
+
+.shareReviewButton img {
+    position: relative;
+}

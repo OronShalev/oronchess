@@ -4,3 +4,21 @@
     
     color: grey;
 }
+
+.importReviewButton {
+    margin-bottom: 4px;
+
+    background-color: var(--ui-shade-5);
+    box-shadow: 0 4px 0 var(--ui-shade-4);
+
+    transform: translateY(0px);
+
+    transition: all 0.3s ease;
+}
+
+.importReviewButton:active {
+    transform: translateY(4px);
+
+    box-shadow: 0 0 0 var(--ui-shade-4);
+    filter: brightness(0.85) !important;
+}
