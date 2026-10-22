@@ -1,0 +1,4 @@
+build/
+WintrChess/bin/
+WintrChess/obj/
+*.exe
