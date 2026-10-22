@@ -66,14 +66,14 @@
     },
     "shareReview": {
         "title": "Share Review",
-        "description": "Send this to anyone. They can open it with Import Reviewed Game to see the full review instantly, without analysing it again."
+        "description": "Send this code to anyone. They can open it with Import Reviewed Game to see the full review instantly, without analysing it again."
     },
     "importReview": {
         "title": "Import Reviewed Game",
-        "description": "Paste a game review shared from WintrChess to open it already reviewed.",
-        "placeholder": "Paste the reviewed game...",
+        "description": "Paste a review code shared from WintrChess to open the game already reviewed.",
+        "placeholder": "wintrchess-...",
         "openButton": "Open Review",
-        "invalid": "This is not a reviewed game from WintrChess, or it was changed after sharing."
+        "invalid": "This is not a valid WintrChess review code. Check that it was copied in full."
     },
     "gameSearchMenu": {
         "title": "Select a game",

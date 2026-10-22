@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { renderReviewedPgn } from "@analysis/lib/reviewShare";
+import { encodeReviewCode } from "@analysis/lib/reviewShare";
 import Dialog from "@client/components/common/Dialog";
 import TextField from "@client/components/common/TextField";
 import Button from "@client/components/common/Button";
@@ -32,13 +32,7 @@ const canShareText = !!window.AndroidShare || !!navigator.share;
 function ShareReviewDialog({ game, onClose }: ShareReviewDialogProps) {
     const { t } = useTranslation(["analysis", "common"]);
 
-    const [ reviewedPgn, setReviewedPgn ] = useState<string>();
-
-    useEffect(() => {
-        renderReviewedPgn(game)
-            .then(setReviewedPgn)
-            .catch(err => console.error(err));
-    }, [game]);
+    const reviewCode = useMemo(() => encodeReviewCode(game), [game]);
 
     return <Dialog className={styles.wrapper} onClose={onClose}>
         <div className={styles.title}>
@@ -50,24 +44,23 @@ function ShareReviewDialog({ game, onClose }: ShareReviewDialogProps) {
                 {t("shareReview.description")}
             </span>
 
-            {/* Text fields copy the value they were created with */}
-            {reviewedPgn && <TextField
-                wrapperStyle={{ width: "100%", height: "200px" }}
+            <TextField
+                wrapperStyle={{ width: "100%", height: "120px" }}
                 className={styles.field}
                 copyClassName={styles.fieldCopy}
-                value={reviewedPgn}
+                value={reviewCode}
                 multiline
                 readOnly
                 copyable
-                copyTooltip={t("shareGame.copyReviewedPGN", { ns: "common" })}
-                copyToast={t("shareGame.copyReviewedPGNToast", { ns: "common" })}
+                copyTooltip={t("shareGame.copyReviewCode", { ns: "common" })}
+                copyToast={t("shareGame.copyReviewCodeToast", { ns: "common" })}
                 onClick={event => event.currentTarget.select()}
-            />}
+            />
 
-            {reviewedPgn && canShareText && <Button
+            {canShareText && <Button
                 className={styles.shareButton}
                 icon={iconInterfaceShare}
-                onClick={() => shareText(reviewedPgn)}
+                onClick={() => shareText(reviewCode)}
             >
                 {t("shareGame.shareReview", { ns: "common" })}
             </Button>}

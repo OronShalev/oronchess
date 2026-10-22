@@ -17,11 +17,11 @@ function ImportReviewDialog({ onClose }: ImportReviewDialogProps) {
 
     const importReview = useImportReview();
 
-    const [ reviewedPgn, setReviewedPgn ] = useState("");
+    const [ reviewCode, setReviewCode ] = useState("");
     const [ invalid, setInvalid ] = useState(false);
 
-    async function open() {
-        if (await importReview(reviewedPgn.trim())) {
+    function open() {
+        if (importReview(reviewCode)) {
             return onClose();
         }
 
@@ -39,13 +39,13 @@ function ImportReviewDialog({ onClose }: ImportReviewDialogProps) {
             </span>
 
             <TextField
-                wrapperStyle={{ width: "100%", height: "200px" }}
+                wrapperStyle={{ width: "100%", height: "120px" }}
                 className={styles.field}
                 placeholder={t("importReview.placeholder")}
-                value={reviewedPgn}
+                value={reviewCode}
                 multiline
                 onChange={value => {
-                    setReviewedPgn(value);
+                    setReviewCode(value);
                     setInvalid(false);
                 }}
             />
@@ -58,7 +58,7 @@ function ImportReviewDialog({ onClose }: ImportReviewDialogProps) {
                 className={styles.openButton}
                 icon={iconAnalysis}
                 iconSize="25px"
-                disabled={reviewedPgn.trim().length == 0}
+                disabled={reviewCode.trim().length == 0}
                 onClick={open}
             >
                 {t("importReview.openButton")}
