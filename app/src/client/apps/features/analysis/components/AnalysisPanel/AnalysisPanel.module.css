@@ -20,6 +20,20 @@
     overscroll-behavior: contain;
 }
 
+/* On small screens the panel grows with its content and the page scrolls
+instead, so it must not be a scroll container: one with nothing to scroll
+and contained overscroll swallows touch swipes that start on it */
+@media (max-width: 900px) {
+    .wrapper {
+        overflow-x: clip;
+    }
+
+    .components {
+        overflow-y: visible;
+        overscroll-behavior: auto;
+    }
+}
+
 .title {
     text-align: center;
     padding: 5px 10px;
