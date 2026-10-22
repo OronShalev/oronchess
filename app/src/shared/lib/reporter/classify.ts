@@ -2,6 +2,10 @@ import ReportOptions from "./types/AnalysisOptions";
 import { StateTreeNode } from "@shared/types/game/position/StateTreeNode";
 import { Classification, classifValues } from "@shared/constants/Classification";
 import {
+    ExtractedCurrentNode,
+    ExtractedPreviousNode
+} from "./types/ExtractedNode";
+import {
     extractPreviousStateTreeNode,
     extractCurrentStateTreeNode
 } from "./utils/extractNode";
@@ -26,6 +30,14 @@ export function classify(
         throw new Error("information missing from current or previous node.");
     }
 
+    return classifyExtracted(previous, current, options);
+}
+
+export function classifyExtracted(
+    previous: ExtractedPreviousNode,
+    current: ExtractedCurrentNode,
+    options?: ReportOptions
+) {
     const opts: Required<ReportOptions> = {
         includeBrilliant: true,
         includeCritical: true,

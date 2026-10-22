@@ -19,7 +19,7 @@ function useRealtimeAnalyser() {
         setRealtimeClassifyError(errorString);
     }
 
-    async function considerRealtimeAnalyse() {
+    function considerRealtimeAnalyse() {
         if (!currentStateTreeNode.parent) return;
 
         // If there is not enough data for a centipawn comparison
@@ -31,23 +31,12 @@ function useRealtimeAnalyser() {
             return cancelAnalyse("classifiedMoveCard.insufficientLines");
         }
 
-        const analyseNodeResult = await analyseNode(currentStateTreeNode, {
+        const classified = analyseNode(currentStateTreeNode, {
             includeBrilliant: settings.classifications.included.brilliant,
             includeTheory: settings.classifications.included.theory
         });
 
-        if (!analyseNodeResult.node)
-            return cancelAnalyse("classifiedMoveCard.unknownError");
-
-        // Apply classification and deactivate classifier
-        const currentState = currentStateTreeNode.state;
-        const analysedState = analyseNodeResult.node.state;
-
-        currentState.classification = analysedState.classification;
-        currentState.accuracy = analysedState.accuracy;
-        currentState.opening = analysedState.opening;
-
-        if (!analysedState.classification)
+        if (!classified)
             return cancelAnalyse("classifiedMoveCard.unknownError");
 
         cancelAnalyse();

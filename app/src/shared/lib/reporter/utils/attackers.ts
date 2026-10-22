@@ -12,25 +12,49 @@ interface TransitiveAttacker {
     type: PieceSymbol;
 }
 
+// Index of a square in the order that chess.js generates moves in
+function getSquareOrder(square: Square) {
+    return (8 - parseInt(square[1])) * 8 + square.charCodeAt(0) - 97;
+}
+
 function directAttackingMoves(
     board: Chess,
     piece: BoardPiece
 ): RawMove[] {
     // Set turn to attacker's side (opposite of piece)
-    const attackerBoard = new Chess(
-        setFenTurn(
-            board.fen(),
-            adaptPieceColour(flipPieceColour(piece.color))
-        )
+    const attackerFen = setFenTurn(
+        board.fen(),
+        adaptPieceColour(flipPieceColour(piece.color))
     );
 
-    const attackingMoves: RawMove[] = attackerBoard
-        .moves({ verbose: true })
+    const attackerBoard = new Chess(attackerFen);
+
+    const attackerSquares = attackerBoard.attackers(piece.square);
+
+    // Only pieces attacking the square, or able to capture onto the en
+    // passant square, can capture there. Generating moves for just those
+    // squares, in board order, gives the same moves as generating all
+    const originSquares = new Set(attackerSquares);
+
+    const enPassantSquare = attackerFen.split(" ")[3];
+
+    if (enPassantSquare && enPassantSquare != "-") {
+        attackerBoard.attackers(enPassantSquare as Square)
+            .forEach(square => originSquares.add(square));
+    }
+
+    // Quiet moves onto an empty square do not come from attackers
+    const candidateMoves = attackerBoard.get(piece.square)
+        ? [...originSquares]
+            .sort((a, b) => getSquareOrder(a) - getSquareOrder(b))
+            .flatMap(square => attackerBoard.moves({ verbose: true, square }))
+        : attackerBoard.moves({ verbose: true });
+
+    const attackingMoves: RawMove[] = candidateMoves
         .filter(move => getCaptureSquare(move) == piece.square)
         .map(toRawMove);
 
-    const kingAttackerSquare = attackerBoard
-        .attackers(piece.square)
+    const kingAttackerSquare = attackerSquares
         .find(attackerSquare => (
             attackerBoard.get(attackerSquare)?.type == KING
         ));

@@ -8,35 +8,48 @@ import {
 } from "./utils/extractNode";
 import { getOpeningName } from "./utils/opening";
 import { getMoveAccuracy } from "./accuracy";
-import { classify } from "./classify";
+import { classifyExtracted } from "./classify";
+
+/**
+ * @description Sets the classification, opening and accuracy of a node
+ * from its engine lines and those of its parent.
+ */
+export function analyseNode(
+    node: StateTreeNode,
+    options?: AnalysisOptions
+) {
+    node.state.opening = getOpeningName(node.state.fen);
+
+    const previous = node.parent
+        && extractPreviousStateTreeNode(node.parent);
+    const current = extractCurrentStateTreeNode(node);
+
+    if (!previous || !current) {
+        node.state.classification = undefined;
+        return;
+    }
+
+    try {
+        node.state.classification = classifyExtracted(
+            previous, current, options
+        );
+    } catch {
+        node.state.classification = undefined;
+    }
+
+    node.state.accuracy = getMoveAccuracy(
+        previous.evaluation,
+        current.evaluation,
+        adaptPieceColour(current.playedMove.color)
+    );
+}
 
 export function getGameAnalysis(
     rootNode: StateTreeNode,
     options?: AnalysisOptions
 ): GameAnalysis {
-    const treeNodes = getNodeChain(rootNode);
-    
-    for (const node of treeNodes) {
-        try {
-            node.state.classification = classify(node, options);
-        } catch (err) {
-            node.state.classification = undefined;
-        }
-
-        node.state.opening = getOpeningName(node.state.fen);
-
-        if (!node.parent) continue;
-
-        const previous = extractPreviousStateTreeNode(node.parent);
-        const current = extractCurrentStateTreeNode(node);
-
-        if (!previous || !current) continue;
-
-        node.state.accuracy = getMoveAccuracy(
-            previous.evaluation,
-            current.evaluation,
-            adaptPieceColour(current.playedMove.color)
-        );
+    for (const node of getNodeChain(rootNode)) {
+        analyseNode(node, options);
     }
 
     return {

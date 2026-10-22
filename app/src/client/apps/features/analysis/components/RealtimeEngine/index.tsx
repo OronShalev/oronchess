@@ -22,6 +22,7 @@ function RealtimeEngine({
     playedUciMoves,
     config,
     cachedEngineLines,
+    paused,
     onEngineLines,
     onEvaluationStart,
     onEvaluationComplete
@@ -89,6 +90,29 @@ function RealtimeEngine({
         hydratedConfig.version
     ]);
 
+    // Cached lines with fewer lines than displayed, shown until
+    // the local engine reaches the same depth
+    const partialCacheLines = useMemo(() => {
+        if (displayedCacheLines) return null;
+
+        const lines = pickEngineLines(
+            position,
+            cachedEngineLines || [],
+            {
+                depth: hydratedConfig.depth,
+                source: hydratedConfig.version
+            }
+        );
+
+        return lines?.length ? lines : null;
+    }, [
+        position,
+        cachedEngineLines,
+        displayedCacheLines,
+        hydratedConfig.depth,
+        hydratedConfig.version
+    ]);
+
     const displayedLocalLines = useMemo(() => pickEngineLines(
         position,
         realtimeEngineLines,
@@ -98,7 +122,13 @@ function RealtimeEngine({
         }
     ) || [], [realtimeEngineLines]);
 
-    const displayedLines = displayedCacheLines || displayedLocalLines;
+    const displayedLines = displayedCacheLines || (
+        partialCacheLines && (
+            displayedLocalLines[0]?.depth || 0
+        ) < partialCacheLines[0].depth
+            ? partialCacheLines
+            : displayedLocalLines
+    );
 
     useEffect(() => (
         onEngineLines?.(displayedLines)
@@ -133,9 +163,17 @@ function RealtimeEngine({
         }
     }
 
-    // Evaluate position when settings or position change
+    // Evaluate position when settings or position change, except
+    // while the whole game is being evaluated by other engines
     useEffect(() => {
-        if (displayedCacheLines) return;
+        if (displayedCacheLines || paused) {
+            if (evaluationDelayRef.current) {
+                clearTimeout(evaluationDelayRef.current);
+            }
+
+            engine?.stopEvaluation();
+            return;
+        }
 
         async function queueEvaluation() {
             await engine?.stopEvaluation();
@@ -153,6 +191,8 @@ function RealtimeEngine({
     }, [
         position,
         engine,
+        paused,
+        !!displayedCacheLines,
         hydratedConfig.depth,
         hydratedConfig.lines
     ]);

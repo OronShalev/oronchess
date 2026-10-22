@@ -1,72 +1,32 @@
-import { StatusCodes } from "http-status-codes";
-import { clone } from "lodash-es";
-
 import AnalysisOptions from "@shared/lib/reporter/types/AnalysisOptions";
+import { GameAnalysis } from "@shared/types/game/GameAnalysis";
+import { StateTreeNode } from "@shared/types/game/position/StateTreeNode";
 import {
-    GameAnalysis,
-    SerializedGameAnalysis
-} from "@shared/types/game/GameAnalysis";
-import {
-    StateTreeNode,
-    serializeNode,
-    deserializeNode
-} from "@shared/types/game/position/StateTreeNode";
-import APIResponse from "@client/types/APIResponse";
+    getGameAnalysis,
+    analyseNode as analyseSingleNode
+} from "@shared/lib/reporter/report";
 
-export async function analyseStateTree(
+/**
+ * @description Classifies every move of a game in place.
+ */
+export function analyseStateTree(
     rootNode: StateTreeNode,
     options?: AnalysisOptions
-): APIResponse<{ gameAnalysis: GameAnalysis }> {
-    const reportURL = "/api/analysis/analyse"
-        + `?brilliant=${String(options?.includeBrilliant)}`
-        + `&critical=${String(options?.includeCritical)}`
-        + `&theory=${String(options?.includeTheory)}`;
-
-    const reportResponse = await fetch(reportURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-            serializeNode(rootNode)
-        )
-    });
-
-    if (!reportResponse.ok)
-        return { status: reportResponse.status };
-
-    const serializedAnalysis: SerializedGameAnalysis = (
-        await reportResponse.json()
-    );
-
-    return {
-        status: reportResponse.status,
-        gameAnalysis: {
-            ...serializedAnalysis,
-            stateTree: deserializeNode(
-                serializedAnalysis.stateTree,
-                rootNode
-            )
-        }
-    };
+): GameAnalysis {
+    return getGameAnalysis(rootNode, options);
 }
 
-export async function analyseNode(
+/**
+ * @description Classifies a single move in place. Returns whether
+ * a classification could be found.
+ */
+export function analyseNode(
     node: StateTreeNode,
     options?: AnalysisOptions
-): APIResponse<{ node: StateTreeNode }> {
-    if (!node.parent)
-        return { status: StatusCodes.BAD_REQUEST };
+) {
+    if (!node.parent) return false;
 
-    const childlessNode = clone(node);
-    childlessNode.children = [];
+    analyseSingleNode(node, options);
 
-    const parentNode = clone(node.parent);
-    parentNode.children = [childlessNode];
-
-    const reportResult = await analyseStateTree(parentNode, options);
-    const analysedNode = reportResult.gameAnalysis?.stateTree.children.at(0);
-
-    return {
-        status: reportResult.status,
-        node: analysedNode
-    };
+    return !!node.state.classification;
 }

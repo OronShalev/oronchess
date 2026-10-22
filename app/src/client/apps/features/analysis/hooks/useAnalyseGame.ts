@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { StatusCodes } from "http-status-codes";
 
-import { findNodeRecursively } from "@shared/types/game/position/StateTreeNode";
 import AnalysisStatus from "@analysis/constants/AnalysisStatus";
 import useSettingsStore from "@client/stores/SettingsStore";
 import useAnalysisGameStore from "@analysis/stores/AnalysisGameStore";
@@ -21,49 +19,36 @@ function useAnalyseGame(
         setAnalysisGame
     } = useAnalysisGameStore();
 
-    const setCurrentStateTreeNode = useAnalysisBoardStore(
-        state => state.setCurrentStateTreeNode
+    const dispatchCurrentNodeUpdate = useAnalysisBoardStore(
+        state => state.dispatchCurrentNodeUpdate
     );
 
     const setAnalysisStatus = useAnalysisProgressStore(
         state => state.setAnalysisStatus
     );
 
-    return async () => {
-        const analyseResult = await analyseStateTree(analysisGame.stateTree, {
-            includeBrilliant: settings.classifications.included.brilliant,
-            includeCritical: settings.classifications.included.critical,
-            includeTheory: settings.classifications.included.theory
-        });
+    return () => {
+        // Classifies the moves of the state tree in place
+        try {
+            var gameAnalysis = analyseStateTree(analysisGame.stateTree, {
+                includeBrilliant: settings.classifications.included.brilliant,
+                includeCritical: settings.classifications.included.critical,
+                includeTheory: settings.classifications.included.theory
+            });
+        } catch (err) {
+            console.error(err);
 
-        if (analyseResult.status != StatusCodes.OK) {
             return onAnalysisError?.(
                 t("progressReporter.reportFailed")
             );
         }
 
-        if (!analyseResult.gameAnalysis) {
-            return setAnalysisStatus(AnalysisStatus.INACTIVE);
-        }
-
-        // Update analysed game with new analysis object
         setAnalysisGame({
             ...analysisGame,
-            ...analyseResult.gameAnalysis
+            ...gameAnalysis
         });
 
-        // Set current state tree node to equivalent in new tree
-        setCurrentStateTreeNode(prev => {
-            if (!analyseResult.gameAnalysis) {
-                return prev;
-            }
-
-            return findNodeRecursively(
-                analyseResult.gameAnalysis.stateTree,
-                node => node.id == prev.id
-            ) || prev;
-        });
-
+        dispatchCurrentNodeUpdate();
         setAnalysisStatus(AnalysisStatus.INACTIVE);
     };
 }

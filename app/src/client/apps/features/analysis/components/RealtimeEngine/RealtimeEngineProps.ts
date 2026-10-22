@@ -16,6 +16,7 @@ interface RealtimeEngineProps {
         timeLimit?: number;
     };
     cachedEngineLines?: EngineLine[];
+    paused?: boolean;
     onEngineLines?: (lines: EngineLine[]) => void;
     onEvaluationStart?: () => void;
     onEvaluationComplete?: (lines: EngineLine[]) => void;

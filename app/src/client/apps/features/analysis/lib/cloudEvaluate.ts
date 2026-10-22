@@ -11,7 +11,7 @@ type CloudEvaluation = components["schemas"]["CloudEval"];
 async function getCloudEvaluation(fen: string, targetCount = 1) {
     const cloudResponse = await fetch(
         "https://lichess.org/api/cloud-eval"
-        + `?fen=${fen}&multiPv=${targetCount}`
+        + `?fen=${encodeURIComponent(fen)}&multiPv=${targetCount}`
     );
 
     if (!cloudResponse.ok) {

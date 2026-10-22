@@ -5,11 +5,13 @@ import { uniqWith } from "lodash-es";
 import { getNodeParentChain } from "@shared/types/game/position/StateTreeNode";
 import { isEngineLineEqual } from "@shared/types/game/position/EngineLine";
 import AnalysisTab from "@analysis/constants/AnalysisTab";
+import AnalysisStatus from "@analysis/constants/AnalysisStatus";
 import useRealtimeAnalyser from "@analysis/hooks/useRealtimeAnalyser";
 import useSettingsStore from "@client/stores/SettingsStore";
 import useAnalysisTabStore from "@analysis/stores/AnalysisTabStore";
 import useAnalysisGameStore from "@analysis/stores/AnalysisGameStore";
 import useAnalysisBoardStore from "@analysis/stores/AnalysisBoardStore";
+import useAnalysisProgressStore from "@analysis/stores/AnalysisProgressStore";
 import useRealtimeEngineStore from "@analysis/stores/RealtimeEngineStore";
 import RealtimeEngine from "@analysis/components/RealtimeEngine";
 
@@ -30,6 +32,10 @@ function RealtimeEngineArea() {
             currentStateTreeNode: state.currentStateTreeNode,
             currentEngineLines: state.currentStateTreeNode.state.engineLines
         }))
+    );
+
+    const gameEvaluating = useAnalysisProgressStore(
+        state => state.analysisStatus == AnalysisStatus.EVALUATING
     );
 
     const setDisplayedEngineLines = useRealtimeEngineStore(
@@ -55,6 +61,7 @@ function RealtimeEngineArea() {
                 : undefined
         }}
         cachedEngineLines={currentEngineLines}
+        paused={gameEvaluating}
         onEngineLines={setDisplayedEngineLines}
         onEvaluationComplete={lines => {
             currentStateTreeNode.state.engineLines = uniqWith(
