@@ -287,9 +287,11 @@ function createGameEvaluator(
             }
         }
 
-        // Take the later half of the largest remaining segment
+        // Take the later half of the largest remaining segment. A segment
+        // down to its last position must be taken too: the opening segment
+        // left to cloud evaluations has no engine of its own to finish it
         const largestSegment = maxBy(
-            segments.filter(other => other.end > other.start),
+            segments.filter(other => other.end >= other.start),
             other => other.end - other.start
         );
 
