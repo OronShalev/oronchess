@@ -13,8 +13,6 @@ import AnalyseButton from "../../AnalyseButton";
 import ImportReviewDialog from "../../ImportReviewDialog";
 import * as styles from "./GameSelection.module.css";
 
-import iconLogo from "@assets/img/logo.svg";
-
 function GameSelection() {
     const { t } = useTranslation("analysis");
 
@@ -53,11 +51,11 @@ function GameSelection() {
 
         <Button
             className={styles.importReviewButton}
-            icon={iconLogo}
-            iconSize="28px"
             onClick={() => setImportReviewOpen(true)}
         >
-            {t("gameSelector.importReviewButton")}
+            <span className={styles.importReviewLabel}>
+                {t("gameSelector.importReviewButton")}
+            </span>
         </Button>
 
         {statusMessage && <i className={styles.statusMessage}>

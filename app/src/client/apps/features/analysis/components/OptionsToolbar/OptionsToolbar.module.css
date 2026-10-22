@@ -27,22 +27,22 @@
     background-color: var(--ui-shade-4);
 }
 
-/* Share icon over a faded WintrChess logo */
+/* Share icon over the chessboard logo */
 .shareReviewButton {
     position: relative;
-
-    background-color: var(--ui-blue);
 }
 
 .shareReviewButton::before {
     content: "";
     position: absolute;
-    inset: 4px;
+    inset: 6px;
 
     background: var(--logo) center / contain no-repeat;
-    opacity: 0.35;
+    opacity: 0.85;
 }
 
 .shareReviewButton img {
     position: relative;
+
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9));
 }

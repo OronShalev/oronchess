@@ -6,14 +6,32 @@
 }
 
 .importReviewButton {
+    position: relative;
     margin-bottom: 4px;
 
     background-color: var(--ui-shade-5);
     box-shadow: 0 4px 0 var(--ui-shade-4);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 
     transform: translateY(0px);
 
     transition: all 0.3s ease;
+}
+
+/* The light blue board of the logo behind the label */
+.importReviewButton::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+    background: repeating-conic-gradient(#7ec3f5 0 25%, #cfe8ff 0 50%)
+        0 0 / 22px 22px;
+    opacity: 0.35;
+}
+
+.importReviewLabel {
+    position: relative;
 }
 
 .importReviewButton:active {
