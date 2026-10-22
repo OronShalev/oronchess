@@ -6,6 +6,7 @@ import z from "zod";
 import EngineVersion from "@shared/constants/EngineVersion";
 import EngineArrowType from "@analysis/constants/EngineArrowType";
 import LocalStorageKey from "@client/constants/LocalStorageKey";
+import { isNativeEngineAvailable } from "@analysis/lib/nativeEngine";
 
 const settingsSchema = z.object({
     analysis: z.object({
@@ -45,7 +46,9 @@ export const defaultSettings: Settings = {
     analysis: {
         engine: {
             enabled: true,
-            version: EngineVersion.STOCKFISH_19_LITE,
+            version: isNativeEngineAvailable()
+                ? EngineVersion.STOCKFISH_19
+                : EngineVersion.STOCKFISH_19_LITE,
             depth: 16,
             lines: 2,
             timeLimitEnabled: false,

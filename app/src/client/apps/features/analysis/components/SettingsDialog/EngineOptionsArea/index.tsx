@@ -10,19 +10,34 @@ import LogMessage from "@client/components/common/LogMessage";
 import DropdownSetting from "@client/components/settings/DropdownSetting";
 import NumberSetting from "@client/components/settings/NumberSetting";
 import SwitchSetting from "@client/components/settings/SwitchSetting";
+import { isMobileDevice } from "@analysis/lib/hardware";
+import { isNativeEngine } from "@analysis/lib/engine";
+import { isNativeEngineAvailable } from "@analysis/lib/nativeEngine";
 
 import * as styles from "../SettingsDialog.module.css";
 
-const engineVersionOptions = [
-    {
-        label: "Stockfish 19 (99 MB)",
-        value: EngineVersion.STOCKFISH_19
-    },
-    {
-        label: "Stockfish 19 Lite (Recommended)",
-        value: EngineVersion.STOCKFISH_19_LITE
-    }
-];
+// In the apps the full engine runs natively, as fast as Lite
+const engineVersionOptions = isNativeEngineAvailable()
+    ? [
+        {
+            label: "Stockfish 19 (Recommended)",
+            value: EngineVersion.STOCKFISH_19
+        },
+        {
+            label: "Stockfish 19 Lite",
+            value: EngineVersion.STOCKFISH_19_LITE
+        }
+    ]
+    : [
+        {
+            label: "Stockfish 19 (99 MB)",
+            value: EngineVersion.STOCKFISH_19
+        },
+        {
+            label: "Stockfish 19 Lite (Recommended)",
+            value: EngineVersion.STOCKFISH_19_LITE
+        }
+    ];
 
 function EngineOptionsArea() {
     const { t, i18n } = useTranslation(["analysis", "common"]);
@@ -119,6 +134,19 @@ function EngineOptionsArea() {
                 style={{ width: "180px" }}
             />
         </div>
+
+        {isMobileDevice() && (
+            isNativeEngine(settings.analysis.engine.version)
+                ? settings.analysis.engine.depth > 16 && <LogMessage theme="info">
+                    {t("settings.engine.mobileDepthNote")}
+                </LogMessage>
+                : (
+                    settings.analysis.engine.version == EngineVersion.STOCKFISH_19
+                    || settings.analysis.engine.depth > 16
+                ) && <LogMessage theme="info">
+                    {t("settings.engine.mobileSpeedNote")}
+                </LogMessage>
+        )}
 
         <div className={styles.setting}>
             <span data-tooltip-id="settings-engine-lines">

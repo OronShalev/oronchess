@@ -50,6 +50,7 @@ namespace WintrChess
         private readonly WebView2 webView = new WebView2 { Dock = DockStyle.Fill };
 
         private CoreWebView2Environment environment;
+        private NativeEngineHost nativeEngines;
 
         public MainForm()
         {
@@ -133,6 +134,21 @@ namespace WintrChess
                 if (IsAppUrl(args.Uri)) core.Navigate(args.Uri);
                 else OpenExternally(args.Uri);
             };
+
+            // Native Stockfish, much faster than its WebAssembly builds
+            string enginePath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, "engines", "stockfish.exe"
+            );
+
+            if (File.Exists(enginePath))
+            {
+                await core.AddScriptToExecuteOnDocumentCreatedAsync(
+                    "window.__wintrNativeEngine = true;"
+                );
+
+                nativeEngines = new NativeEngineHost(core, enginePath, Host);
+                FormClosed += (sender, args) => nativeEngines.Dispose();
+            }
 
             core.DocumentTitleChanged += (sender, args) =>
             {

@@ -20,9 +20,13 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 import androidx.webkit.WebViewAssetLoader;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +64,7 @@ public class MainActivity extends Activity {
 
     private WebView webView;
     private ValueCallback<Uri[]> fileChooserCallback;
+    private NativeEngineHost nativeEngines;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +110,23 @@ public class MainActivity extends Activity {
         // The WebView has no Web Share API, so sharing goes through the
         // system share sheet. Only the bundled app is ever loaded.
         webView.addJavascriptInterface(new ShareBridge(), "AndroidShare");
+
+        // Native Stockfish, run from the app's native library folder
+        File engine = new File(getApplicationInfo().nativeLibraryDir, "libstockfish.so");
+
+        if (
+            engine.exists()
+            && WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)
+        ) {
+            nativeEngines = new NativeEngineHost(engine.getPath());
+
+            WebViewCompat.addWebMessageListener(
+                webView,
+                "NativeEngine",
+                Collections.singleton("https://" + HOST),
+                nativeEngines
+            );
+        }
 
         WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
             .setDomain(HOST)
@@ -238,6 +260,8 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        if (nativeEngines != null) nativeEngines.stopAll();
+
         webView.destroy();
         super.onDestroy();
     }

@@ -57,15 +57,19 @@ function RealtimeEngine({
         return board.fen();
     }, [initialPosition, playedUciMoves]);
 
-    // Instantiate new engine when version changes
+    // Instantiate new engine when version changes. None is kept while
+    // paused, so that it holds no memory while a game is evaluated
     useEffect(() => {
-        engine?.terminate();
+        if (paused) {
+            setEngine(undefined);
+            return;
+        }
 
         const newEngine = new Engine(hydratedConfig.version);
         setEngine(newEngine);
 
         return () => newEngine.terminate();
-    }, [hydratedConfig.version]);
+    }, [hydratedConfig.version, paused]);
 
     // Get number of lines expected to appear
     const expectedLineCount = useMemo(() => Math.min(

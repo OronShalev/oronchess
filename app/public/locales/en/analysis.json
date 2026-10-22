@@ -24,6 +24,8 @@
             "depth": "Depth",
             "lines": "Number of Lines",
             "linesWarning": "At least 2 lines are required for Critical and some Brilliant moves.",
+            "mobileSpeedNote": "On phones, reviews with the 99 MB engine take about twice as long as with Lite, and each depth above 16 adds about 30-40% more time.",
+            "mobileDepthNote": "On phones, each depth above 16 adds about 30-40% more review time.",
             "timeLimit": "Time Limit (seconds)",
             "suggestionArrows": {
                 "title": "Suggestion Arrows",

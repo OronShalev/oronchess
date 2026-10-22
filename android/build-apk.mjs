@@ -4,13 +4,16 @@
 // Usage (from android/): node build-apk.mjs [--skip-web]
 //
 // Needs a JDK 17 and the Android SDK (platform 35, build tools 35).
+// Native Stockfish is downloaded from its official release.
 // JAVA_HOME and ANDROID_HOME are used when set; otherwise the toolchain
 // is looked for in ~/.android-toolchain/{jdk,sdk}.
 import { execFileSync } from "node:child_process";
-import { cpSync, copyFileSync, existsSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import os from "node:os";
 import path from "node:path";
+
+import { getStockfish } from "../native-stockfish.mjs";
 
 const androidRoot = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.resolve(androidRoot, "../app");
@@ -45,10 +48,22 @@ if (!process.argv.includes("--skip-web")) {
     run("npm", ["run", "build:client"], appRoot);
 }
 
-// The server only serves these two folders, so they make up the whole app
+// The server only serves these two folders, so they make up the whole app.
+// The full strength engine runs natively in the app, so its WebAssembly
+// build is left out
 rmSync(assetsRoot, { recursive: true, force: true });
-cpSync(path.join(appRoot, "public"), assetsRoot, { recursive: true });
+cpSync(path.join(appRoot, "public"), assetsRoot, {
+    recursive: true,
+    filter: source => !/stockfish-19-single\.(js|wasm)$/.test(source)
+});
 cpSync(path.join(appRoot, "dist/client"), assetsRoot, { recursive: true });
+copyFileSync(path.join(androidRoot, "../THIRD_PARTY.md"), path.join(assetsRoot, "THIRD_PARTY.md"));
+
+// Native Stockfish is packaged as a native library so that it can be run
+const nativeLibraryRoot = path.join(androidRoot, "app/src/main/jniLibs/arm64-v8a");
+
+mkdirSync(nativeLibraryRoot, { recursive: true });
+copyFileSync(await getStockfish("android"), path.join(nativeLibraryRoot, "libstockfish.so"));
 
 writeFileSync(
     path.join(androidRoot, "local.properties"),

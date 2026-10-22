@@ -3,6 +3,11 @@ import { Chess } from "chess.js";
 import { EngineLine } from "@shared/types/game/position/EngineLine";
 import EngineVersion from "@shared/constants/EngineVersion";
 import { STARTING_FEN } from "@shared/constants/utils";
+import {
+    EngineTransport,
+    createNativeEngineTransport,
+    isNativeEngineAvailable
+} from "./nativeEngine";
 
 // Convert UCI evaluation types to our ones
 const uciEvaluationTypes: Record<string, "centipawn" | "mate" | undefined> = {
@@ -17,8 +22,16 @@ interface ParsedInfoLine {
     moveUcis: string[];
 }
 
+/**
+ * @description Returns whether an engine version runs as a native program
+ * here. In the apps, the full strength engine does.
+ */
+export function isNativeEngine(version: EngineVersion) {
+    return version == EngineVersion.STOCKFISH_19 && isNativeEngineAvailable();
+}
+
 class Engine {
-    private worker: Worker;
+    private worker: EngineTransport;
     private version: EngineVersion;
 
     private position = STARTING_FEN;
@@ -26,7 +39,9 @@ class Engine {
     private evaluating = false;
 
     constructor(version: EngineVersion) {
-        this.worker = new Worker("/engines/" + version);
+        this.worker = isNativeEngine(version)
+            ? createNativeEngineTransport()
+            : new Worker("/engines/" + version);
         this.version = version;
 
         this.worker.postMessage("uci");

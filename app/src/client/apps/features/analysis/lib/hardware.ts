@@ -1,6 +1,7 @@
 import EngineVersion from "@shared/constants/EngineVersion";
+import { isNativeEngineAvailable } from "./nativeEngine";
 
-function isMobileDevice() {
+export function isMobileDevice() {
     if (typeof navigator == "undefined") return false;
 
     return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
@@ -30,8 +31,12 @@ export function getRecommendedEngineCount(version: EngineVersion) {
         engineCount = Math.min(engineCount, 4);
     }
 
-    // Each engine holds its own copy of the full size network
-    if (version == EngineVersion.STOCKFISH_19) {
+    // Each WebAssembly engine holds its own copy of the full size network,
+    // while native ones in the apps are light enough to use every core
+    if (
+        version == EngineVersion.STOCKFISH_19
+        && !isNativeEngineAvailable()
+    ) {
         engineCount = Math.min(engineCount, 4);
     }
 

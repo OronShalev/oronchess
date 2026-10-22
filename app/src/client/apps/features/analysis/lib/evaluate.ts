@@ -447,11 +447,13 @@ function createGameEvaluator(
 
             engineErrorPromise.catch(() => {});
 
+            // Each engine starts work as soon as it is ready, rather than
+            // all waiting for the slowest to start; its segment is taken
+            // over by the others in the meantime
+            const engineReadiness = engines.map(engine => engine.waitUntilReady());
+
             await Promise.race([
-                Promise.all([
-                    ...engines.map(engine => engine.waitUntilReady()),
-                    loadCachedEvaluations()
-                ]),
+                loadCachedEvaluations(),
                 engineErrorPromise,
                 abortPromise
             ]);
@@ -463,7 +465,9 @@ function createGameEvaluator(
             do {
                 await Promise.race([
                     Promise.all(engines.map((engine, engineIndex) => (
-                        runEngine(engine, segments[engineIndex])
+                        engineReadiness[engineIndex].then(() => (
+                            runEngine(engine, segments[engineIndex])
+                        ))
                     ))),
                     engineErrorPromise,
                     abortPromise
