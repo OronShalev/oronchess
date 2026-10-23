@@ -1,4 +1,4 @@
-; Installer for the WintrChess Windows app, built by build-exe.mjs.
+; Installer for the OronChess Windows app, built by build-exe.mjs.
 ; Installs for the current user by default, so no administrator rights
 ; are needed.
 
@@ -7,13 +7,13 @@
 #endif
 
 [Setup]
-AppId={{6E0B4C1E-5A2F-4C61-9C1B-3F0D7A9E2B57}
-AppName=WintrChess
+AppId={{50CB9F9E-D945-4CF1-A18A-A34FA19BC563}
+AppName=OronChess
 AppVersion={#AppVersion}
-AppPublisher=WintrChess
-AppPublisherURL=https://github.com/OronShalev/wintrchess
-DefaultDirName={autopf}\WintrChess
-DefaultGroupName=WintrChess
+AppPublisher=OronChess
+AppPublisherURL=https://github.com/OronShalev/oronchess
+DefaultDirName={autopf}\OronChess
+DefaultGroupName=OronChess
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
@@ -21,10 +21,10 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0
 OutputDir=.
-OutputBaseFilename=WintrChess-Setup
-SetupIconFile=WintrChess\app.ico
-UninstallDisplayIcon={app}\WintrChess.exe
-UninstallDisplayName=WintrChess
+OutputBaseFilename=OronChess-Setup
+SetupIconFile=OronChess\app.ico
+UninstallDisplayIcon={app}\OronChess.exe
+UninstallDisplayName=OronChess
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
@@ -41,11 +41,11 @@ Type: filesandordirs; Name: "{app}\www"
 
 [UninstallDelete]
 ; Browser data, including saved evaluations
-Type: filesandordirs; Name: "{localappdata}\WintrChess"
+Type: filesandordirs; Name: "{localappdata}\OronChess"
 
 [Icons]
-Name: "{autoprograms}\WintrChess"; Filename: "{app}\WintrChess.exe"
-Name: "{autodesktop}\WintrChess"; Filename: "{app}\WintrChess.exe"; Tasks: desktopicon
+Name: "{autoprograms}\OronChess"; Filename: "{app}\OronChess.exe"
+Name: "{autodesktop}\OronChess"; Filename: "{app}\OronChess.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\WintrChess.exe"; Description: "{cm:LaunchProgram,WintrChess}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\OronChess.exe"; Description: "{cm:LaunchProgram,OronChess}"; Flags: nowait postinstall skipifsilent

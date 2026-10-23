@@ -44,7 +44,7 @@ declare global {
 
         // Set by the Windows app, whose bridge is the WebView2 one; true
         // in versions that only had the full engine
-        __wintrNativeEngine?: boolean | string[];
+        __oronNativeEngine?: boolean | string[];
         chrome?: { webview?: MessageChannelLike };
     }
 }
@@ -71,7 +71,7 @@ function findBridge(): NativeBridge | null {
     };
 
     const webview = window.chrome?.webview;
-    const windowsEngines = window.__wintrNativeEngine;
+    const windowsEngines = window.__oronNativeEngine;
 
     if (webview && windowsEngines) return {
         engines: Array.isArray(windowsEngines)

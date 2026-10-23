@@ -1,6 +1,6 @@
-# 🏗️ Hosting WintrChess locally
+# 🏗️ Hosting OronChess
 
-> This is a guide on how to get WintrChess running on your local machine.
+> This is a guide on how to get the OronChess web app running on your own machine or server.
 
 ## Prerequisites
 
@@ -13,15 +13,15 @@
 ### Clone the repository
 
 ```sh
-git clone https://github.com/wintrcat/wintrchess.git
+git clone https://github.com/OronShalev/oronchess.git
 
 # Go to the directory
-cd wintrchess
+cd oronchess
 ```
 
 ### Set environment variables
 
-These are the environment variables that you can set when hosting WintrChess:
+These are the environment variables that you can set when hosting OronChess:
 
 ```toml
 NODE_ENV="production"
@@ -30,7 +30,7 @@ NODE_ENV="production"
 The environment that the app is running in. Can be one of two values: `production` (default) and `development`.
 
 ```toml
-ALLOWED_HOSTNAMES="wintrchess.com,localhost"
+ALLOWED_HOSTNAMES="example.com,localhost"
 ```
 
 A comma-separated list of hostnames the server will accept requests for (subdomains included). Requests with any other `Host` header get a `401 Unauthorized`. If unset, requests for any hostname are accepted.
@@ -72,7 +72,7 @@ The server will begin listening on the port that you defined in the environment 
 
 ## Deploy with Docker
 
-You might find it easier to run WintrChess in a Docker container.
+You might find it easier to run OronChess in a Docker container.
 
 ### Build and start
 

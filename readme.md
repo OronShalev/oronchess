@@ -1,47 +1,47 @@
-> [!IMPORTANT]
-> Looking for maintainers! Please join [the Discord server](https://discord.com/invite/XxtsAzPyCb) and open a ticket to apply :)
-
 <h1 align="center">
-    <a href="https://wintrchess.com"><img width="175" src="https://github.com/user-attachments/assets/9a33a746-c9cd-43b8-b17b-564f3f6ce4a2" /></a>
+    <img width="120" src="app/public/img/logo.svg" />
     <br>
-    WintrChess
+    OronChess
 </h1>
 
 <p align="center">
-    A website that analyses Chess games with move classifications, for free.
+    Chess game reviews with move classifications, powered by Stockfish.
+    Runs in the browser, and as Android and Windows apps.
 </p>
 
-<p align="center">
-    📌 <a href="https://wintrchess.com/"><b>wintrchess.com</b></a>
-</p>
+## ✨ Features
 
-<img width="1000" alt="image" src="https://github.com/user-attachments/assets/77d98631-07d4-4ccc-83ef-32f6b3e1d6dd" />
-
-> Originally <a href="https://github.com/wintrcat/freechess">Game Report</a>, the platform has been rebuilt with many more features!
+- Full game reviews with Brilliant, Critical, Best, Inaccuracy, Mistake and Blunder moves, accuracies and an evaluation graph
+- Games from PGN, FEN, Chess.com or Lichess
+- Live engine analysis while exploring moves
+- Share a review as a short `oronchess-…` code, and open it on any device with no engine run
+- Android and Windows apps that run Stockfish natively, several times faster than in the browser
 
 ## 📂 Project
 
-Everything lives in a single TypeScript app under `app/`:
+#### `app/`
+The web app, in TypeScript:
 
-#### `app/src/client`
-The frontend for the website built with React. Import with `@client/...`.
+- `app/src/client`: the React frontend. Import with `@client/...`.
+- `app/src/server`: the Express server that serves the app. Import with `@server/...`.
+- `app/src/shared`: types and common logic, like the move classifier. Import with `@shared/...`.
+- `app/public`: static files: HTML pages, images, translations and the Stockfish engines.
 
-#### `app/src/server`
-The Express backend where the website content is served, and where any API endpoints will live. Import with `@server/...`.
+#### `android/`
+The Android app: the web app in a WebView, with native Stockfish. Build with `node android/build-apk.mjs`.
 
-#### `app/src/shared`
-Libraries, types and common logic (like the move classifier) used by both the client and the server. Import with `@shared/...`.
+#### `windows/`
+The Windows app: the web app in WebView2, with native Stockfish, and its installer. Build with `node windows/build-exe.mjs`.
 
-#### `app/public`
-Static files: HTML pages, images, translations and the Stockfish engines.
+#### `native/`, `native-stockfish.mjs`
+Native Stockfish programs for the apps: the official Stockfish 19 release, and Stockfish 19 Lite built from source. See `THIRD_PARTY.md`.
 
 ## 📚 Documentation
 
-[Hosting WintrChess locally](https://github.com/WintrCat/wintrchess/blob/master/docs/hosting.md)
+[Hosting OronChess](docs/hosting.md)
 
-[Contributing to the project](https://github.com/WintrCat/wintrchess/blob/master/docs/contributing.md)
+[Contributing to the project](docs/contributing.md)
 
-## ☕ Support
+## 📄 License
 
-If you like this project or find it useful, consider buying me a little coffee! Everything is appreciated so much 💙
-[https://ko-fi.com/wintrcat](https://ko-fi.com/wintrcat)
+GNU General Public License v3.0; see `LICENSE`.

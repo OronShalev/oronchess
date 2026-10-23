@@ -1,5 +1,5 @@
 // Native Stockfish programs for the Android and Windows apps, cached in
-// ~/.cache/wintrchess-stockfish:
+// ~/.cache/oronchess-stockfish:
 // - getStockfish: the official Stockfish 19 release (full strength), checked
 //   against its published SHA-256 digest
 // - getStockfishLite: Stockfish 19 Lite, built from the Stockfish.js engine
@@ -22,7 +22,7 @@ import { fileURLToPath } from "node:url";
 import os from "node:os";
 import path from "node:path";
 
-const cacheRoot = path.join(os.homedir(), ".cache/wintrchess-stockfish");
+const cacheRoot = path.join(os.homedir(), ".cache/oronchess-stockfish");
 const patchPath = fileURLToPath(new URL("native/stockfish-lite.patch", import.meta.url));
 
 const release = "sf_19";

@@ -1,5 +1,5 @@
 // Builds the web client, bundles it into the Android app and builds an
-// installable APK at android/wintrchess.apk.
+// installable APK at android/oronchess.apk.
 //
 // Usage (from android/): node build-apk.mjs [--skip-web]
 //
@@ -86,7 +86,7 @@ run(
     { JAVA_HOME: javaHome, ANDROID_HOME: androidHome }
 );
 
-const apkPath = path.join(androidRoot, "wintrchess.apk");
+const apkPath = path.join(androidRoot, "oronchess.apk");
 
 copyFileSync(
     path.join(androidRoot, "app/build/outputs/apk/release/app-release.apk"),

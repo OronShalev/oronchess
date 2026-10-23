@@ -1,4 +1,4 @@
 build/
-WintrChess/bin/
-WintrChess/obj/
+OronChess/bin/
+OronChess/obj/
 *.exe

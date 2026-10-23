@@ -1,4 +1,4 @@
-package com.wintrchess.app;
+package com.oronchess.app;
 
 import android.net.Uri;
 import android.os.Handler;

@@ -20,4 +20,4 @@ The web app uses Stockfish 19 compiled to WebAssembly by
 [Stockfish.js](https://github.com/nmrugg/stockfish.js).
 
 Stockfish and Stockfish.js are licensed under the GNU General Public License v3.0.
-WintrChess itself is licensed under the GNU General Public License v3.0; see `LICENSE`.
+OronChess itself is licensed under the GNU General Public License v3.0; see `LICENSE`.

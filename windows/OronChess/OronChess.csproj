@@ -7,8 +7,8 @@
     <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>WintrChess</AssemblyName>
-    <RootNamespace>WintrChess</RootNamespace>
+    <AssemblyName>OronChess</AssemblyName>
+    <RootNamespace>OronChess</RootNamespace>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Prefer32Bit>false</Prefer32Bit>
@@ -17,7 +17,7 @@
     <SelfContained>false</SelfContained>
     <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
     <Version>1.0.0</Version>
-    <Product>WintrChess</Product>
+    <Product>OronChess</Product>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
 

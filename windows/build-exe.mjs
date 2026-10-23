@@ -1,5 +1,5 @@
 // Builds the web client, bundles it with the Windows app and builds an
-// installer at windows/WintrChess-Setup.exe.
+// installer at windows/OronChess-Setup.exe.
 //
 // Usage (from windows/): node build-exe.mjs [--skip-web]
 //
@@ -42,7 +42,7 @@ if (!process.argv.includes("--skip-web")) {
 rmSync(path.join(windowsRoot, "build"), { recursive: true, force: true });
 
 run("dotnet", [
-    "publish", "WintrChess/WintrChess.csproj",
+    "publish", "OronChess/OronChess.csproj",
     "-c", "Release",
     "-o", `"${outputRoot}"`,
     "--nologo"
@@ -71,4 +71,4 @@ copyFileSync(path.join(windowsRoot, "../THIRD_PARTY.md"), path.join(outputRoot, 
 // Package it into an installer
 run(`"${findInnoSetupCompiler()}"`, ["/Q", "installer.iss"], windowsRoot);
 
-console.log(`Installer written to ${path.join(windowsRoot, "WintrChess-Setup.exe")}`);
+console.log(`Installer written to ${path.join(windowsRoot, "OronChess-Setup.exe")}`);

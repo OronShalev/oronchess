@@ -8,7 +8,7 @@ import os from "node:os";
 import path from "node:path";
 
 const engineSourceDir = fileURLToPath(new URL("../../public/engines/", import.meta.url));
-const engineCacheDir = path.join(os.tmpdir(), "wintrchess-bench-engines");
+const engineCacheDir = path.join(os.tmpdir(), "oronchess-bench-engines");
 
 export const workerStats = {
     created: 0,

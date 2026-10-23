@@ -5,7 +5,7 @@ export interface EvaluationCache {
     setMany: (entries: [string, EngineLine[]][]) => Promise<void>;
 }
 
-const databaseName = "wintrchess-evaluations";
+const databaseName = "oronchess-evaluations";
 const storeName = "engineLines";
 
 // The store is cleared when it grows past this many positions

@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "WintrChess"
+rootProject.name = "OronChess"
 include ":app"

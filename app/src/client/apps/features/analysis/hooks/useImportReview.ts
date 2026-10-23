@@ -6,7 +6,7 @@ import { decodeReviewCode } from "@analysis/lib/reviewShare";
 
 /**
  * @description Returns a function that opens a game review shared from
- * WintrChess as a code. Its evaluations are restored, so it is only
+ * OronChess as a code. Its evaluations are restored, so it is only
  * classified, without any engine search. Returns whether it was valid.
  */
 function useImportReview() {

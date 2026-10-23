@@ -1,4 +1,5 @@
 {
+    "name": "oronchess",
     "workspaces": [
         "./app"
     ],

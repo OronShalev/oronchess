@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 
-namespace WintrChess
+namespace OronChess
 {
     /// <summary>
     /// Runs Stockfish as native processes for the page, which is much faster

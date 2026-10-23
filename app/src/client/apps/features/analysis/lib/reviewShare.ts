@@ -16,8 +16,8 @@ import parsePgn from "@client/lib/games/pgn";
 //
 // Layout, bit-packed: version, checksum, game details, base depth and
 // source, ply count, moves, then up to two lines for every position.
-const codePrefix = "wintrchess-";
-const codePattern = /wintrchess-([A-Za-z0-9_-]+)/;
+const codePrefix = "oronchess-";
+const codePattern = /oronchess-([A-Za-z0-9_-]+)/;
 
 const codeVersion = 1;
 const versionBits = 4;

@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace WintrChess
+namespace OronChess
 {
     internal static class Program
     {

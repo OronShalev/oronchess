@@ -73,10 +73,10 @@
     },
     "importReview": {
         "title": "Import Reviewed Game",
-        "description": "Paste a review code shared from WintrChess to open the game already reviewed.",
-        "placeholder": "wintrchess-...",
+        "description": "Paste a review code shared from OronChess to open the game already reviewed.",
+        "placeholder": "oronchess-...",
         "openButton": "Open Review",
-        "invalid": "This is not a valid WintrChess review code. Check that it was copied in full."
+        "invalid": "This is not a valid OronChess review code. Check that it was copied in full."
     },
     "gameSearchMenu": {
         "title": "Select a game",

@@ -1,35 +1,20 @@
 # ☕ Contributing
 
-If you'd like to contribute to the WintrChess platform, you can get started by reading this guide. Thank you for considering a contribution!
+If you'd like to contribute to OronChess, this guide will help you get started. Thank you for considering a contribution!
 
-## 🏰 The State of WintrChess
+## 💡 Ideas
 
-This is a project that I worked on throughout my spare time for 14 months. I learnt a lot of things on the go while building this, and it was (mostly) super fun!
+Some improvements that would make OronChess better:
 
-I think I've left the project in an *okay...* state, but there are still a lot of features or improvements that can be made from here. I've compiled a list of what the community has asked for the most:
-
-- Algorithm that estimates a player's performance rating "Elo" in a game.
-- A better accuracy algorithm; I still receive a lot of feedback saying it's too high.
-- Performance metrics (accuracies etc.) for each stage of the game; opening, middlegame, endgame...
-- Ability to explore a Chess masters database when analysing opening moves.
-- Flipping the board to match the viewpoint of the user, when selecting games from Chess.com / Lichess.
-
-One thing that I left in the code but never had time to implement is the "Risky" classification, which is given to moves that have good win rates in the database, but are objectively dubious according to the engine. The icon and constant values are already there, but the classifier does not distribute it.
-
-There were also a bunch of larger systems on the roadmap; hopefully we can all work together on building these ☕
-
-- A puzzles page; this was suggested a lot, but I'm not immediately sure what would be nice to have on it that's any different from Lichess for example.
-- A "lessons" page where you can train / learn openings, tactics, endgames etc. Not idea how to produce the content.
-- Explanations on Chess moves, like Chess.com's coach. This may be a monumental challenge! I would love to see something on par with or even better than Chess.com's.
-- Automated classifier testing? A large set of pre-evaluated games to test the brilliant move algorithm on etc.
-
-If you'd like to contribute to WintrChess, but don't know where to start, this list may give you some inspiration 💙
+- Performance metrics (accuracies etc.) for each stage of the game: opening, middlegame and endgame.
+- Exploring a database of master games when analysing opening moves.
+- The "Risky" classification, for moves with good results in the database that the engine finds dubious. Its icon and constants exist, but the classifier does not give it yet.
+- Explanations of moves, in plain language.
+- Automated classifier tests on a large set of evaluated games (`app/scripts/review-bench` is a start).
 
 ## 📋 Code Style
 
-There is a particular coding style that I've used across this project that I would hope you can adhere to in your contributions. At the root of the project there is `eslint.config.js`, so you can use ESLint to help match code style. You can also have a look at other code in the project if you'd like :)
-
-Some other weird things I got into the habit of:
+Use ESLint with `eslint.config.js` at the root of the project to match the code style, and look at the code around your change. Some conventions:
 
 ```tsx
 // Sorting imports
@@ -59,11 +44,11 @@ function AwesomeThing({ children }: AwesomeThingProps) {
 export default AwesomeThing;
 ```
 
-If you can, try not to use classes unless you absolutely have to - use functions and interfaces!
+Prefer functions and interfaces to classes unless a class is really needed.
 
 ## 🎋 Opening a Pull Request
 
-Pull request / commit names generally follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary):
+Pull request and commit names follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary):
 
 ```
 <type of change>(<optional scope>): <present tense description>
@@ -72,14 +57,12 @@ feat(fe): add cool new feature
 docs: add funny message
 ```
 
-The scopes are `fe` (Frontend), `be` (Backend), and `sh` (Shared). You can omit the scope if multiple areas or root-level files are substantially changed.
+The scopes are `fe` (Frontend), `be` (Backend), `sh` (Shared), `android`, `windows` and `apps` (both apps). Omit the scope if several areas or root-level files change substantially.
 
-If your changes deal in personal information, please make sure you describe what kind of data is collected, and what security considerations you've taken into account. This makes it easier to make any necessary amendments to the privacy policy thereafter.
+If your changes deal with personal information, describe what data is collected and the security considerations you have taken into account.
 
 Please be nice when discussing things in pull requests! 💙
 
 ## 🔐 Reporting security vulnerabilities
 
-If you have found a security vulnerability, please report it responsibly! Some that do not cause that much damage can be opened as an issue, though if you have found a critical vulnerability that could, for example, affect the safety of user information, please instead send an email to:
-
-[contact@wintrchess.com](mailto:contact@wintrchess.com)
+Please report vulnerabilities responsibly. Minor ones can be opened as an issue; for anything that could affect user data, use GitHub's private vulnerability reporting on the repository instead.

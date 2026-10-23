@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 
-namespace WintrChess
+namespace OronChess
 {
     /// <summary>
     /// Shows the analysis web app, served from the www folder next to the
@@ -18,7 +18,7 @@ namespace WintrChess
     /// </summary>
     internal sealed class MainForm : Form
     {
-        private const string Host = "wintrchess.local";
+        private const string Host = "oronchess.local";
         private const string Origin = "https://" + Host;
         private const string StartUrl = Origin + "/analysis";
         private const string AppPage = "apps/features/analysis.html";
@@ -56,7 +56,7 @@ namespace WintrChess
 
         public MainForm()
         {
-            Text = "WintrChess";
+            Text = "OronChess";
             Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             BackColor = Color.FromArgb(16, 18, 22);
             StartPosition = FormStartPosition.CenterScreen;
@@ -74,7 +74,7 @@ namespace WintrChess
             // Program Files is read only, so browser data lives with the user
             string userDataFolder = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "WintrChess",
+                "OronChess",
                 "WebView2"
             );
 
@@ -89,9 +89,9 @@ namespace WintrChess
             catch (WebView2RuntimeNotFoundException)
             {
                 DialogResult answer = MessageBox.Show(
-                    "WintrChess needs the Microsoft Edge WebView2 Runtime, "
+                    "OronChess needs the Microsoft Edge WebView2 Runtime, "
                         + "which is not installed. Open its download page?",
-                    "WintrChess",
+                    "OronChess",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning
                 );
@@ -145,7 +145,7 @@ namespace WintrChess
                 string engineList = string.Join(",", enginePaths.Keys.Select(name => "\"" + name + "\""));
 
                 await core.AddScriptToExecuteOnDocumentCreatedAsync(
-                    "window.__wintrNativeEngine = [" + engineList + "];"
+                    "window.__oronNativeEngine = [" + engineList + "];"
                 );
 
                 nativeEngines = new NativeEngineHost(core, enginePaths, Host);
@@ -155,7 +155,7 @@ namespace WintrChess
             core.DocumentTitleChanged += (sender, args) =>
             {
                 Text = string.IsNullOrWhiteSpace(core.DocumentTitle)
-                    ? "WintrChess"
+                    ? "OronChess"
                     : core.DocumentTitle;
             };
 
