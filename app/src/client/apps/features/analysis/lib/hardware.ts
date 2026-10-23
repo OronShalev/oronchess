@@ -35,7 +35,7 @@ export function getRecommendedEngineCount(version: EngineVersion) {
     // while native ones in the apps are light enough to use every core
     if (
         version == EngineVersion.STOCKFISH_19
-        && !isNativeEngineAvailable()
+        && !isNativeEngineAvailable("full")
     ) {
         engineCount = Math.min(engineCount, 4);
     }

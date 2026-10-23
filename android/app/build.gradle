@@ -32,13 +32,13 @@ android {
         noCompress += ["wasm"]
     }
 
-    // Native Stockfish ships as libstockfish.so (added by build-apk.mjs).
-    // It is a program rather than a library, so it must be extracted to
-    // disk to be run, and is left as built
+    // Native Stockfish ships as libstockfish*.so (added by build-apk.mjs).
+    // These are programs rather than libraries, so they must be extracted
+    // to disk to be run, and are left as built
     packaging {
         jniLibs {
             useLegacyPackaging = true
-            keepDebugSymbols += ["**/libstockfish.so"]
+            keepDebugSymbols += ["**/libstockfish*.so"]
         }
     }
 }

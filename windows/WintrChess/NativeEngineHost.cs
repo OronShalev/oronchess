@@ -13,7 +13,8 @@ namespace WintrChess
     /// than its WebAssembly builds. The page talks to it through WebView2
     /// messages:
     ///
-    ///   to here:  "start|send|stop \t id \t line"
+    ///   to here:  "start \t id \t engine" (full or lite), "send \t id \t line"
+    ///             or "stop \t id"
     ///   to page:  "id \n line \n line ..." or "id \n !message" on failure
     ///
     /// Messages arrive on the UI thread, where all engine bookkeeping stays.
@@ -24,16 +25,22 @@ namespace WintrChess
         private const int FlushIntervalMs = 15;
 
         private readonly CoreWebView2 core;
-        private readonly string enginePath;
+
+        // Program of each engine the page can start, by name
+        private readonly IReadOnlyDictionary<string, string> enginePaths;
         private readonly Dictionary<string, EngineProcess> engines =
             new Dictionary<string, EngineProcess>();
 
         private readonly Timer flushTimer = new Timer { Interval = FlushIntervalMs };
 
-        public NativeEngineHost(CoreWebView2 core, string enginePath, string appHost)
+        public NativeEngineHost(
+            CoreWebView2 core,
+            IReadOnlyDictionary<string, string> enginePaths,
+            string appHost
+        )
         {
             this.core = core;
-            this.enginePath = enginePath;
+            this.enginePaths = enginePaths;
 
             core.WebMessageReceived += OnWebMessageReceived;
 
@@ -76,7 +83,7 @@ namespace WintrChess
             switch (parts[0])
             {
                 case "start":
-                    Start(id);
+                    Start(id, line);
                     break;
                 case "send":
                     if (engines.TryGetValue(id, out EngineProcess engine)) engine.Send(line);
@@ -87,9 +94,15 @@ namespace WintrChess
             }
         }
 
-        private void Start(string id)
+        private void Start(string id, string engine)
         {
             Stop(id);
+
+            if (!enginePaths.TryGetValue(engine, out string enginePath))
+            {
+                core.PostWebMessageAsString(id + "\n!no " + engine + " engine");
+                return;
+            }
 
             try
             {

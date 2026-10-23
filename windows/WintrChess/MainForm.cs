@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
@@ -136,17 +138,17 @@ namespace WintrChess
             };
 
             // Native Stockfish, much faster than its WebAssembly builds
-            string enginePath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory, "engines", "stockfish.exe"
-            );
+            Dictionary<string, string> enginePaths = FindEngines();
 
-            if (File.Exists(enginePath))
+            if (enginePaths.Count > 0)
             {
+                string engineList = string.Join(",", enginePaths.Keys.Select(name => "\"" + name + "\""));
+
                 await core.AddScriptToExecuteOnDocumentCreatedAsync(
-                    "window.__wintrNativeEngine = true;"
+                    "window.__wintrNativeEngine = [" + engineList + "];"
                 );
 
-                nativeEngines = new NativeEngineHost(core, enginePath, Host);
+                nativeEngines = new NativeEngineHost(core, enginePaths, Host);
                 FormClosed += (sender, args) => nativeEngines.Dispose();
             }
 
@@ -158,6 +160,38 @@ namespace WintrChess
             };
 
             core.Navigate(StartUrl);
+        }
+
+        [DllImport("kernel32.dll")]
+        private static extern bool IsProcessorFeaturePresent(int feature);
+
+        private const int PF_AVX2_INSTRUCTIONS_AVAILABLE = 40;
+
+        /// <summary>
+        /// Returns the native engines bundled with the app, by name. Lite uses
+        /// its AVX2 build where the CPU has those instructions.
+        /// </summary>
+        private static Dictionary<string, string> FindEngines()
+        {
+            string enginesRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "engines");
+            Dictionary<string, string> engines = new Dictionary<string, string>();
+
+            string full = Path.Combine(enginesRoot, "stockfish.exe");
+            if (File.Exists(full)) engines["full"] = full;
+
+            string liteAvx2 = Path.Combine(enginesRoot, "stockfish-lite-avx2.exe");
+            string lite = Path.Combine(enginesRoot, "stockfish-lite.exe");
+
+            if (File.Exists(liteAvx2) && IsProcessorFeaturePresent(PF_AVX2_INSTRUCTIONS_AVAILABLE))
+            {
+                engines["lite"] = liteAvx2;
+            }
+            else if (File.Exists(lite))
+            {
+                engines["lite"] = lite;
+            }
+
+            return engines;
         }
 
         private static bool IsAppUrl(string url)

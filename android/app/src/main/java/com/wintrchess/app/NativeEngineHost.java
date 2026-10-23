@@ -27,7 +27,8 @@ import java.util.concurrent.Executors;
  * than its WebAssembly builds. The page talks to it through the
  * "NativeEngine" object:
  *
- *   to here:   "start|send|stop \t id \t line"
+ *   to here:   "start \t id \t engine" (full or lite), "send \t id \t line"
+ *              or "stop \t id"
  *   to page:   "id \n line \n line ..." or "id \n !message" on failure
  *
  * Messages arrive on the main thread, where all engine bookkeeping stays.
@@ -37,14 +38,15 @@ final class NativeEngineHost implements WebViewCompat.WebMessageListener {
     // Output is batched so that the page is not messaged for every line
     private static final long FLUSH_DELAY_MS = 16;
 
-    private final String enginePath;
+    // Program of each engine the page can start, by name
+    private final Map<String, String> enginePaths;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final Map<String, EngineProcess> engines = new HashMap<>();
 
     private JavaScriptReplyProxy currentPage;
 
-    NativeEngineHost(String enginePath) {
-        this.enginePath = enginePath;
+    NativeEngineHost(Map<String, String> enginePaths) {
+        this.enginePaths = enginePaths;
     }
 
     @Override
@@ -73,7 +75,7 @@ final class NativeEngineHost implements WebViewCompat.WebMessageListener {
 
         switch (op) {
             case "start":
-                start(id);
+                start(id, line);
                 break;
             case "send":
                 EngineProcess engine = engines.get(id);
@@ -85,11 +87,18 @@ final class NativeEngineHost implements WebViewCompat.WebMessageListener {
         }
     }
 
-    private void start(String id) {
+    private void start(String id, String engine) {
         stop(id);
 
+        String enginePath = enginePaths.get(engine);
+
+        if (enginePath == null) {
+            currentPage.postMessage(id + "\n!no " + engine + " engine");
+            return;
+        }
+
         try {
-            engines.put(id, new EngineProcess(id, currentPage));
+            engines.put(id, new EngineProcess(id, enginePath, currentPage));
         } catch (IOException exception) {
             currentPage.postMessage(id + "\n!" + exception.getMessage());
         }
@@ -116,7 +125,11 @@ final class NativeEngineHost implements WebViewCompat.WebMessageListener {
         private boolean flushScheduled = false;
         private volatile boolean stopped = false;
 
-        EngineProcess(String id, JavaScriptReplyProxy page) throws IOException {
+        EngineProcess(
+            String id,
+            String enginePath,
+            JavaScriptReplyProxy page
+        ) throws IOException {
             this.id = id;
             this.page = page;
 

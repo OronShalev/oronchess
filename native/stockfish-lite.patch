@@ -1,0 +1,38 @@
+Native builds of the Stockfish.js engine source (used for the Lite engine of
+the Android and Windows apps). Stockfish.js only builds WebAssembly, so its
+native code path needs two fixes:
+- main.cpp: the UCI engine is held in a unique_ptr
+- thread_native.h: use std::thread on Windows, where the Zig toolchain has
+  no pthreads
+
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -69,7 +69,7 @@
+
+     Tune::init(uci->engine_options());
+
+-    uci.loop();
++    uci->loop();
+ #endif
+
+     return 0;
+--- a/src/thread_native.h
++++ b/src/thread_native.h
+@@ -19,7 +19,7 @@
+ #ifndef THREAD_NATIVE_H_INCLUDED
+ #define THREAD_NATIVE_H_INCLUDED
+
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(_WIN32)
+     #include <thread>
+ #else
+     #include <pthread.h>
+@@ -44,7 +44,7 @@
+     }
+ };
+
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(_WIN32)
+
+ // MSVC-compatible toolchains use std::thread because they do not provide
+ // pthreads by default. On all other platforms, pthreads is required and used.

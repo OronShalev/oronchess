@@ -16,15 +16,16 @@ import { isNativeEngineAvailable } from "@analysis/lib/nativeEngine";
 
 import * as styles from "../SettingsDialog.module.css";
 
-// In the apps the full engine runs natively, as fast as Lite
+// In the apps both engines run natively, which makes the full one
+// affordable and Lite several times faster
 const engineVersionOptions = isNativeEngineAvailable()
     ? [
         {
-            label: "Stockfish 19 (Recommended)",
+            label: "Stockfish 19 (Strongest)",
             value: EngineVersion.STOCKFISH_19
         },
         {
-            label: "Stockfish 19 Lite",
+            label: "Stockfish 19 Lite (Fastest)",
             value: EngineVersion.STOCKFISH_19_LITE
         }
     ]
@@ -43,6 +44,17 @@ function EngineOptionsArea() {
     const { t, i18n } = useTranslation(["analysis", "common"]);
 
     const { settings, setSettings } = useSettingsStore();
+
+    // How much slower heavier settings are on phones, as measured
+    const engineSettings = settings.analysis.engine;
+
+    const mobileSpeedNote = engineSettings.version == EngineVersion.STOCKFISH_19
+        ? (isNativeEngine(engineSettings.version)
+            ? "settings.engine.mobileNativeSpeedNote"
+            : "settings.engine.mobileSpeedNote")
+        : (engineSettings.depth > 16
+            ? "settings.engine.mobileDepthNote"
+            : undefined);
 
     const engineArrowsOptions = useMemo(() => [
         {
@@ -135,18 +147,9 @@ function EngineOptionsArea() {
             />
         </div>
 
-        {isMobileDevice() && (
-            isNativeEngine(settings.analysis.engine.version)
-                ? settings.analysis.engine.depth > 16 && <LogMessage theme="info">
-                    {t("settings.engine.mobileDepthNote")}
-                </LogMessage>
-                : (
-                    settings.analysis.engine.version == EngineVersion.STOCKFISH_19
-                    || settings.analysis.engine.depth > 16
-                ) && <LogMessage theme="info">
-                    {t("settings.engine.mobileSpeedNote")}
-                </LogMessage>
-        )}
+        {isMobileDevice() && mobileSpeedNote && <LogMessage theme="info">
+            {t(mobileSpeedNote)}
+        </LogMessage>}
 
         <div className={styles.setting}>
             <span data-tooltip-id="settings-engine-lines">

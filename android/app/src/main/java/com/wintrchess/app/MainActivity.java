@@ -23,11 +23,14 @@ import androidx.webkit.WebViewAssetLoader;
 import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -112,13 +115,13 @@ public class MainActivity extends Activity {
         webView.addJavascriptInterface(new ShareBridge(), "AndroidShare");
 
         // Native Stockfish, run from the app's native library folder
-        File engine = new File(getApplicationInfo().nativeLibraryDir, "libstockfish.so");
+        Map<String, String> enginePaths = findEngines();
 
         if (
-            engine.exists()
+            !enginePaths.isEmpty()
             && WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)
         ) {
-            nativeEngines = new NativeEngineHost(engine.getPath());
+            nativeEngines = new NativeEngineHost(enginePaths);
 
             WebViewCompat.addWebMessageListener(
                 webView,
@@ -126,6 +129,15 @@ public class MainActivity extends Activity {
                 Collections.singleton("https://" + HOST),
                 nativeEngines
             );
+
+            String engineNames = String.join(",", enginePaths.keySet());
+
+            webView.addJavascriptInterface(new Object() {
+                @JavascriptInterface
+                public String engines() {
+                    return engineNames;
+                }
+            }, "NativeEngineInfo");
         }
 
         WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
@@ -193,6 +205,46 @@ public class MainActivity extends Activity {
         } else {
             webView.loadUrl(START_URL);
         }
+    }
+
+    /**
+     * Returns the native engines bundled with the app, by name. Lite uses
+     * its dot product build where the CPU has those instructions.
+     */
+    private Map<String, String> findEngines() {
+        File libraryDir = new File(getApplicationInfo().nativeLibraryDir);
+        Map<String, String> engines = new LinkedHashMap<>();
+
+        File full = new File(libraryDir, "libstockfish.so");
+        if (full.exists()) engines.put("full", full.getPath());
+
+        File liteDotProduct = new File(libraryDir, "libstockfish_lite_dotprod.so");
+        File lite = new File(libraryDir, "libstockfish_lite.so");
+
+        if (liteDotProduct.exists() && cpuHasFeature("asimddp")) {
+            engines.put("lite", liteDotProduct.getPath());
+        } else if (lite.exists()) {
+            engines.put("lite", lite.getPath());
+        }
+
+        return engines;
+    }
+
+    private static boolean cpuHasFeature(String feature) {
+        try (BufferedReader cpuInfo = new BufferedReader(new FileReader("/proc/cpuinfo"))) {
+            String line;
+
+            while ((line = cpuInfo.readLine()) != null) {
+                if (!line.startsWith("Features")) continue;
+
+                for (String name : line.substring(line.indexOf(':') + 1).trim().split("\\s+")) {
+                    if (name.equals(feature)) return true;
+                }
+            }
+        } catch (IOException ignored) {
+        }
+
+        return false;
     }
 
     private class ShareBridge {

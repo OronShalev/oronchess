@@ -5,6 +5,7 @@ import EngineVersion from "@shared/constants/EngineVersion";
 import { STARTING_FEN } from "@shared/constants/utils";
 import {
     EngineTransport,
+    NativeEngineKind,
     createNativeEngineTransport,
     isNativeEngineAvailable
 } from "./nativeEngine";
@@ -22,12 +23,19 @@ interface ParsedInfoLine {
     moveUcis: string[];
 }
 
+const nativeEngineKinds: Partial<Record<EngineVersion, NativeEngineKind>> = {
+    [EngineVersion.STOCKFISH_19]: "full",
+    [EngineVersion.STOCKFISH_19_LITE]: "lite"
+};
+
 /**
  * @description Returns whether an engine version runs as a native program
- * here. In the apps, the full strength engine does.
+ * here, as it does in the apps.
  */
 export function isNativeEngine(version: EngineVersion) {
-    return version == EngineVersion.STOCKFISH_19 && isNativeEngineAvailable();
+    const kind = nativeEngineKinds[version];
+
+    return !!kind && isNativeEngineAvailable(kind);
 }
 
 class Engine {
@@ -40,7 +48,7 @@ class Engine {
 
     constructor(version: EngineVersion) {
         this.worker = isNativeEngine(version)
-            ? createNativeEngineTransport()
+            ? createNativeEngineTransport(nativeEngineKinds[version]!)
             : new Worker("/engines/" + version);
         this.version = version;
 

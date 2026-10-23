@@ -2,7 +2,9 @@
 // which is much faster than its WebAssembly builds. Each app exposes a
 // bridge that starts engine processes and relays their UCI output.
 //
-// Messages to the app:   "<op>\t<id>\t<line>" with op start, send or stop
+// Messages to the app:   "<op>\t<id>\t<argument>" with op start (argument
+//                        is the engine, full or lite), send (a UCI command)
+//                        or stop
 // Messages from the app: "<id>\n<line>\n<line>..." with output lines, or
 //                        "<id>\n!<message>" when the engine fails
 
@@ -18,34 +20,39 @@ export interface EngineTransport {
     terminate(): void;
 }
 
+export type NativeEngineKind = "full" | "lite";
+
 interface NativeBridge {
+    engines: NativeEngineKind[];
     post: (message: string) => void;
     listen: (handler: (message: string) => void) => void;
+}
+
+interface MessageChannelLike {
+    postMessage: (message: string) => void;
+    addEventListener: (
+        type: "message",
+        listener: (event: { data: string }) => void
+    ) => void;
 }
 
 declare global {
     interface Window {
         // Added by the Android app
-        NativeEngine?: {
-            postMessage: (message: string) => void;
-            addEventListener: (
-                type: "message",
-                listener: (event: { data: string }) => void
-            ) => void;
-        };
+        NativeEngine?: MessageChannelLike;
+        NativeEngineInfo?: { engines: () => string };
 
-        // Set by the Windows app, whose bridge is the WebView2 one
-        __wintrNativeEngine?: boolean;
-        chrome?: {
-            webview?: {
-                postMessage: (message: string) => void;
-                addEventListener: (
-                    type: "message",
-                    listener: (event: { data: string }) => void
-                ) => void;
-            };
-        };
+        // Set by the Windows app, whose bridge is the WebView2 one; true
+        // in versions that only had the full engine
+        __wintrNativeEngine?: boolean | string[];
+        chrome?: { webview?: MessageChannelLike };
     }
+}
+
+function parseEngines(engines: string[]) {
+    return engines.filter((engine): engine is NativeEngineKind => (
+        engine == "full" || engine == "lite"
+    ));
 }
 
 function findBridge(): NativeBridge | null {
@@ -54,6 +61,9 @@ function findBridge(): NativeBridge | null {
     const android = window.NativeEngine;
 
     if (android) return {
+        engines: window.NativeEngineInfo
+            ? parseEngines(window.NativeEngineInfo.engines().split(","))
+            : ["full"],
         post: message => android.postMessage(message),
         listen: handler => android.addEventListener(
             "message", event => handler(String(event.data))
@@ -61,8 +71,12 @@ function findBridge(): NativeBridge | null {
     };
 
     const webview = window.chrome?.webview;
+    const windowsEngines = window.__wintrNativeEngine;
 
-    if (webview && window.__wintrNativeEngine) return {
+    if (webview && windowsEngines) return {
+        engines: Array.isArray(windowsEngines)
+            ? parseEngines(windowsEngines)
+            : ["full"],
         post: message => webview.postMessage(message),
         listen: handler => webview.addEventListener(
             "message", event => handler(String(event.data))
@@ -95,20 +109,23 @@ bridge?.listen(message => {
 });
 
 /**
- * @description Returns whether this app can run native engines.
+ * @description Returns whether this app can run a native engine, or any
+ * native engine if none is given.
  */
-export function isNativeEngineAvailable() {
-    return bridge != null;
+export function isNativeEngineAvailable(engine?: NativeEngineKind) {
+    if (!bridge) return false;
+
+    return engine ? bridge.engines.includes(engine) : bridge.engines.length > 0;
 }
 
 class NativeEngineTransport extends EventTarget {
     private id = String(nextId++);
 
-    constructor() {
+    constructor(engine: NativeEngineKind) {
         super();
 
         transports.set(this.id, this);
-        bridge!.post(`start\t${this.id}\t`);
+        bridge!.post(`start\t${this.id}\t${engine}`);
     }
 
     postMessage(message: string) {
@@ -127,8 +144,12 @@ class NativeEngineTransport extends EventTarget {
 /**
  * @description Starts a native engine process through the app bridge.
  */
-export function createNativeEngineTransport(): EngineTransport {
-    if (!bridge) throw new Error("native engines are not available");
+export function createNativeEngineTransport(
+    engine: NativeEngineKind
+): EngineTransport {
+    if (!isNativeEngineAvailable(engine)) {
+        throw new Error(`native ${engine} engine is not available`);
+    }
 
-    return new NativeEngineTransport() as unknown as EngineTransport;
+    return new NativeEngineTransport(engine) as unknown as EngineTransport;
 }
