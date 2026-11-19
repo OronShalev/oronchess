@@ -1,7 +1,7 @@
 .wrapper {
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    align-items: center;
+    gap: 8px;
     position: relative;
 
     border-radius: 10px;
@@ -9,22 +9,39 @@
 }
 
 .backButton {
+    flex-shrink: 0;
     padding: 3px;
     box-sizing: border-box;
     width: 52px;
     height: 52px;
-    position: absolute;
-    left: 0;
 
     background-color: var(--ui-shade-5);
 }
 
+/* The other buttons share the space beside the back button, centred, and
+shrink on narrow screens rather than overflowing it */
+.options {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+
 .optionButton {
+    flex: 0 1 64px;
+    min-width: 40px;
     padding: 6px;
-    width: 52px;
-    height: 52px;
+    box-sizing: border-box;
+    aspect-ratio: 1;
 
     background-color: var(--ui-shade-4);
+}
+
+.optionButton img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 /* Share icon over the chessboard logo */

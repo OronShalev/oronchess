@@ -110,76 +110,78 @@ function OptionsToolbar() {
                 delayShow={500}
             />
 
-            <Button
-                className={styles.optionButton}
-                icon={iconFlip}
-                iconSize={"40px"}
-                tooltipId={"options-toolbar-flip"}
-                onClick={() => setBoardFlipped(!boardFlipped)}
-            />
+            <div className={styles.options}>
+                <Button
+                    className={styles.optionButton}
+                    icon={iconFlip}
+                    iconSize={"40px"}
+                    tooltipId={"options-toolbar-flip"}
+                    onClick={() => setBoardFlipped(!boardFlipped)}
+                />
 
-            <Tooltip
-                id="options-toolbar-flip"
-                content={t("optionsToolbar.flipBoard")}
-                delayShow={500}
-            />
+                <Tooltip
+                    id="options-toolbar-flip"
+                    content={t("optionsToolbar.flipBoard")}
+                    delayShow={500}
+                />
 
-            <Button
-                className={styles.optionButton}
-                icon={iconSettings}
-                iconSize={"35px"}
-                tooltipId={"options-toolbar-settings"}
-                onClick={() => setSettingsOpen(true)}
-            />
+                <Button
+                    className={styles.optionButton}
+                    icon={iconSettings}
+                    iconSize={"35px"}
+                    tooltipId={"options-toolbar-settings"}
+                    onClick={() => setSettingsOpen(true)}
+                />
 
-            <Tooltip
-                id="options-toolbar-settings"
-                content={t("settings", { ns: "common" })}
-                delayShow={500}
-            />
+                <Tooltip
+                    id="options-toolbar-settings"
+                    content={t("settings", { ns: "common" })}
+                    delayShow={500}
+                />
 
-            <Button
-                className={styles.optionButton}
-                icon={iconShare}
-                iconSize={"35px"}
-                tooltipId={"options-toolbar-share"}
-                onClick={() => setShareOpen(true)}
-            />
+                <Button
+                    className={styles.optionButton}
+                    icon={iconShare}
+                    iconSize={"35px"}
+                    tooltipId={"options-toolbar-share"}
+                    onClick={() => setShareOpen(true)}
+                />
 
-            <Tooltip
-                id="options-toolbar-share"
-                content={t("optionsToolbar.share")}
-                delayShow={500}
-            />
+                <Tooltip
+                    id="options-toolbar-share"
+                    content={t("optionsToolbar.share")}
+                    delayShow={500}
+                />
 
-            {reviewShareable && <Button
-                className={`${styles.optionButton} ${styles.shareReviewButton}`}
-                style={{ "--logo": `url(${iconLogo})` } as CSSProperties}
-                icon={iconShare}
-                iconSize={"35px"}
-                tooltipId={"options-toolbar-share-review"}
-                onClick={() => setShareReviewOpen(true)}
-            />}
+                {reviewShareable && <Button
+                    className={`${styles.optionButton} ${styles.shareReviewButton}`}
+                    style={{ "--logo": `url(${iconLogo})` } as CSSProperties}
+                    icon={iconShare}
+                    iconSize={"35px"}
+                    tooltipId={"options-toolbar-share-review"}
+                    onClick={() => setShareReviewOpen(true)}
+                />}
 
-            <Tooltip
-                id="options-toolbar-share-review"
-                content={t("optionsToolbar.shareReview")}
-                delayShow={500}
-            />
+                <Tooltip
+                    id="options-toolbar-share-review"
+                    content={t("optionsToolbar.shareReview")}
+                    delayShow={500}
+                />
 
-            {reviewShareable && <Button
-                className={styles.optionButton}
-                icon={iconVideo}
-                iconSize={"35px"}
-                tooltipId={"options-toolbar-export-video"}
-                onClick={() => setExportVideoOpen(true)}
-            />}
+                {reviewShareable && <Button
+                    className={styles.optionButton}
+                    icon={iconVideo}
+                    iconSize={"35px"}
+                    tooltipId={"options-toolbar-export-video"}
+                    onClick={() => setExportVideoOpen(true)}
+                />}
 
-            <Tooltip
-                id="options-toolbar-export-video"
-                content={t("optionsToolbar.exportVideo")}
-                delayShow={500}
-            />
+                <Tooltip
+                    id="options-toolbar-export-video"
+                    content={t("optionsToolbar.exportVideo")}
+                    delayShow={500}
+                />
+            </div>
         </div>
 
         {settingsOpen && <SettingsDialog
