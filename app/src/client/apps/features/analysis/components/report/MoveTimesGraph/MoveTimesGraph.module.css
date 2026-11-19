@@ -16,11 +16,36 @@
     padding: 0 5px;
 }
 
-.title {
+/* The title row opens and closes the graph */
+.toggle {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin: 0 -5px;
+    padding: 4px 5px;
 
+    border: none;
+    border-radius: 6px;
+    background: none;
+    color: white;
+    font: inherit;
+
+    cursor: pointer;
+}
+
+.toggle:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.toggle:focus-visible {
+    outline: 2px solid var(--ui-blue);
+}
+
+.toggleArrow {
+    transition: transform 0.2s ease;
+}
+
+.title {
     color: white;
 }
 

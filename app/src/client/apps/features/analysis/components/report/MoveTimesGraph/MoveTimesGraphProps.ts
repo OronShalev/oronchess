@@ -5,6 +5,9 @@ interface MoveTimesGraphProps {
     timeControl?: string;
     initialPosition?: string;
     selectedIndex: number;
+    // Whether the graph is shown, or only its title
+    open: boolean;
+    onToggle: () => void;
     onMoveClick?: (node: StateTreeNode) => void;
 }
 

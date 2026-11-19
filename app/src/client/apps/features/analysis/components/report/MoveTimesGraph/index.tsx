@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { useTranslation } from "react-i18next";
 import {
     ResponsiveContainer,
@@ -17,6 +17,8 @@ import { formatClockTime, formatMoveTime } from "@shared/lib/stateTree/clocks";
 
 import MoveTimesGraphProps from "./MoveTimesGraphProps";
 import * as styles from "./MoveTimesGraph.module.css";
+
+import iconInterfaceExpandArrow from "@assets/img/interface/expand_arrow.svg";
 
 // Bars for White rise from the axis and bars for Black fall from it, in
 // the colours of the pieces
@@ -70,9 +72,13 @@ function MoveTimesGraph({
     timeControl,
     initialPosition,
     selectedIndex,
+    open,
+    onToggle,
     onMoveClick
 }: MoveTimesGraphProps) {
     const { t } = useTranslation("analysis");
+
+    const chartId = useId();
 
     const points: MoveTimePoint[] = nodes.map((node, index) => {
         const { moveTime, moveColour, clock, move } = node.state;
@@ -94,15 +100,31 @@ function MoveTimesGraph({
 
     return <div className={styles.wrapper}>
         <div className={styles.header}>
-            <span className={styles.title}>
-                {t("moveTimesGraph.title")}
+            <button
+                className={styles.toggle}
+                aria-expanded={open}
+                aria-controls={chartId}
+                onClick={onToggle}
+            >
+                <img
+                    className={styles.toggleArrow}
+                    src={iconInterfaceExpandArrow}
+                    width={22}
+                    height={22}
+                    alt=""
+                    style={{ transform: open ? "rotate(180deg)" : undefined }}
+                />
+
+                <span className={styles.title}>
+                    {t("moveTimesGraph.title")}
+                </span>
 
                 {timeControl && <span className={styles.timeControl}>
                     {timeControl}
                 </span>}
-            </span>
+            </button>
 
-            <span className={styles.legend}>
+            {open && <span className={styles.legend}>
                 {[PieceColour.WHITE, PieceColour.BLACK].map(colour => (
                     <span key={colour} className={styles.legendItem}>
                         <span
@@ -112,68 +134,70 @@ function MoveTimesGraph({
                         {t(`moveTimesGraph.${colour}`)}
                     </span>
                 ))}
-            </span>
+            </span>}
         </div>
 
-        <ResponsiveContainer width="100%" height={110}>
-            <BarChart
-                className={styles.chart}
-                data={points}
-                margin={{ top: 4, right: 0, bottom: 4, left: 0 }}
-                barCategoryGap="15%"
-                onClick={event => {
-                    const index = event?.activePayload?.at(0)?.payload?.index;
-                    if (index == undefined || !nodes[index]) return;
+        {open && <div id={chartId}>
+            <ResponsiveContainer width="100%" height={110}>
+                <BarChart
+                    className={styles.chart}
+                    data={points}
+                    margin={{ top: 4, right: 0, bottom: 4, left: 0 }}
+                    barCategoryGap="15%"
+                    onClick={event => {
+                        const index = event?.activePayload?.at(0)?.payload?.index;
+                        if (index == undefined || !nodes[index]) return;
 
-                    onMoveClick?.(nodes[index]);
-                }}
-            >
-                <XAxis hide dataKey="index" />
-                <YAxis hide domain={[-longestTime, longestTime]} />
-
-                <ReferenceLine y={0} stroke="#50575f" strokeWidth={1} />
-
-                {selectedIndex >= 0 && <ReferenceLine
-                    x={selectedIndex}
-                    stroke="#97a0ab"
-                    strokeWidth={2}
-                />}
-
-                <Bar
-                    dataKey="y"
-                    isAnimationActive={false}
-                    shape={(props: unknown) => (
-                        <BarShape {...props as BarShapeProps} />
-                    )}
-                />
-
-                <Tooltip
-                    cursor={{ fill: "rgba(255, 255, 255, 0.08)" }}
-                    content={({ payload }) => {
-                        const point = payload?.at(0)?.payload as MoveTimePoint | undefined;
-                        if (!point?.label) return null;
-
-                        return <div className={styles.tooltip}>
-                            <span className={styles.tooltipMove}>
-                                {point.label}
-                            </span>
-
-                            {point.moveTime != undefined && <span>
-                                {t("moveTimesGraph.spent", {
-                                    time: formatMoveTime(point.moveTime)
-                                })}
-                            </span>}
-
-                            {point.clock != undefined && <span>
-                                {t("moveTimesGraph.left", {
-                                    time: formatClockTime(point.clock)
-                                })}
-                            </span>}
-                        </div>;
+                        onMoveClick?.(nodes[index]);
                     }}
-                />
-            </BarChart>
-        </ResponsiveContainer>
+                >
+                    <XAxis hide dataKey="index" />
+                    <YAxis hide domain={[-longestTime, longestTime]} />
+
+                    <ReferenceLine y={0} stroke="#50575f" strokeWidth={1} />
+
+                    {selectedIndex >= 0 && <ReferenceLine
+                        x={selectedIndex}
+                        stroke="#97a0ab"
+                        strokeWidth={2}
+                    />}
+
+                    <Bar
+                        dataKey="y"
+                        isAnimationActive={false}
+                        shape={(props: unknown) => (
+                            <BarShape {...props as BarShapeProps} />
+                        )}
+                    />
+
+                    <Tooltip
+                        cursor={{ fill: "rgba(255, 255, 255, 0.08)" }}
+                        content={({ payload }) => {
+                            const point = payload?.at(0)?.payload as MoveTimePoint | undefined;
+                            if (!point?.label) return null;
+
+                            return <div className={styles.tooltip}>
+                                <span className={styles.tooltipMove}>
+                                    {point.label}
+                                </span>
+
+                                {point.moveTime != undefined && <span>
+                                    {t("moveTimesGraph.spent", {
+                                        time: formatMoveTime(point.moveTime)
+                                    })}
+                                </span>}
+
+                                {point.clock != undefined && <span>
+                                    {t("moveTimesGraph.left", {
+                                        time: formatClockTime(point.clock)
+                                    })}
+                                </span>}
+                            </div>;
+                        }}
+                    />
+                </BarChart>
+            </ResponsiveContainer>
+        </div>}
     </div>;
 }
 

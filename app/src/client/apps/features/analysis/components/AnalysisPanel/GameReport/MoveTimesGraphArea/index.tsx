@@ -11,6 +11,8 @@ import {
 import useAnalysisGameStore from "@analysis/stores/AnalysisGameStore";
 import useAnalysisBoardStore from "@analysis/stores/AnalysisBoardStore";
 import MoveTimesGraph from "@analysis/components/report/MoveTimesGraph";
+import LocalStorageKey from "@client/constants/LocalStorageKey";
+import useLocalStorage from "@client/hooks/useLocalStorage";
 import playBoardSound from "@client/lib/boardSounds";
 
 function MoveTimesGraphArea() {
@@ -30,6 +32,13 @@ function MoveTimesGraphArea() {
         getNodeChain(analysisGame.stateTree)
     ), [analysisGame]);
 
+    // Closed until opened, which is then remembered
+    const openSetting = useLocalStorage<boolean>(
+        LocalStorageKey.MOVE_TIMES_OPEN, false
+    );
+
+    const open = openSetting.value == "true";
+
     const timeControl = useMemo(() => {
         const periods = parseTimeControl(getPgnTimeControl(analysisGame.pgn));
 
@@ -45,6 +54,8 @@ function MoveTimesGraphArea() {
         nodes={mainlineChain}
         timeControl={timeControl}
         initialPosition={analysisGame.initialPosition}
+        open={open}
+        onToggle={() => openSetting.set(!open)}
         selectedIndex={findIndex(
             mainlineChain,
             node => node.id == currentStateTreeNode.id
