@@ -10,7 +10,7 @@ import iconCastle from "@assets/audio/castle.mp3";
 import iconPromote from "@assets/audio/promote.mp3";
 import iconGameend from "@assets/audio/gameend.mp3";
 
-const moveSounds = {
+export const moveSounds = {
     move: iconMove,
     check: iconCheck,
     capture: iconCapture,
@@ -19,28 +19,42 @@ const moveSounds = {
     gameEnd: iconGameend
 };
 
-function playBoardSound(node: StateTreeNode) {
+export type MoveSound = keyof typeof moveSounds;
+
+/**
+ * @description Returns the sounds of the move that led to a position:
+ * one for the kind of move, and another if it ended the game.
+ */
+export function getMoveSounds(node: StateTreeNode) {
     const move = node.state.move;
-    if (!move) return;
+    if (!move) return [];
 
-    const board = new Chess(node.state.fen);
+    const sounds: MoveSound[] = [];
 
-    if (board.isGameOver()) {
-        new Audio(moveSounds.gameEnd).play();
+    if (new Chess(node.state.fen).isGameOver()) {
+        sounds.push("gameEnd");
     }
 
     const parsedMove = parseSanMove(move.san);
 
     if (parsedMove.check || parsedMove.checkmate) {
-        new Audio(moveSounds.check).play();
+        sounds.push("check");
     } else if (parsedMove.castling) {
-        new Audio(moveSounds.castle).play();
+        sounds.push("castle");
     } else if (parsedMove.promotion) {
-        new Audio(moveSounds.promote).play();
+        sounds.push("promote");
     } else if (parsedMove.capture) {
-        new Audio(moveSounds.capture).play();
+        sounds.push("capture");
     } else {
-        new Audio(moveSounds.move).play();
+        sounds.push("move");
+    }
+
+    return sounds;
+}
+
+function playBoardSound(node: StateTreeNode) {
+    for (const sound of getMoveSounds(node)) {
+        new Audio(moveSounds[sound]).play();
     }
 }
 

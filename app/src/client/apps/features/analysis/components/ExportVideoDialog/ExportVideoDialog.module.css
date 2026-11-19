@@ -59,7 +59,7 @@
 
 .speedOptions {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     position: relative;
 }
 
@@ -67,8 +67,8 @@
 .speedRail {
     position: absolute;
     top: 9px;
-    left: calc(100% / 6);
-    right: calc(100% / 6);
+    left: calc(100% / 10);
+    right: calc(100% / 10);
     height: 4px;
 
     border-radius: 2px;
@@ -142,7 +142,8 @@
 
 .speedLabel {
     color: #c8ccd2;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
 }
 
 .speedSelected .speedLabel {
@@ -300,4 +301,9 @@
 
 .error {
     color: #eb6150;
+}
+
+.notice {
+    color: #c8ccd2;
+    font-size: 0.85rem;
 }

@@ -1,20 +1,28 @@
+// Named after chess time controls, from the slowest to the fastest
 export enum VideoSpeed {
-    SLOW = "slow",
-    REGULAR = "regular",
-    FAST = "fast"
+    CLASSICAL = "classical",
+    RAPID = "rapid",
+    BLITZ = "blitz",
+    BULLET = "bullet",
+    ULTRABULLET = "ultraBullet"
 }
 
 interface VideoSpeedTiming {
     // Time each move is shown for, including its animation
     moveSeconds: number;
-    animationSeconds: number;
+    // Frames the move's pieces take to slide to their squares
+    animationFrames: number;
 }
 
 export const videoSpeedTimings: Record<VideoSpeed, VideoSpeedTiming> = {
-    [VideoSpeed.SLOW]: { moveSeconds: 2, animationSeconds: 0.4 },
-    [VideoSpeed.REGULAR]: { moveSeconds: 1.2, animationSeconds: 0.25 },
-    [VideoSpeed.FAST]: { moveSeconds: 0.6, animationSeconds: 0.15 }
+    [VideoSpeed.CLASSICAL]: { moveSeconds: 2, animationFrames: 12 },
+    [VideoSpeed.RAPID]: { moveSeconds: 1.6, animationFrames: 10 },
+    [VideoSpeed.BLITZ]: { moveSeconds: 1.2, animationFrames: 8 },
+    [VideoSpeed.BULLET]: { moveSeconds: 0.9, animationFrames: 6 },
+    [VideoSpeed.ULTRABULLET]: { moveSeconds: 0.6, animationFrames: 5 }
 };
+
+export const defaultVideoSpeed = VideoSpeed.BLITZ;
 
 export const videoFrameRate = 30;
 
@@ -44,9 +52,7 @@ export function getVideoTimeline(plyCount: number, speed: VideoSpeed) {
     const timing = videoSpeedTimings[speed];
 
     const moveFrames = Math.round(timing.moveSeconds * videoFrameRate);
-    const animationFrames = Math.max(
-        1, Math.round(timing.animationSeconds * videoFrameRate)
-    );
+    const animationFrames = timing.animationFrames;
 
     const frames: VideoFrame[] = [];
     let time = 0;
@@ -82,6 +88,22 @@ export function getVideoTimeline(plyCount: number, speed: VideoSpeed) {
     if (plyCount == 0) hold(0, endFrames);
 
     return frames;
+}
+
+/**
+ * @description Returns the time in seconds at which each move of a video
+ * arrives on its square, indexed by the position it leads to.
+ */
+export function getMoveArrivalTimes(timeline: VideoFrame[]) {
+    const arrivalTimes: number[] = [];
+
+    for (const frame of timeline) {
+        if (frame.ply == 0 || frame.progress < 1) continue;
+
+        arrivalTimes[frame.ply] ??= frame.start / videoFrameRate;
+    }
+
+    return arrivalTimes;
 }
 
 /**

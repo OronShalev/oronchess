@@ -14,7 +14,7 @@ import useSettingsStore from "@client/stores/SettingsStore";
 import Dialog from "@client/components/common/Dialog";
 import Button from "@client/components/common/Button";
 import { canShareFile, saveFile, shareFile } from "@client/lib/files";
-import { VideoSpeed } from "@analysis/lib/video/timeline";
+import { defaultVideoSpeed } from "@analysis/lib/video/timeline";
 import { drawVideoFrame } from "@analysis/lib/video/frames";
 import {
     VideoEncodingUnsupportedError,
@@ -32,7 +32,14 @@ import iconInterfaceShare from "@assets/img/interface/share.svg";
 type ExportStatus =
     | { stage: "options" }
     | { stage: "exporting"; progress: number }
-    | { stage: "done"; video: Blob; saved: boolean; saveFailed?: boolean; location?: string }
+    | {
+        stage: "done";
+        video: Blob;
+        hasSound: boolean;
+        saved: boolean;
+        saveFailed?: boolean;
+        location?: string;
+    }
     | { stage: "failed"; unsupported: boolean };
 
 function getVideoFileName(game: AnalysedGame) {
@@ -94,9 +101,10 @@ function ExportVideoDialog({
 
     const theme = useSettingsStore(state => state.settings.themes.board);
 
-    const [ speed, setSpeed ] = useState(VideoSpeed.REGULAR);
+    const [ speed, setSpeed ] = useState(defaultVideoSpeed);
     const [ showPlayers, setShowPlayers ] = useState(true);
     const [ showClocks, setShowClocks ] = useState(true);
+    const [ moveSounds, setMoveSounds ] = useState(true);
 
     const [ status, setStatus ] = useState<ExportStatus>({ stage: "options" });
 
@@ -109,6 +117,7 @@ function ExportVideoDialog({
         speed: speed,
         showPlayers: showPlayers,
         showClocks: showClocks && gameHasClocks,
+        moveSounds: moveSounds,
         flipped: flipped,
         theme: theme
     };
@@ -156,14 +165,17 @@ function ExportVideoDialog({
 
     useEffect(() => () => controllerRef.current?.abort(), []);
 
-    async function save(video: Blob) {
+    async function save(video: Blob, hasSound: boolean) {
         try {
             const result = await saveFile(video, fileName);
 
-            setStatus({ stage: "done", video, ...result });
+            setStatus({ stage: "done", video, hasSound, ...result });
         } catch (error) {
             console.error(error);
-            setStatus({ stage: "done", video, saved: false, saveFailed: true });
+
+            setStatus({
+                stage: "done", video, hasSound, saved: false, saveFailed: true
+            });
         }
     }
 
@@ -176,7 +188,7 @@ function ExportVideoDialog({
         let shownPercent = 0;
 
         try {
-            var video = await exportGameVideo(game, options, progress => {
+            var { video, hasSound } = await exportGameVideo(game, options, progress => {
                 const percent = Math.floor(progress * 100);
                 if (percent == shownPercent) return;
 
@@ -196,7 +208,7 @@ function ExportVideoDialog({
             controllerRef.current = undefined;
         }
 
-        await save(video);
+        await save(video, hasSound);
     }
 
     const exporting = status.stage == "exporting";
@@ -236,6 +248,14 @@ function ExportVideoDialog({
                     checked={showClocks && gameHasClocks}
                     disabled={exporting || !gameHasClocks}
                     onChange={setShowClocks}
+                />
+
+                <OptionSwitch
+                    name={t("exportVideo.moveSounds")}
+                    description={t("exportVideo.moveSoundsDescription")}
+                    checked={moveSounds}
+                    disabled={exporting}
+                    onChange={setMoveSounds}
                 />
             </div>
 
@@ -302,10 +322,14 @@ function ExportVideoDialog({
                     }
                 </span>
 
+                {!status.hasSound && <span className={styles.notice}>
+                    {t("exportVideo.noSound")}
+                </span>}
+
                 <div className={styles.resultButtons}>
                     <Button
                         className={status.saved ? styles.secondaryButton : styles.primaryButton}
-                        onClick={() => save(status.video)}
+                        onClick={() => save(status.video, status.hasSound)}
                     >
                         {status.saved ? t("exportVideo.saveAgain") : t("exportVideo.save")}
                     </Button>

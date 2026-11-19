@@ -14,14 +14,27 @@ import {
     getVideoLayout,
     loadVideoAssets
 } from "./frames";
-import { VideoSpeed, getVideoTimeline, videoFrameRate } from "./timeline";
+import {
+    VideoSpeed,
+    getMoveArrivalTimes,
+    getVideoTimeline,
+    videoFrameRate
+} from "./timeline";
+import { renderMoveSounds, videoSampleRate } from "./audio";
 
 export interface VideoExportOptions {
     speed: VideoSpeed;
     showPlayers: boolean;
     showClocks: boolean;
+    moveSounds: boolean;
     flipped: boolean;
     theme: VideoScene["theme"];
+}
+
+export interface GameVideo {
+    video: Blob;
+    // False when move sounds were asked for but could not be encoded
+    hasSound: boolean;
 }
 
 export class VideoEncodingUnsupportedError extends Error {}
@@ -43,7 +56,7 @@ export function videoHasBars(game: AnalysedGame, options: Pick<
  */
 export async function createVideoScene(
     game: AnalysedGame,
-    options: Omit<VideoExportOptions, "speed">
+    options: Omit<VideoExportOptions, "speed" | "moveSounds">
 ): Promise<VideoScene> {
     return {
         layout: getVideoLayout(videoHasBars(game, options)),
@@ -59,22 +72,24 @@ export async function createVideoScene(
 
 /**
  * @description Renders the mainline of a reviewed game into an MP4 video,
- * with the classification of every move. Rejects with "abort" if the
- * signal aborts.
+ * with the classification of every move, and its sound if asked for.
+ * Rejects with "abort" if the signal aborts.
  */
 export async function exportGameVideo(
     game: AnalysedGame,
     options: VideoExportOptions,
     onProgress?: (progress: number) => void,
     signal?: AbortSignal
-) {
+): Promise<GameVideo> {
     const {
         Output,
         Mp4OutputFormat,
         BufferTarget,
         CanvasSource,
+        AudioBufferSource,
         QUALITY_HIGH,
-        getFirstEncodableVideoCodec
+        getFirstEncodableVideoCodec,
+        getFirstEncodableAudioCodec
     } = await import("mediabunny");
 
     const nodes = getNodeChain(game.stateTree);
@@ -106,6 +121,22 @@ export async function exportGameVideo(
 
     output.addVideoTrack(source, { frameRate: videoFrameRate });
 
+    // AAC plays everywhere; Opus is the fallback where it cannot be made
+    const audioCodec = options.moveSounds
+        ? await getFirstEncodableAudioCodec(["aac", "opus"], {
+            numberOfChannels: 1,
+            sampleRate: videoSampleRate,
+            quality: QUALITY_HIGH
+        })
+        : null;
+
+    const audioSource = audioCodec && new AudioBufferSource({
+        codec: audioCodec,
+        quality: QUALITY_HIGH
+    });
+
+    if (audioSource) output.addAudioTrack(audioSource);
+
     const periods = parseTimeControl(getPgnTimeControl(game.pgn));
     const showClocks = options.showClocks && hasClocks(game.stateTree);
 
@@ -114,6 +145,19 @@ export async function exportGameVideo(
     await output.start();
 
     try {
+        if (audioSource) {
+            const lastFrame = timeline[timeline.length - 1];
+            const duration = (lastFrame.start + lastFrame.length) / videoFrameRate;
+
+            const soundChunks = renderMoveSounds(
+                nodes, getMoveArrivalTimes(timeline), duration
+            );
+
+            for await (const soundChunk of soundChunks) {
+                await audioSource.add(soundChunk);
+            }
+        }
+
         for (const [ index, frame ] of timeline.entries()) {
             if (signal?.aborted) throw "abort";
 
@@ -144,5 +188,8 @@ export async function exportGameVideo(
         throw error;
     }
 
-    return new Blob([output.target.buffer!], { type: "video/mp4" });
+    return {
+        video: new Blob([output.target.buffer!], { type: "video/mp4" }),
+        hasSound: !!audioSource || !options.moveSounds
+    };
 }

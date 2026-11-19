@@ -10,7 +10,8 @@ import { formatClockTime } from "@shared/lib/stateTree/clocks";
 
 import * as styles from "./ExportVideoDialog.module.css";
 
-const speeds = [ VideoSpeed.SLOW, VideoSpeed.REGULAR, VideoSpeed.FAST ];
+// From the slowest to the fastest
+const speeds = Object.values(VideoSpeed);
 
 interface SpeedSelectorProps {
     value: VideoSpeed;
@@ -89,7 +90,7 @@ function SpeedSelector({ value, plyCount, disabled, onChange }: SpeedSelectorPro
                 </span>
 
                 <span className={styles.speedDetail}>
-                    {t("exportVideo.perMove", {
+                    {t("exportVideo.seconds", {
                         seconds: videoSpeedTimings[speed].moveSeconds
                     })}
                 </span>
@@ -97,7 +98,8 @@ function SpeedSelector({ value, plyCount, disabled, onChange }: SpeedSelectorPro
         </div>
 
         <span className={styles.optionDescription}>
-            {t("exportVideo.length", {
+            {t("exportVideo.speedSummary", {
+                seconds: videoSpeedTimings[value].moveSeconds,
                 length: formatClockTime(Math.round(getVideoDuration(plyCount, value)))
             })}
         </span>
