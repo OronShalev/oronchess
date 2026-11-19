@@ -5,6 +5,12 @@ import { uniqueId } from "lodash-es";
 import Game from "@shared/types/game/Game";
 import { StateTreeNode } from "@shared/types/game/position/StateTreeNode";
 import PieceColour from "@shared/constants/PieceColour";
+import {
+    getPgnTimeControl,
+    parseClockTime,
+    parseTimeControl,
+    setMoveTimes
+} from "./clocks";
 
 type ParsedPGNMove = ParseTree["moves"][number];
 
@@ -36,7 +42,9 @@ function parseStateTree(game: Game) {
                     },
                     moveColour: move.color == "w"
                         ? PieceColour.WHITE
-                        : PieceColour.BLACK
+                        : PieceColour.BLACK,
+                    clock: parseClockTime(pgnMove.commentDiag?.clk),
+                    moveTime: parseClockTime(pgnMove.commentDiag?.emt)
                 }
             };
 
@@ -61,6 +69,8 @@ function parseStateTree(game: Game) {
     };
 
     addMovesToNode(rootNode, parsedPGN.moves, true);
+
+    setMoveTimes(rootNode, parseTimeControl(getPgnTimeControl(game.pgn)));
 
     return rootNode;
 }

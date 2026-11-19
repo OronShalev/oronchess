@@ -6,7 +6,13 @@ import GameResult from "@shared/constants/game/GameResult";
 import Variant from "@shared/constants/game/Variant";
 import { STARTING_FEN } from "@shared/constants/utils";
 import { EngineLine, pickEngineLines } from "@shared/types/game/position/EngineLine";
-import { StateTreeNode, getNodeChain } from "@shared/types/game/position/StateTreeNode";
+import {
+    StateTreeNode,
+    getNodeChain,
+    getNodeMoveNumber
+} from "@shared/types/game/position/StateTreeNode";
+import PieceColour from "@shared/constants/PieceColour";
+import { formatClockCommand, getPgnTimeControl } from "@shared/lib/stateTree/clocks";
 import parseStateTree from "@shared/lib/stateTree/parse";
 import parsePgn from "@client/lib/games/pgn";
 
@@ -15,7 +21,8 @@ import parsePgn from "@client/lib/games/pgn";
 // so that it can be opened on another device without any engine search.
 //
 // Layout, bit-packed: version, checksum, game details, base depth and
-// source, ply count, moves, then up to two lines for every position.
+// source, ply count, moves, then up to two lines for every position, and
+// last the clocks, which codes made before them end without.
 const codePrefix = "oronchess-";
 const codePattern = /oronchess-([A-Za-z0-9_-]+)/;
 
@@ -30,6 +37,7 @@ const sourceBits = 2;
 const countOrder = 0;
 const evaluationOrder = 5;
 const ratingOrder = 8;
+const clockOrder = 4;
 
 const results = ["*", "1-0", "0-1", "1/2-1/2"];
 
@@ -456,6 +464,8 @@ export function encodeReviewCode(game: AnalysedGame) {
         }
     });
 
+    writeClocks(writer, game, nodes);
+
     const payload = writer.toBytes();
 
     const header = new BitWriter();
@@ -563,6 +573,84 @@ function readLines(
     });
 }
 
+// Clocks in tenths of a second, as changes from the mover's last clock
+function writeClocks(
+    writer: BitWriter,
+    game: AnalysedGame,
+    nodes: StateTreeNode[]
+) {
+    const moveNodes = nodes.slice(1);
+
+    const hasClocks = moveNodes.some(node => node.state.clock != undefined);
+    writer.writeFlag(hasClocks);
+    if (!hasClocks) return;
+
+    writer.writeString(getPgnTimeControl(game.pgn) || "");
+
+    const previousTenths = { [PieceColour.WHITE]: 0, [PieceColour.BLACK]: 0 };
+
+    for (const node of moveNodes) {
+        const { clock, moveColour } = node.state;
+
+        writer.writeFlag(clock != undefined);
+        if (clock == undefined || !moveColour) continue;
+
+        const tenths = Math.max(0, Math.round(clock * 10));
+
+        writer.writeSigned(tenths - previousTenths[moveColour], clockOrder);
+        previousTenths[moveColour] = tenths;
+    }
+}
+
+/**
+ * @description Reads the clocks of a code, if it has them, and returns the
+ * PGN with them as [%clk] comments and its time control. The PGN is built
+ * here, as chess.js keeps comments by position, which can repeat.
+ */
+function readClocks(reader: BitReader, pgn: string, nodes: StateTreeNode[]) {
+    try {
+        // Codes made before clocks were added end here
+        if (!reader.readFlag()) return;
+    } catch {
+        return;
+    }
+
+    const timeControl = reader.readString();
+    const previousTenths = { [PieceColour.WHITE]: 0, [PieceColour.BLACK]: 0 };
+
+    const initialPosition = nodes[0].state.fen;
+
+    const moveText = nodes.slice(1).map((node, index) => {
+        const colour = node.state.moveColour!;
+        const moveNumber = Math.floor(getNodeMoveNumber(node, initialPosition));
+
+        const prefix = colour == PieceColour.WHITE
+            ? `${moveNumber}. `
+            : (index == 0 ? `${moveNumber}... ` : "");
+
+        let text = prefix + node.state.move!.san;
+
+        if (reader.readFlag()) {
+            previousTenths[colour] += reader.readSigned(clockOrder);
+            text += ` {[%clk ${formatClockCommand(previousTenths[colour] / 10)}]}`;
+        }
+
+        return text;
+    });
+
+    const sanitisedTimeControl = timeControl.replace(/["\\\]]/g, "");
+
+    const headers = pgn.split(/\r?\n\r?\n/)[0]
+        + (sanitisedTimeControl
+            ? `\n[TimeControl "${sanitisedTimeControl}"]`
+            : ""
+        );
+
+    const result = pgn.match(/\[Result "([^"]*)"\]/)?.[1] || "*";
+
+    return `${headers}\n\n${moveText.join(" ")} ${result}`;
+}
+
 /**
  * @description Unpacks a review code, found anywhere in the given text,
  * into a game whose mainline holds its engine lines. Returns null if no
@@ -589,13 +677,20 @@ export function decodeReviewCode(text: string): AnalysedGame | null {
 
         const { pgn, format } = readGame(reader);
 
-        const game = parsePgn(pgn);
-        const stateTree = parseStateTree(game);
+        let game = parsePgn(pgn);
+        let stateTree = parseStateTree(game);
 
-        const nodes = getNodeChain(stateTree);
-        const nodeLines = readLines(reader, nodes, format);
+        const nodeLines = readLines(reader, getNodeChain(stateTree), format);
 
-        nodes.forEach((node, index) => {
+        // Clocks are added to the PGN, which is then read again
+        const clockedPgn = readClocks(reader, pgn, getNodeChain(stateTree));
+
+        if (clockedPgn) {
+            game = parsePgn(clockedPgn);
+            stateTree = parseStateTree(game);
+        }
+
+        getNodeChain(stateTree).forEach((node, index) => {
             node.state.engineLines = nodeLines[index];
         });
 

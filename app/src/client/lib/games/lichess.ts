@@ -49,7 +49,9 @@ async function getLichessGames(
         `https://lichess.org/api/games/user/${username}`
         + `?since=${monthStart.getTime()}`
         + `&until=${monthEnd.getTime()}`
-        + "&pgnInJson=true",
+        + "&pgnInJson=true"
+        // Clocks are added to the PGN as [%clk h:mm:ss] comments
+        + "&clocks=true",
         { headers: { Accept: "application/x-ndjson" } }
     );
 

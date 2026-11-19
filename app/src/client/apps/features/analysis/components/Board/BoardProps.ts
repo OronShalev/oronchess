@@ -5,6 +5,7 @@ import { Move } from "chess.js";
 import { StateTreeNode } from "@shared/types/game/position/StateTreeNode";
 import PlayerProfile from "@shared/types/game/PlayerProfile";
 import Evaluation from "@shared/types/game/position/Evaluation";
+import { GameClocks } from "@shared/lib/stateTree/clocks";
 
 interface BoardProps {
     className?: string;
@@ -13,6 +14,7 @@ interface BoardProps {
     profileStyle?: CSSProperties;
     whiteProfile?: PlayerProfile;
     blackProfile?: PlayerProfile;
+    clocks?: GameClocks;
     node?: StateTreeNode;
     flipped?: boolean;
     evaluation?: Evaluation;

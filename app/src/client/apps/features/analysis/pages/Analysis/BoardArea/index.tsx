@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Move } from "chess.js";
 
-import { addChildMove } from "@shared/types/game/position/StateTreeNode";
+import {
+    addChildMove,
+    getNodeChain
+} from "@shared/types/game/position/StateTreeNode";
+import {
+    getNodeClocks,
+    getPgnTimeControl,
+    parseTimeControl
+} from "@shared/lib/stateTree/clocks";
 import AnalysisTab from "@analysis/constants/AnalysisTab";
 import useSettingsStore from "@client/stores/SettingsStore";
 import useAnalysisGameStore from "@analysis/stores/AnalysisGameStore";
@@ -34,6 +42,15 @@ function BoardArea() {
         boardFlipped
     } = useAnalysisBoardStore();
 
+    const timeControl = useMemo(() => parseTimeControl(
+        getPgnTimeControl(analysisGame.pgn)
+    ), [analysisGame.pgn]);
+
+    // Clocks are only shown for games that recorded them
+    const hasClocks = useMemo(() => getNodeChain(analysisGame.stateTree).some(
+        node => node.state.clock != undefined
+    ), [analysisGame.stateTree]);
+
     const evaluation = useEvaluation();
     const suggestionArrows = useSuggestionArrows();
 
@@ -63,6 +80,10 @@ function BoardArea() {
         profileClassName={styles.boardProfile}
         whiteProfile={analysisGame.players.white}
         blackProfile={analysisGame.players.black}
+        clocks={hasClocks
+            ? getNodeClocks(currentStateTreeNode, timeControl)
+            : undefined
+        }
         theme={{
             lightSquareColour: theme.board.lightSquareColour,
             darkSquareColour: theme.board.darkSquareColour

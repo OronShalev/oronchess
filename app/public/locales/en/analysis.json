@@ -120,6 +120,13 @@
         "report": "Report",
         "analysis": "Analysis"
     },
+    "moveTimesGraph": {
+        "title": "Move times",
+        "white": "White",
+        "black": "Black",
+        "spent": "Took {{time}}",
+        "left": "{{time}} left"
+    },
     "accuraciesCard": {
         "title": "Accuracies",
         "partial": "Partial analysis: White {{white}}, Black {{black}} moves analysed"

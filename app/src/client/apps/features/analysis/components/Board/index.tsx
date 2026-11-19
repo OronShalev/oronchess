@@ -6,7 +6,9 @@ import { Chess, Move, PieceSymbol } from "chess.js";
 import { defaultRootNode } from "@shared/constants/utils";
 import { isMovePromotion } from "@shared/lib/utils/chess";
 import useResizeObserver from "@client/hooks/useResizeObserver";
+import PieceColour from "@shared/constants/PieceColour";
 import PlayerProfile from "@client/components/chess/PlayerProfile";
+import PlayerClock from "@client/components/chess/PlayerClock";
 import EvaluationBar from "../EvaluationBar";
 
 import { useSquares } from "./squares/useSquares";
@@ -29,6 +31,7 @@ function Board({
     profileStyle,
     whiteProfile,
     blackProfile,
+    clocks,
     theme,
     piecesDraggable = true,
     node = defaultRootNode,
@@ -54,6 +57,24 @@ function Board({
 
     const topProfile = flipped ? whiteProfile : blackProfile;
     const bottomProfile = flipped ? blackProfile : whiteProfile;
+
+    const topColour = flipped ? PieceColour.WHITE : PieceColour.BLACK;
+    const bottomColour = flipped ? PieceColour.BLACK : PieceColour.WHITE;
+
+    // The clock of the side to move is the one running
+    const runningColour = node.state.fen.split(" ")[1] == "w"
+        ? PieceColour.WHITE
+        : PieceColour.BLACK;
+
+    function renderClock(colour: PieceColour) {
+        const seconds = clocks?.[colour];
+        if (seconds == undefined) return;
+
+        return <PlayerClock
+            seconds={seconds}
+            running={colour == runningColour}
+        />;
+    }
 
     function onSquareClick(square: Square, piece?: Piece) {
         squares.setHighlighted([]);
@@ -123,6 +144,7 @@ function Board({
             style={{ borderRadius: "7px 7px 0 0", ...profileStyle }}
         >
             <PlayerProfile profile={topProfile} />
+            {renderClock(topColour)}
         </div>}
 
         <div className={styles.boardContainer} ref={boardContainerRef}>
@@ -174,6 +196,7 @@ function Board({
             style={{ borderRadius: "0 0 7px 7px", ...profileStyle }}
         >
             <PlayerProfile profile={bottomProfile} />
+            {renderClock(bottomColour)}
         </div>}
     </div>;
 }

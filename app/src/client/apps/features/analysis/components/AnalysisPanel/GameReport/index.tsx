@@ -7,6 +7,7 @@ import AccuraciesCard from "@analysis/components/report/AccuraciesCard";
 import ClassificationCountCard from "@analysis/components/report/ClassificationCountCard";
 
 import EvaluationGraphArea from "./EvaluationGraphArea";
+import MoveTimesGraphArea from "./MoveTimesGraphArea";
 
 function GameReport() {
     const analysisGame = useAnalysisGameStore(state => state.analysisGame);
@@ -17,6 +18,8 @@ function GameReport() {
     
     return <>
         <EvaluationGraphArea/>
+
+        <MoveTimesGraphArea/>
 
         <AccuraciesCard accuracies={accuracies} />
 

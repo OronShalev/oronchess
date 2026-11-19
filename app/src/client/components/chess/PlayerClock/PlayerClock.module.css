@@ -1,0 +1,19 @@
+.clock {
+    margin-left: auto;
+    padding: 3px 8px;
+    min-width: 48px;
+    box-sizing: border-box;
+    text-align: right;
+
+    border-radius: 5px;
+    background-color: var(--ui-shade-5);
+    color: #c8ccd2;
+
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.running {
+    background-color: whitesmoke;
+    color: #0a0a0a;
+}
