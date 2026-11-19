@@ -16,6 +16,7 @@ import Button from "@client/components/common/Button";
 import SettingsDialog from "../SettingsDialog";
 import ShareDialog from "../ShareDialog";
 import ShareReviewDialog from "../ShareReviewDialog";
+import ExportVideoDialog from "../ExportVideoDialog";
 
 import * as styles from "./OptionsToolbar.module.css";
 
@@ -23,6 +24,7 @@ import iconBack from "@assets/img/interface/back.svg";
 import iconFlip from "@assets/img/interface/flip.svg";
 import iconSettings from "@assets/img/interface/settings.svg";
 import iconShare from "@assets/img/interface/share.svg";
+import iconVideo from "@assets/img/interface/video.svg";
 import iconLogo from "@assets/img/logo.svg";
 
 function OptionsToolbar() {
@@ -63,6 +65,7 @@ function OptionsToolbar() {
     const [ settingsOpen, setSettingsOpen ] = useState(false);
     const [ shareOpen, setShareOpen ] = useState(false);
     const [ shareReviewOpen, setShareReviewOpen ] = useState(false);
+    const [ exportVideoOpen, setExportVideoOpen ] = useState(false);
 
     // A review can be shared once the game has been fully evaluated
     // and classified in the app
@@ -163,6 +166,20 @@ function OptionsToolbar() {
                 content={t("optionsToolbar.shareReview")}
                 delayShow={500}
             />
+
+            {reviewShareable && <Button
+                className={styles.optionButton}
+                icon={iconVideo}
+                iconSize={"35px"}
+                tooltipId={"options-toolbar-export-video"}
+                onClick={() => setExportVideoOpen(true)}
+            />}
+
+            <Tooltip
+                id="options-toolbar-export-video"
+                content={t("optionsToolbar.exportVideo")}
+                delayShow={500}
+            />
         </div>
 
         {settingsOpen && <SettingsDialog
@@ -178,6 +195,13 @@ function OptionsToolbar() {
         {shareReviewOpen && <ShareReviewDialog
             game={analysisGame}
             onClose={() => setShareReviewOpen(false)}
+        />}
+
+        {exportVideoOpen && <ExportVideoDialog
+            game={analysisGame}
+            currentNode={currentStateTreeNode}
+            flipped={boardFlipped}
+            onClose={() => setExportVideoOpen(false)}
         />}
     </>;
 }

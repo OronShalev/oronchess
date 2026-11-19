@@ -3,7 +3,8 @@
     "optionsToolbar": {
         "flipBoard": "Flip Board",
         "share": "Share Game",
-        "shareReview": "Share Review"
+        "shareReview": "Share Review",
+        "exportVideo": "Export Video"
     },
     "settings": {
         "title": "Analysis Settings",
@@ -66,6 +67,39 @@
             "noGameSelected": "Please select a Chess game.",
             "invalidGame": "Failed to parse invalid game."
         }
+    },
+    "exportVideo": {
+        "title": "Export Video",
+        "description": "Make a video of the game, move by move, with every move's classification.",
+        "speed": "Speed",
+        "speeds": {
+            "slow": "Slow",
+            "regular": "Regular",
+            "fast": "Fast"
+        },
+        "perMove": "{{seconds}}s per move",
+        "length": "Video length: about {{length}}",
+        "showPlayers": "Show players",
+        "showPlayersDescription": "Names and ratings above and below the board",
+        "showClocks": "Show clocks",
+        "showClocksDescription": "Each player's time left after every move",
+        "noClocks": "This game has no clock times",
+        "preview": "Preview",
+        "boardOnly": "Preview: only the board will be in the video",
+        "export": "Export Video",
+        "exporting": "Making video…",
+        "cancel": "Cancel",
+        "saved": "Video saved.",
+        "savedTo": "Video saved to {{location}}",
+        "notSaved": "The video is ready but was not saved.",
+        "saveFailed": "The video is ready but could not be saved.",
+        "save": "Save Video",
+        "saveAgain": "Save Again",
+        "share": "Share",
+        "again": "Make another video",
+        "unsupported": "This device cannot make videos.",
+        "failed": "The video could not be made.",
+        "back": "Back"
     },
     "shareReview": {
         "title": "Share Review",

@@ -1,6 +1,9 @@
 import { round } from "lodash-es";
 
-import { StateTreeNode } from "@shared/types/game/position/StateTreeNode";
+import {
+    StateTreeNode,
+    getNodeChain
+} from "@shared/types/game/position/StateTreeNode";
 import PieceColour from "@shared/constants/PieceColour";
 
 // Time controls, clocks and move times of games, from PGN metadata:
@@ -242,6 +245,13 @@ export function setMoveTimes(
     }
 
     visit(rootNode, {});
+}
+
+/**
+ * @description Returns whether the mainline of a game recorded clocks.
+ */
+export function hasClocks(rootNode: StateTreeNode) {
+    return getNodeChain(rootNode).some(node => node.state.clock != undefined);
 }
 
 /**

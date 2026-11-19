@@ -1,13 +1,11 @@
 import React, { useMemo } from "react";
 import { Move } from "chess.js";
 
-import {
-    addChildMove,
-    getNodeChain
-} from "@shared/types/game/position/StateTreeNode";
+import { addChildMove } from "@shared/types/game/position/StateTreeNode";
 import {
     getNodeClocks,
     getPgnTimeControl,
+    hasClocks,
     parseTimeControl
 } from "@shared/lib/stateTree/clocks";
 import AnalysisTab from "@analysis/constants/AnalysisTab";
@@ -47,8 +45,8 @@ function BoardArea() {
     ), [analysisGame.pgn]);
 
     // Clocks are only shown for games that recorded them
-    const hasClocks = useMemo(() => getNodeChain(analysisGame.stateTree).some(
-        node => node.state.clock != undefined
+    const gameHasClocks = useMemo(() => (
+        hasClocks(analysisGame.stateTree)
     ), [analysisGame.stateTree]);
 
     const evaluation = useEvaluation();
@@ -80,7 +78,7 @@ function BoardArea() {
         profileClassName={styles.boardProfile}
         whiteProfile={analysisGame.players.white}
         blackProfile={analysisGame.players.black}
-        clocks={hasClocks
+        clocks={gameHasClocks
             ? getNodeClocks(currentStateTreeNode, timeControl)
             : undefined
         }

@@ -1,0 +1,303 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: min(440px, 100%);
+    max-height: 100%;
+
+    color: white;
+
+    overflow-y: auto;
+}
+
+.title {
+    box-sizing: border-box;
+    padding: 15px;
+    padding-right: 50px;
+    width: 100%;
+
+    background-color: var(--ui-shade-2);
+    font-family: "Nunito";
+    font-weight: 700;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 15px;
+    padding-top: 0;
+}
+
+.description {
+    color: #a5a5a5;
+    font-size: 0.85rem;
+}
+
+/* Speed slider */
+
+.speed {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+
+    border-radius: 10px;
+    background-color: var(--ui-shade-2);
+}
+
+.optionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.speedValue {
+    color: var(--ui-blue);
+    font-weight: 600;
+}
+
+.speedOptions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    position: relative;
+}
+
+/* Runs between the centres of the first and last stops */
+.speedRail {
+    position: absolute;
+    top: 9px;
+    left: calc(100% / 6);
+    right: calc(100% / 6);
+    height: 4px;
+
+    border-radius: 2px;
+    background-color: var(--ui-shade-6);
+}
+
+.speedFill {
+    height: 100%;
+
+    border-radius: 2px;
+    background-color: var(--ui-blue);
+
+    transition: width 0.2s ease;
+}
+
+.speedOption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+    padding: 0 0 2px 0;
+
+    border: none;
+    border-radius: 8px;
+    background: none;
+    color: inherit;
+    font: inherit;
+
+    cursor: pointer;
+}
+
+.speedOption:disabled {
+    cursor: default;
+}
+
+.speedOption:focus-visible {
+    outline: 2px solid var(--ui-blue);
+    outline-offset: 2px;
+}
+
+.speedDotArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 22px;
+}
+
+.speedDot {
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+    background-color: var(--ui-shade-6);
+    box-shadow: 0 0 0 3px var(--ui-shade-2);
+
+    transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+}
+
+.speedReached .speedDot {
+    background-color: var(--ui-blue);
+}
+
+.speedSelected .speedDot {
+    width: 20px;
+    height: 20px;
+
+    background-color: white;
+    box-shadow: 0 0 0 3px var(--ui-blue), 0 0 0 7px rgba(70, 125, 232, 0.25);
+}
+
+.speedLabel {
+    color: #c8ccd2;
+    font-size: 0.95rem;
+}
+
+.speedSelected .speedLabel {
+    color: white;
+    font-weight: 600;
+}
+
+.speedDetail {
+    color: #8b9098;
+    font-size: 0.75rem;
+}
+
+/* Switches */
+
+.options {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    border-radius: 10px;
+    background-color: var(--ui-shade-2);
+}
+
+.option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+
+    cursor: pointer;
+}
+
+.option + .option {
+    border-top: 1px solid var(--ui-shade-4);
+}
+
+.optionDisabled {
+    cursor: default;
+}
+
+.optionDisabled .optionName {
+    color: #8b9098;
+}
+
+.optionText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.optionName {
+    color: white;
+}
+
+.optionDescription {
+    color: #a5a5a5;
+    font-size: 0.8rem;
+}
+
+/* Preview */
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.previewCanvas {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 240px;
+    min-height: 120px;
+
+    border-radius: 8px;
+    background-color: var(--ui-shade-2);
+}
+
+.previewCaption {
+    color: #8b9098;
+    font-size: 0.8rem;
+}
+
+/* Export */
+
+.primaryButton {
+    width: 100%;
+
+    background-color: var(--ui-blue);
+}
+
+.secondaryButton {
+    width: 100%;
+
+    background-color: var(--ui-shade-5);
+}
+
+.linkButton {
+    align-self: center;
+
+    background: none;
+    color: #a5a5a5;
+    font-size: 0.85rem;
+}
+
+.progress {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progressLabel {
+    display: flex;
+    justify-content: space-between;
+
+    color: #c8ccd2;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.progressBar {
+    height: 8px;
+    overflow: hidden;
+
+    border-radius: 4px;
+    background-color: var(--ui-shade-2);
+}
+
+.progressFill {
+    height: 100%;
+
+    background-color: var(--ui-blue);
+
+    transition: width 0.15s linear;
+}
+
+.result {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.resultButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.success {
+    color: #98bc49;
+    overflow-wrap: anywhere;
+}
+
+.error {
+    color: #eb6150;
+}

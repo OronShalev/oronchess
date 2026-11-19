@@ -2,12 +2,18 @@ package com.oronchess.app;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.graphics.Insets;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.WindowInsets;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -19,15 +25,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import androidx.core.content.FileProvider;
 import androidx.webkit.WebViewAssetLoader;
 import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -45,6 +55,9 @@ public class MainActivity extends Activity {
     private static final String APP_PAGE = "apps/features/analysis.html";
 
     private static final int FILE_CHOOSER_REQUEST = 1;
+
+    // Cache folder of files made in the app, shared through FileProvider
+    private static final String EXPORTS_DIRECTORY = "exports";
 
     private static final Map<String, String> MIME_TYPES = new HashMap<>();
 
@@ -113,6 +126,7 @@ public class MainActivity extends Activity {
         // The WebView has no Web Share API, so sharing goes through the
         // system share sheet. Only the bundled app is ever loaded.
         webView.addJavascriptInterface(new ShareBridge(), "AndroidShare");
+        webView.addJavascriptInterface(new FileBridge(), "AndroidFiles");
 
         // Native Stockfish, run from the app's native library folder
         Map<String, String> enginePaths = findEngines();
@@ -255,6 +269,133 @@ public class MainActivity extends Activity {
             intent.putExtra(Intent.EXTRA_TEXT, text);
 
             runOnUiThread(() -> startActivity(Intent.createChooser(intent, null)));
+        }
+    }
+
+    /**
+     * Receives files made in the app, such as game videos, in base64
+     * chunks, then saves them to Downloads/OronChess or shares them. The
+     * WebView cannot download the blobs they are made as.
+     */
+    private class FileBridge {
+        private File file;
+        private OutputStream output;
+        private String mimeType;
+
+        @JavascriptInterface
+        public synchronized boolean begin(String name, String type) {
+            closeOutput();
+
+            // Only the latest file is kept
+            File directory = new File(getCacheDir(), EXPORTS_DIRECTORY);
+            File[] oldFiles = directory.listFiles();
+
+            if (oldFiles != null) {
+                for (File oldFile : oldFiles) oldFile.delete();
+            }
+
+            if (!directory.isDirectory() && !directory.mkdirs()) return false;
+
+            String safeName = name.replaceAll("[\\\\/:*?\"<>|\\p{Cntrl}]", "").trim();
+
+            try {
+                file = new File(directory, safeName.isEmpty() ? "oronchess" : safeName);
+                output = new FileOutputStream(file);
+                mimeType = type;
+
+                return true;
+            } catch (IOException exception) {
+                file = null;
+                return false;
+            }
+        }
+
+        @JavascriptInterface
+        public synchronized boolean append(String base64) {
+            if (output == null) return false;
+
+            try {
+                output.write(Base64.decode(base64, Base64.DEFAULT));
+                return true;
+            } catch (IOException | IllegalArgumentException exception) {
+                return false;
+            }
+        }
+
+        /**
+         * Saves the file to Downloads/OronChess and returns where it went,
+         * or "" if it could not be saved, as before Android 10, where that
+         * needs a storage permission.
+         */
+        @JavascriptInterface
+        public synchronized String save() {
+            closeOutput();
+
+            if (file == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return "";
+
+            String relativePath = Environment.DIRECTORY_DOWNLOADS + "/OronChess";
+
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, file.getName());
+            values.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath);
+            values.put(MediaStore.MediaColumns.IS_PENDING, 1);
+
+            ContentResolver resolver = getContentResolver();
+            Uri uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+            if (uri == null) return "";
+
+            try (
+                InputStream input = new FileInputStream(file);
+                OutputStream saved = resolver.openOutputStream(uri)
+            ) {
+                if (saved == null) throw new IOException("no output stream");
+
+                byte[] buffer = new byte[64 * 1024];
+                int length;
+
+                while ((length = input.read(buffer)) > 0) saved.write(buffer, 0, length);
+            } catch (IOException exception) {
+                resolver.delete(uri, null, null);
+                return "";
+            }
+
+            values.clear();
+            values.put(MediaStore.MediaColumns.IS_PENDING, 0);
+            resolver.update(uri, values, null, null);
+
+            return relativePath;
+        }
+
+        @JavascriptInterface
+        public synchronized boolean share() {
+            closeOutput();
+            if (file == null) return false;
+
+            Uri uri = FileProvider.getUriForFile(
+                MainActivity.this, getPackageName() + ".files", file
+            );
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType(mimeType);
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            intent.setClipData(ClipData.newRawUri(null, uri));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            runOnUiThread(() -> startActivity(Intent.createChooser(intent, null)));
+
+            return true;
+        }
+
+        private void closeOutput() {
+            if (output == null) return;
+
+            try {
+                output.close();
+            } catch (IOException ignored) {
+            }
+
+            output = null;
         }
     }
 

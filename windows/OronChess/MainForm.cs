@@ -152,6 +152,9 @@ namespace OronChess
                 FormClosed += (sender, args) => nativeEngines.Dispose();
             }
 
+            // Files made in the app, saved where the user chooses
+            new FileSaveHost(core, this);
+
             core.DocumentTitleChanged += (sender, args) =>
             {
                 Text = string.IsNullOrWhiteSpace(core.DocumentTitle)

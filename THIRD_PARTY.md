@@ -21,3 +21,20 @@ The web app uses Stockfish 19 compiled to WebAssembly by
 
 Stockfish and Stockfish.js are licensed under the GNU General Public License v3.0.
 OronChess itself is licensed under the GNU General Public License v3.0; see `LICENSE`.
+
+## Mediabunny
+
+Game videos are written as MP4 files with **Mediabunny 1.65.2**, licensed under the
+Mozilla Public License 2.0.
+
+- Source code: https://github.com/Vanilagy/mediabunny
+
+## Chess pieces
+
+Game videos draw the default piece set of **react-chessboard** (MIT License), the
+same pieces as the board. They were drawn by Colin M.L. Burnett and are available
+under the GNU General Public License, the BSD License and the GNU Free
+Documentation License.
+
+- Source: https://github.com/Clariity/react-chessboard
+- Original pieces: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
