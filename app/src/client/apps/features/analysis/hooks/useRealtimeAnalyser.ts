@@ -22,17 +22,21 @@ function useRealtimeAnalyser() {
     function considerRealtimeAnalyse() {
         if (!currentStateTreeNode.parent) return;
 
+        // Moves that are already classified, as all are after a game
+        // review, keep their results, so that the review's accuracies
+        // do not change with the lines of realtime searches
+        if (currentStateTreeNode.state.classification) {
+            return cancelAnalyse();
+        }
+
         // If there is not enough data for a centipawn comparison
         const parentState = currentStateTreeNode.parent.state;
 
-        if (parentState.engineLines.length == 0) {
-            if (!currentStateTreeNode.state.classification) return;
-
-            return cancelAnalyse("classifiedMoveCard.insufficientLines");
-        }
+        if (parentState.engineLines.length == 0) return;
 
         const classified = analyseNode(currentStateTreeNode, {
             includeBrilliant: settings.classifications.included.brilliant,
+            includeCritical: settings.classifications.included.critical,
             includeTheory: settings.classifications.included.theory
         });
 

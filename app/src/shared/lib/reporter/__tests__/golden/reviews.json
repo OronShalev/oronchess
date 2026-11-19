@@ -1,0 +1,2030 @@
+{
+  "description": "Engine lines recorded by the game review pipeline, with the classifications and accuracies they gave. Replayed without an engine by golden.test.ts.",
+  "recorded": {
+    "date": "2026-10-23",
+    "command": "npm run bench:review -- --corpus <corpus.json> --out <run.json> --depth 16 --node-limit 2000000 --engines 1",
+    "engine": "stockfish-19-lite-single.js (WebAssembly, single thread)",
+    "depth": 16,
+    "nodeLimit": 2000000,
+    "hashMegabytes": 32,
+    "lines": "MultiPV 1, with a second line searched only for Brilliant and Critical candidates",
+    "cloudEvaluation": false
+  },
+  "games": [
+    {
+      "id": "opera-game",
+      "pgn": "[Event \"Paris Opera\"]\n[White \"Morphy\"]\n[Black \"Duke Karl / Count Isouard\"]\n[Result \"1-0\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7 8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7 14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 25
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e2e4",
+                  "san": "e4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e2e4",
+          "classification": "theory",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 26
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e7e5",
+                  "san": "e5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e7e5",
+          "classification": "theory",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 25
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g1f3",
+                  "san": "Nf3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g1f3",
+          "classification": "theory",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 25
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b8c6",
+                  "san": "Nc6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d7d6",
+          "classification": "theory",
+          "accuracy": 90.40427425450348,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 53
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d2d4",
+                  "san": "d4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d2d4",
+          "classification": "theory",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 54
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g8f6",
+                  "san": "Nf6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c8g4",
+          "classification": "okay",
+          "accuracy": 82.84631831110346,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 107
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c1e3",
+                  "san": "Be3"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 103
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d4e5",
+                  "san": "dxe5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d4e5",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 107
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b8d7",
+                  "san": "Nd7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g4f3",
+          "classification": "excellent",
+          "accuracy": 90.14170283106351,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 137
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d1f3",
+                  "san": "Qxf3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d1f3",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 135
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d6e5",
+                  "san": "dxe5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d6e5",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 163
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f3b3",
+                  "san": "Qb3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f1c4",
+          "classification": "excellent",
+          "accuracy": 92.84355748464138,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 141
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d8d7",
+                  "san": "Qd7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g8f6",
+          "classification": "inaccuracy",
+          "accuracy": 61.04840106937539,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 298
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f3b3",
+                  "san": "Qb3"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 119
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c1e3",
+                  "san": "Be3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f3b3",
+          "classification": "critical",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 267
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f8c5",
+                  "san": "Bc5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d8e7",
+          "classification": "excellent",
+          "accuracy": 89.50348451595691,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 306
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b3b7",
+                  "san": "Qxb7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "b1c3",
+          "classification": "excellent",
+          "accuracy": 88.45543494041004,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 263
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c7c6",
+                  "san": "c6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c7c6",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 273
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c1g5",
+                  "san": "Bg5"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 152
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "a2a4",
+                  "san": "a4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c1g5",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 253
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b8a6",
+                  "san": "Na6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "b7b5",
+          "classification": "mistake",
+          "accuracy": 58.68644583429691,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 465
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c3b5",
+                  "san": "Nxb5"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 155
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g5f6",
+                  "san": "Bxf6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c3b5",
+          "classification": "brilliant",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 465
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e7b4",
+                  "san": "Qb4+"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c6b5",
+          "classification": "okay",
+          "accuracy": 74.77573298444516,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 647
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c4b5",
+                  "san": "Bxb5+"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c4b5",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 693
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b8d7",
+                  "san": "Nbd7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "b8d7",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 702
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e1c1",
+                  "san": "O-O-O"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 349
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g5f6",
+                  "san": "Bxf6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e1c1",
+          "classification": "critical",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 700
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "a8d8",
+                  "san": "Rd8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "a8d8",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 733
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d1d7",
+                  "san": "Rxd7"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 570
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d1d5",
+                  "san": "Rd5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d1d7",
+          "classification": "brilliant",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 720
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f6d7",
+                  "san": "Nxd7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d8d7",
+          "classification": "excellent",
+          "accuracy": 93.2992078803826,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 798
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "h1d1",
+                  "san": "Rd1"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 168
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b5d7",
+                  "san": "Bxd7+"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "h1d1",
+          "classification": "critical",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 865
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e7d6",
+                  "san": "Qd6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e7e6",
+          "classification": "excellent",
+          "accuracy": 87.76779250761115,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1202
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b5d7",
+                  "san": "Bxd7+"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "b5d7",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1213
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e6d7",
+                  "san": "Qxd7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f6d7",
+          "classification": "excellent",
+          "accuracy": 94.32260618711904,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "mate",
+                "value": 2
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b3b8",
+                  "san": "Qb8+"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 352
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b3b7",
+                  "san": "Qb7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "b3b8",
+          "classification": "brilliant",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "mate",
+                "value": 1
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d7b8",
+                  "san": "Nxb8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d7b8",
+          "classification": "forced",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "mate",
+                "value": 1
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d1d8",
+                  "san": "Rd8#"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d1d8",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 0,
+              "index": 1,
+              "evaluation": {
+                "type": "mate",
+                "value": 0
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fools-mate",
+      "pgn": "[Result \"0-1\"]\n\n1. f3 e5 2. g4 Qh4# 0-1",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 25
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e2e4",
+                  "san": "e4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f2f3",
+          "classification": "theory",
+          "accuracy": 72.19275032616882,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -65
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e7e5",
+                  "san": "e5"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -57
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d7d5",
+                  "san": "d5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e7e5",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -65
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e2e4",
+                  "san": "e4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g2g4",
+          "classification": "blunder",
+          "accuracy": 14.340575640282855,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "mate",
+                "value": -1
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d8h4",
+                  "san": "Qh4#"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d8h4",
+          "classification": "theory",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 0,
+              "index": 1,
+              "evaluation": {
+                "type": "mate",
+                "value": 0
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "special-moves",
+      "pgn": "[Result \"*\"]\n\n1. e4 d5 2. e5 f5 3. exf6 Nc6 4. fxg7 Nf6 5. gxh8=Q Bf5 6. Nf3 e6 7. Be2 Qd7 8. O-O O-O-O *",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 25
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e2e4",
+                  "san": "e4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e2e4",
+          "classification": "theory",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 26
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e7e5",
+                  "san": "e5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d7d5",
+          "classification": "theory",
+          "accuracy": 84.15673163361373,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 74
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e4d5",
+                  "san": "exd5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e4e5",
+          "classification": "okay",
+          "accuracy": 76.28726813785924,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -1
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c8f5",
+                  "san": "Bf5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f7f5",
+          "classification": "okay",
+          "accuracy": 72.30306044434693,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 89
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d2d4",
+                  "san": "d4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e5f6",
+          "classification": "inaccuracy",
+          "accuracy": 67.94488036066927,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -18
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g8f6",
+                  "san": "Nxf6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "b8c6",
+          "classification": "okay",
+          "accuracy": 73.79292077117732,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 66
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f6g7",
+                  "san": "fxg7"
+                }
+              ]
+            },
+            {
+              "depth": 16,
+              "index": 2,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -6
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d2d4",
+                  "san": "d4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f6g7",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 61
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f8g7",
+                  "san": "Bxg7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g8f6",
+          "classification": "blunder",
+          "accuracy": 15.342627411262557,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1153
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g7h8q",
+                  "san": "gxh8=Q"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g7h8q",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1176
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c8f5",
+                  "san": "Bf5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c8f5",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1238
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d2d4",
+                  "san": "d4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g1f3",
+          "classification": "best",
+          "accuracy": 99.66720954557925,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1221
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d8d7",
+                  "san": "Qd7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e7e6",
+          "classification": "best",
+          "accuracy": 96.04435363784003,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1577
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d2d4",
+                  "san": "d4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f1e2",
+          "classification": "excellent",
+          "accuracy": 94.52077244464094,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1149
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d8e7",
+                  "san": "Qe7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d8d7",
+          "classification": "excellent",
+          "accuracy": 93.07454734941963,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 2355
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "h8f6",
+                  "san": "Qxf6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e1g1",
+          "classification": "excellent",
+          "accuracy": 95.2059237646522,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1257
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d7e7",
+                  "san": "Qe7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e8c8",
+          "classification": "excellent",
+          "accuracy": 95.22702551335706,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 2302
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "h8f6",
+                  "san": "Qxf6"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "threefold",
+      "pgn": "[Result \"1/2-1/2\"]\n\n1. Nf3 Nf6 2. Ng1 Ng8 3. Nf3 Nf6 4. Ng1 Ng8 1/2-1/2",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 25
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e2e4",
+                  "san": "e4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g1f3",
+          "classification": "theory",
+          "accuracy": 95.75174836713319,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 13
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d7d5",
+                  "san": "d5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g8f6",
+          "classification": "theory",
+          "accuracy": 96.09794309848726,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 24
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c2c4",
+                  "san": "c4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f3g1",
+          "classification": "inaccuracy",
+          "accuracy": 65.9950688176313,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -91
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e7e5",
+                  "san": "e5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f6g8",
+          "classification": "inaccuracy",
+          "accuracy": 66.23716023841278,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 23
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e2e4",
+                  "san": "e4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g1f3",
+          "classification": "theory",
+          "accuracy": 97.84884433485071,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 17
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d7d5",
+                  "san": "d5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "g8f6",
+          "classification": "theory",
+          "accuracy": 98.20248014522639,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 22
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c2c4",
+                  "san": "c4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f3g1",
+          "classification": "inaccuracy",
+          "accuracy": 65.30337657296413,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -96
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e7e5",
+                  "san": "e5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f6g8",
+          "classification": "inaccuracy",
+          "accuracy": 70.78131599042824,
+          "lines": [
+            {
+              "depth": 0,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 0
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "loyd-stalemate",
+      "pgn": "[Result \"1/2-1/2\"]\n\n1. e3 a5 2. Qh5 Ra6 3. Qxa5 h5 4. h4 Rah6 5. Qxc7 f6 6. Qxd7+ Kf7 7. Qxb7 Qd3 8. Qxb8 Qh7 9. Qxc8 Kg6 10. Qe6 1/2-1/2",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 25
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "e2e4",
+                  "san": "e4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e2e3",
+          "classification": "theory",
+          "accuracy": 95.75174836713319,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 13
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g8f6",
+                  "san": "Nf6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "a7a5",
+          "classification": "excellent",
+          "accuracy": 91.03609484759767,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 39
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g1f3",
+                  "san": "Nf3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d1h5",
+          "classification": "okay",
+          "accuracy": 73.22083120542281,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -47
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g8f6",
+                  "san": "Nf6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "a8a6",
+          "classification": "blunder",
+          "accuracy": 33.43561884713851,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 267
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f1a6",
+                  "san": "Bxa6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "h5a5",
+          "classification": "blunder",
+          "accuracy": 4.183278490675711,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -798
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "a6a5",
+                  "san": "Rxa5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "h7h5",
+          "classification": "blunder",
+          "accuracy": 3.366092879365434,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 310
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f1a6",
+                  "san": "Bxa6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "h2h4",
+          "classification": "blunder",
+          "accuracy": 3.8742294568666775,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -712
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "a6a5",
+                  "san": "Rxa5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "a6h6",
+          "classification": "blunder",
+          "accuracy": 6.353284455951076,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 205
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d2d4",
+                  "san": "d4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "a5c7",
+          "classification": "blunder",
+          "accuracy": 7.772727069600609,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -594
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d8c7",
+                  "san": "Qxc7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f7f6",
+          "classification": "blunder",
+          "accuracy": 0.5453651854193899,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 797
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c7b8",
+                  "san": "Qxb8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c7d7",
+          "classification": "blunder",
+          "accuracy": 0.5871608019792789,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -586
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c8d7",
+                  "san": "Bxd7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "e8f7",
+          "classification": "blunder",
+          "accuracy": 0,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 2215
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f1c4",
+                  "san": "Bc4+"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d7b7",
+          "classification": "blunder",
+          "accuracy": 0,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": -618
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "c8b7",
+                  "san": "Bxb7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d8d3",
+          "classification": "blunder",
+          "accuracy": 0,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1275
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b7c8",
+                  "san": "Qxc8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "b7b8",
+          "classification": "excellent",
+          "accuracy": 94.23384833081587,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1038
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "d3d8",
+                  "san": "Qd8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "d3h7",
+          "classification": "excellent",
+          "accuracy": 90.45992687065952,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1853
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "b8c8",
+                  "san": "Qxc8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "b8c8",
+          "classification": "best",
+          "accuracy": 100,
+          "lines": [
+            {
+              "depth": 16,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 1815
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "g7g6",
+                  "san": "g6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "f7g6",
+          "classification": "best",
+          "accuracy": 99.29140523943651,
+          "lines": [
+            {
+              "depth": 15,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 2889
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": [
+                {
+                  "uci": "f1d3",
+                  "san": "Bd3+"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "move": "c8e6",
+          "classification": "blunder",
+          "accuracy": 10.793455757552948,
+          "lines": [
+            {
+              "depth": 0,
+              "index": 1,
+              "evaluation": {
+                "type": "centipawn",
+                "value": 0
+              },
+              "source": "stockfish-19-lite-single.js",
+              "moves": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

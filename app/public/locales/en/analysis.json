@@ -121,7 +121,8 @@
         "analysis": "Analysis"
     },
     "accuraciesCard": {
-        "title": "Accuracies"
+        "title": "Accuracies",
+        "partial": "Partial analysis: White {{white}}, Black {{black}} moves analysed"
     },
     "classifiedMoveCard": {
         "unknownError": "A classification could not be loaded.",

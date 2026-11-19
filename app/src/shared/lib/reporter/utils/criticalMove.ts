@@ -18,9 +18,9 @@ export function isMoveCriticalCandidate(
     const secondSubjectiveEval = previous.secondSubjectiveEvaluation;
 
     if (secondSubjectiveEval) {
-        if (
-            secondSubjectiveEval.type == "centipawn"
-            && secondSubjectiveEval.value >= 700
+        if (secondSubjectiveEval.type == "centipawn"
+            ? secondSubjectiveEval.value >= 700
+            : secondSubjectiveEval.value > 0
         ) return false;
     } else {
         if (

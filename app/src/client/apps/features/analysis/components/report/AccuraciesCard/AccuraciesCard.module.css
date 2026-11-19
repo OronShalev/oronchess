@@ -39,3 +39,11 @@
     background-color: #0a0a0a;
     color: whitesmoke;
 }
+
+.partialNotice {
+    padding: 0 10px;
+    text-align: center;
+
+    font-size: 0.9rem;
+    color: #b4b8bf;
+}

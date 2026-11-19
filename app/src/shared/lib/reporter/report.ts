@@ -1,7 +1,6 @@
 import { GameAnalysis } from "@shared/types/game/GameAnalysis";
 import { StateTreeNode, getNodeChain } from "@shared/types/game/position/StateTreeNode";
 import AnalysisOptions from "./types/AnalysisOptions";
-import { adaptPieceColour } from "@shared/constants/PieceColour";
 import {
     extractCurrentStateTreeNode,
     extractPreviousStateTreeNode
@@ -26,6 +25,7 @@ export function analyseNode(
 
     if (!previous || !current) {
         node.state.classification = undefined;
+        node.state.accuracy = undefined;
         return;
     }
 
@@ -37,11 +37,7 @@ export function analyseNode(
         node.state.classification = undefined;
     }
 
-    node.state.accuracy = getMoveAccuracy(
-        previous.evaluation,
-        current.evaluation,
-        adaptPieceColour(current.playedMove.color)
-    );
+    node.state.accuracy = getMoveAccuracy(previous, current);
 }
 
 export function getGameAnalysis(

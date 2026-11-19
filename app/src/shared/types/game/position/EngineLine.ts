@@ -41,10 +41,11 @@ export function getLineGroupSibling(
 }
 
 /**
- * @description Returns the line with the highest depth and lowest index.
+ * @description Returns the first line of the deepest search. A second
+ * line is never returned, even from a deeper search than any first line.
  */
 export function getTopEngineLine(lines: EngineLine[]) {
-    return maxBy(lines, line => line.depth - line.index);
+    return maxBy(lines.filter(line => line.index == 1), line => line.depth);
 }
 
 /**

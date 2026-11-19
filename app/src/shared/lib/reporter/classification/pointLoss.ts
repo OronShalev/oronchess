@@ -1,109 +1,53 @@
-import { WHITE } from "chess.js";
-
 import {
     ExtractedCurrentNode,
     ExtractedPreviousNode
 } from "../types/ExtractedNode";
 import { Classification } from "@shared/constants/Classification";
 import { adaptPieceColour } from "@shared/constants/PieceColour";
+import { getSubjectiveEvaluation } from "@shared/lib/utils/chess";
 import { getExpectedPointsLoss } from "../expectedPoints";
+import { reporterConfig, classifyByBands } from "../config";
 
 /**
- * @description Classify using two evaluations and a move colour,
- * using expected point losses or mate losses.
+ * @description Classify using two evaluations and a move colour, using
+ * expected point losses, or mate losses between mates for the same side.
  */
 export function pointLossClassify(
     previous: ExtractedPreviousNode,
     current: ExtractedCurrentNode
 ) {
-    const previousSubjectiveValue = previous.evaluation.value * (
-        (current.playedMove.color == WHITE ? 1 : -1)
-    );
+    const moveColour = adaptPieceColour(current.playedMove.color);
+
+    const previousSubjectiveValue = getSubjectiveEvaluation(
+        previous.evaluation, moveColour
+    ).value;
 
     const subjectiveValue = current.subjectiveEvaluation.value;
 
-    // Mate to mate evaluations
+    // Mate to mate evaluations for the same side
     if (
         previous.evaluation.type == "mate"
         && current.evaluation.type == "mate"
+        && Math.sign(previousSubjectiveValue) == Math.sign(subjectiveValue)
     ) {
-        // Winning mate to losing mate
-        if (previousSubjectiveValue > 0 && subjectiveValue < 0) {
-            return subjectiveValue < -3
-                ? Classification.MISTAKE
-                : Classification.BLUNDER;
-        }
-
         // For the losing side, making a move that keeps the mate the same
         // is best. Only the winning side expects a mate loss of -1.
-        const mateLoss = (
-            (current.evaluation.value - previous.evaluation.value)
-            * (current.playedMove.color == WHITE ? 1 : -1)
-        );
+        const mateLoss = subjectiveValue - previousSubjectiveValue;
 
         if (mateLoss < 0 || (mateLoss == 0 && subjectiveValue < 0)) {
             return Classification.BEST;
-        } else if (mateLoss < 2) {
-            return Classification.EXCELLENT;
-        } else if (mateLoss < 7) {
-            return Classification.OKAY;
-        } else {
-            return Classification.INACCURACY;
         }
+
+        return classifyByBands(reporterConfig.mateLossBands, mateLoss);
     }
 
-    // Mate to centipawn evaluations
-    if (
-        previous.evaluation.type == "mate"
-        && current.evaluation.type == "centipawn"
-    ) {
-        if (subjectiveValue >= 800) {
-            return Classification.EXCELLENT;
-        } else if (subjectiveValue >= 400) {
-            return Classification.OKAY;
-        } else if (subjectiveValue >= 200) {
-            return Classification.INACCURACY;
-        } else if (subjectiveValue >= 0) {
-            return Classification.MISTAKE;
-        } else {
-            return Classification.BLUNDER;
-        }
-    }
-
-    // Centipawn to mate evaluations
-    if (
-        previous.evaluation.type == "centipawn"
-        && current.evaluation.type == "mate"
-    ) {
-        if (subjectiveValue > 0) {
-            return Classification.BEST;
-        } else if (subjectiveValue >= -2) {
-            return Classification.BLUNDER;
-        } else if (subjectiveValue >= -5) {
-            return Classification.MISTAKE;
-        } else {
-            return Classification.INACCURACY;
-        }
-    }
-
-    // Centipawn to centipawn evaluations
+    // Every other pair of evaluations, including a mate gained or lost,
+    // is compared by expected points, as accuracy is
     const pointLoss = getExpectedPointsLoss(
         previous.evaluation,
         current.evaluation,
-        adaptPieceColour(current.playedMove.color)
+        moveColour
     );
 
-    if (pointLoss < 0.01) {
-        return Classification.BEST;
-    } else if (pointLoss < 0.045) {
-        return Classification.EXCELLENT;
-    } else if (pointLoss < 0.08) {
-        return Classification.OKAY;
-    } else if (pointLoss < 0.12) {
-        return Classification.INACCURACY;
-    } else if (pointLoss < 0.22) {
-        return Classification.MISTAKE;
-    } else {
-        return Classification.BLUNDER;
-    }
+    return classifyByBands(reporterConfig.pointLossBands, pointLoss);
 }

@@ -1,5 +1,6 @@
 import Evaluation from "@shared/types/game/position/Evaluation";
 import { PieceColour, flipPieceColour } from "@shared/constants/PieceColour";
+import { reporterConfig } from "./config";
 
 interface ExpectedPointsOptions {
     moveColour: PieceColour;
@@ -11,7 +12,7 @@ export function getExpectedPoints(
     options?: ExpectedPointsOptions
 ) {
     const opts = {
-        centipawnGradient: 0.0035,
+        centipawnGradient: reporterConfig.centipawnGradient,
         ...options
     };
 

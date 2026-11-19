@@ -1,9 +1,10 @@
 import { GameAnalysis } from "@shared/types/game/GameAnalysis";
+import { SideAccuracy } from "@shared/lib/reporter/accuracy";
 
 interface AccuraciesCardProps {
     accuracies: {
-        white: number;
-        black: number;
+        white: SideAccuracy;
+        black: SideAccuracy;
     };
     estimatedRatings?: GameAnalysis["estimatedRatings"];
 }

@@ -3,6 +3,7 @@ import { maxBy } from "lodash-es";
 
 import AnalysedGame from "@shared/types/game/AnalysedGame";
 import EngineVersion from "@shared/constants/EngineVersion";
+import GameResult from "@shared/constants/game/GameResult";
 import AnalysisOptions from "@shared/lib/reporter/types/AnalysisOptions";
 import Evaluation from "@shared/types/game/position/Evaluation";
 import { StateTreeNode, getNodeChain } from "@shared/types/game/position/StateTreeNode";
@@ -77,6 +78,31 @@ function getForcedMoveEvaluation(
 }
 
 /**
+ * @description Returns whether a game was drawn by a claim on its final
+ * position: threefold repetition, the fifty move rule, or insufficient
+ * material. Engines would play on from it, so it must be scored as drawn.
+ */
+export function isDrawnByClaim(game: AnalysedGame, nodes: StateTreeNode[]) {
+    if (game.players.white.result != GameResult.DRAW) return false;
+
+    const finalFen = nodes.at(-1)?.state.fen;
+    if (!finalFen) return false;
+
+    const [ board, turn, castling, enPassant, halfmoveClock ] = finalFen.split(" ");
+
+    if (parseInt(halfmoveClock) >= 100) return true;
+    if (new Chess(finalFen).isInsufficientMaterial()) return true;
+
+    const position = [ board, turn, castling, enPassant ].join(" ");
+
+    const occurrences = nodes.filter(node => (
+        node.state.fen.split(" ").slice(0, 4).join(" ") == position
+    )).length;
+
+    return occurrences >= 3;
+}
+
+/**
  * @description Returns a node limit for searches of a given depth. It is
  * far above what such a search normally needs, and only stops the rare
  * searches that explode, which are almost all in decided positions.
@@ -103,6 +129,8 @@ function createGameEvaluator(
         .filter(node => node.state.move)
         .map(node => node.state.move!.uci);
 
+    const drawnByClaim = isDrawnByClaim(game, stateTreeNodes);
+
     // Index of node evaluation progress
     const claimed: boolean[] = new Array(nodeCount).fill(false);
     const evaluated: boolean[] = new Array(nodeCount).fill(false);
@@ -114,19 +142,24 @@ function createGameEvaluator(
     let evaluatedCount = 0;
     let cloudStopped = !options.cloudEvaluation;
 
-    // Lines are only reused under the same engine settings
-    const cacheKeys = stateTreeNodes.map((node, index) => getEvaluationCacheKey(
-        node.state.fen,
-        stateTreeNodes.slice(0, index).map(previous => previous.state.fen),
-        {
-            engine: options.engineVersion,
-            depth: options.engineDepth,
-            timeLimit: options.engineTimeLimit,
-            nodeLimit: options.engineNodeLimit,
-            lines: options.engineLines,
-            selectiveSecondLine: selectiveSecondLine
-        }
-    ));
+    // Lines are only reused under the same engine settings. A final
+    // position drawn by a claim is never searched, so it is not cached
+    const cacheKeys = stateTreeNodes.map((node, index) => {
+        if (drawnByClaim && index == nodeCount - 1) return;
+
+        return getEvaluationCacheKey(
+            node.state.fen,
+            stateTreeNodes.slice(0, index).map(previous => previous.state.fen),
+            {
+                engine: options.engineVersion,
+                depth: options.engineDepth,
+                timeLimit: options.engineTimeLimit,
+                nodeLimit: options.engineNodeLimit,
+                lines: options.engineLines,
+                selectiveSecondLine: selectiveSecondLine
+            }
+        );
+    });
 
     function getEngineCount() {
         return Math.max(1, Math.min(options.maxEngineCount || 1, nodeCount));
@@ -220,8 +253,12 @@ function createGameEvaluator(
 
         const lineSource = options.engineVersion;
 
-        // Engines report depth 0 for positions with no legal moves
-        if (legalMoves.length == 0) {
+        // Engines report depth 0 for positions with no legal moves. A game
+        // drawn by a claim ends drawn too, though play could go on from it
+        if (
+            legalMoves.length == 0
+            || (drawnByClaim && index == nodeCount - 1)
+        ) {
             return [{
                 depth: 0,
                 index: 1,
@@ -369,6 +406,7 @@ function createGameEvaluator(
     async function runCloudEvaluation() {
         for (let index = 0; index < nodeCount; index++) {
             if (cloudStopped || claimed[index]) return;
+            if (drawnByClaim && index == nodeCount - 1) return;
 
             try {
                 var cloudEngineLines = await getCloudEvaluation(
