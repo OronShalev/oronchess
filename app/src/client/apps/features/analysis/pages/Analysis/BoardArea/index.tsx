@@ -45,12 +45,14 @@ function BoardArea() {
     const {
         mistake: learningMistake,
         line: learningLine,
-        lineShown: learningLineShown
+        lineShown: learningLineShown,
+        hint: learningHint
     } = useLearningStore(
         useShallow(state => ({
             mistake: state.mistake,
             line: state.line,
-            lineShown: state.lineShown
+            lineShown: state.lineShown,
+            hint: state.hint
         }))
     );
 
@@ -84,11 +86,12 @@ function BoardArea() {
         ? learningLine![learningLineShown - 1]
         : currentStateTreeNode;
 
+    const retrying = learning && !!learningMistake
+        && currentStateTreeNode == learningMistake.parent;
+
     // While learning, moves can only be tried in place of a mistake
-    const movesAllowed = !autoplayEnabled && !lineActive && (
-        !learning
-        || (!!learningMistake && currentStateTreeNode == learningMistake.parent)
-    );
+    const movesAllowed = !autoplayEnabled && !lineActive
+        && (!learning || retrying);
 
     function addMove(move: Move) {
         if (!movesAllowed) return false;
@@ -133,6 +136,7 @@ function BoardArea() {
         evaluation={evaluation}
         arrows={learning ? noArrows : suggestionArrows}
         arrowsAllowed={!learning}
+        hint={retrying && !lineActive ? learningHint : undefined}
         piecesDraggable={movesAllowed}
         enableClassifications={!settings.classifications.hide}
         onAddMove={addMove}

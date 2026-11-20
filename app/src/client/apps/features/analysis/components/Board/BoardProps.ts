@@ -6,6 +6,7 @@ import { StateTreeNode } from "@shared/types/game/position/StateTreeNode";
 import PlayerProfile from "@shared/types/game/PlayerProfile";
 import Evaluation from "@shared/types/game/position/Evaluation";
 import { GameClocks } from "@shared/lib/stateTree/clocks";
+import { BoardHint } from "./squares/SquaresContext";
 
 interface BoardProps {
     className?: string;
@@ -19,6 +20,8 @@ interface BoardProps {
     flipped?: boolean;
     evaluation?: Evaluation;
     arrows?: Arrow[];
+    // A square to draw attention to for a moment
+    hint?: BoardHint;
     // Whether arrows can be drawn by right-click dragging
     arrowsAllowed?: boolean;
     theme?: {

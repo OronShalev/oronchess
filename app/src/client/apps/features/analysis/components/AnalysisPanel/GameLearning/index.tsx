@@ -41,6 +41,10 @@ const hotkeyConfig: HotkeyOptions = { preventDefault: true };
 const lineStartDelay = 400;
 const lineMoveInterval = 900;
 
+// Milliseconds that a hint lights up the best move's piece, as long as
+// its animation on the board
+const hintDuration = 1600;
+
 function GameLearning() {
     const { t } = useTranslation("analysis");
 
@@ -161,6 +165,15 @@ function GameLearning() {
         useLearningStore.getState().closeLine();
     }, []);
 
+    // A hint fades away by itself, then is forgotten
+    useEffect(() => {
+        if (!learning.hint) return;
+
+        const timeout = setTimeout(learning.clearHint, hintDuration);
+
+        return () => clearTimeout(timeout);
+    }, [learning.hint]);
+
     // The engine's line plays one move at a time
     useEffect(() => {
         const line = learning.line;
@@ -239,6 +252,10 @@ function GameLearning() {
         setBoardFlipped(chosen == PieceColour.BLACK);
 
         selectMistake(mistakesBySide[chosen].at(0));
+    }
+
+    function showHint() {
+        if (bestMove) learning.showHint(bestMove.from);
     }
 
     function showLine(from: StateTreeNode) {
@@ -336,6 +353,7 @@ function GameLearning() {
                     }
                     onTryAgain={tryAgain}
                     onShowBest={bestMove && !bestShown ? showBest : undefined}
+                    onHint={bestMove ? showHint : undefined}
                     onShowLine={lineStart && lineAvailable
                         ? () => showLine(lineStart)
                         : undefined

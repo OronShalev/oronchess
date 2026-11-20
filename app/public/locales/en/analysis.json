@@ -179,6 +179,7 @@
         "evaluation": "Evaluation",
         "tryAgain": "Try again",
         "showBest": "Show best",
+        "hint": "Hint",
         "showLine": "Show line",
         "line": {
             "title": "Best play after {{move}}",

@@ -38,6 +38,7 @@ function Board({
     flipped,
     evaluation,
     arrows,
+    hint,
     arrowsAllowed = true,
     enableClassifications = true,
     onAddMove
@@ -170,7 +171,7 @@ function Board({
                 flipped={flipped}
             />}
 
-            {chessboardWidth > 0 && <SquaresContext.Provider value={squares}>
+            {chessboardWidth > 0 && <SquaresContext.Provider value={{ ...squares, hint }}>
                 <Chessboard
                     position={node.state.fen}
                     boardOrientation={flipped ? "black" : "white"}

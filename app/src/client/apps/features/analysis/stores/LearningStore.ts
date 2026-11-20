@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 import PieceColour from "@shared/constants/PieceColour";
 import { StateTreeNode } from "@shared/types/game/position/StateTreeNode";
+import { BoardHint } from "@analysis/components/Board/squares/SquaresContext";
 
 interface LearningStore {
     // The game whose mistakes are being learned from
@@ -17,6 +18,8 @@ interface LearningStore {
     // how many of its moves are on the board
     line?: StateTreeNode[];
     lineShown: number;
+    // The square of the piece that makes the best move, while it is hinted
+    hint?: BoardHint;
 
     startGame: (rootNode: StateTreeNode, colour: PieceColour) => void;
     setColour: (colour: PieceColour) => void;
@@ -26,6 +29,8 @@ interface LearningStore {
     showLine: (line: StateTreeNode[]) => void;
     advanceLine: () => void;
     closeLine: () => void;
+    showHint: (square: BoardHint["square"]) => void;
+    clearHint: () => void;
 }
 
 const useLearningStore = create<LearningStore>(set => ({
@@ -42,8 +47,20 @@ const useLearningStore = create<LearningStore>(set => ({
             solved: {},
             revealed: {},
             line: undefined,
-            lineShown: 0
+            lineShown: 0,
+            hint: undefined
         });
+    },
+
+    showHint(square) {
+        // A new ID plays the hint again, even on the same square
+        set(state => ({
+            hint: { square: square, id: (state.hint?.id || 0) + 1 }
+        }));
+    },
+
+    clearHint() {
+        set({ hint: undefined });
     },
 
     showLine(line) {

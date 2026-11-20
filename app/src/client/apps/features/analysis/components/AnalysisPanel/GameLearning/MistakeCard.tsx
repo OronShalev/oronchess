@@ -33,6 +33,7 @@ import iconInterfaceRetry from "@assets/img/interface/retry.svg";
 import iconInterfaceLightbulb from "@assets/img/interface/lightbulb.svg";
 import iconInterfaceCheck from "@assets/img/interface/check.svg";
 import iconInterfacePlay from "@assets/img/interface/play.svg";
+import iconInterfaceVisibility from "@assets/img/interface/visibility.svg";
 
 export interface MistakeCardProps {
     step: LearningStep;
@@ -56,6 +57,8 @@ export interface MistakeCardProps {
     onNext?: () => void;
     onTryAgain: () => void;
     onShowBest?: () => void;
+    // Lights up the piece that makes the best move
+    onHint?: () => void;
     onShowLine?: () => void;
     onCloseLine: () => void;
     onReturn: () => void;
@@ -132,6 +135,7 @@ function MistakeCard({
     onNext,
     onTryAgain,
     onShowBest,
+    onHint,
     onShowLine,
     onCloseLine,
     onReturn
@@ -198,7 +202,7 @@ function MistakeCard({
 
     const showBestButton = onShowBest && <Button
         className={styles.secondaryButton}
-        icon={iconInterfaceLightbulb}
+        icon={iconInterfaceVisibility}
         onClick={onShowBest}
     >
         {t("learning.showBest")}
@@ -320,6 +324,14 @@ function MistakeCard({
                 </span>
 
                 <div className={styles.actions}>
+                    {onHint && <Button
+                        className={styles.secondaryButton}
+                        icon={iconInterfaceLightbulb}
+                        onClick={onHint}
+                    >
+                        {t("learning.hint")}
+                    </Button>}
+
                     {showBestButton}
                 </div>
             </>;

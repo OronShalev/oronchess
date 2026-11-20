@@ -82,6 +82,11 @@ function createSquareRenderer(
                 && <div className={styles.highlight} />
             }
 
+            {squares.hint?.square == square && <div
+                key={squares.hint.id}
+                className={styles.hint}
+            />}
+
             {node.state.classification
                 && square == playedMove?.to
                 && enableClassifications
