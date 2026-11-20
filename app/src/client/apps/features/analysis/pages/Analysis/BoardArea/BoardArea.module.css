@@ -1,7 +1,12 @@
+/* --evaluation-width is that of the evaluation bar beside the board, or
+0px without one */
 .board {
     flex-grow: 1;
     min-width: 0;
     height: 100%;
+
+    /* Leaves room for the player rows above and below the board */
+    max-width: calc(100vh - 235px + var(--evaluation-width, 0px));
 }
 
 @media (max-width: 900px) {
@@ -15,5 +20,20 @@
         width: 100%;
 
         border-radius: 0 !important;
+    }
+}
+
+/* On short, wide screens the board is as tall as the screen, and the
+players are shown beside it instead (see Analysis.module.css) */
+@media (orientation: landscape) and (max-height: 600px) {
+    .board {
+        flex: 0 1 auto;
+        width: calc(100vh - 12px + var(--evaluation-width, 0px));
+        width: calc(100dvh - 12px + var(--evaluation-width, 0px));
+        max-width: none;
+    }
+
+    .boardProfile {
+        display: none !important;
     }
 }

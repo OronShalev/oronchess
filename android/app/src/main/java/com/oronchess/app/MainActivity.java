@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.graphics.Insets;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -93,14 +95,17 @@ public class MainActivity extends Activity {
 
         webView = new WebView(this);
 
-        // Keep the page clear of the status bar, navigation bar and
-        // keyboard, which Android 15 otherwise draws the app behind
+        // Keep the page clear of the status bar, navigation bar, keyboard
+        // and camera cutout, which Android 15 otherwise draws the app
+        // behind. The cutout is at a side when the phone is on its side
         FrameLayout container = new FrameLayout(this);
         container.addView(webView);
         container.setOnApplyWindowInsetsListener((view, insets) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 Insets bars = insets.getInsets(
-                    WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
+                    WindowInsets.Type.systemBars()
+                        | WindowInsets.Type.displayCutout()
+                        | WindowInsets.Type.ime()
                 );
                 view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             } else {
@@ -116,6 +121,7 @@ public class MainActivity extends Activity {
         });
 
         setContentView(container);
+        updateSystemBars(getResources().getConfiguration());
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -433,6 +439,38 @@ public class MainActivity extends Activity {
             WebChromeClient.FileChooserParams.parseResult(resultCode, data)
         );
         fileChooserCallback = null;
+    }
+
+    /**
+     * Phones on their side hide the status bar, as the board fills the
+     * height of the screen then. A swipe from the edge shows it a moment.
+     */
+    private void updateSystemBars(Configuration configuration) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return;
+
+        WindowInsetsController controller = getWindow().getInsetsController();
+        if (controller == null) return;
+
+        // As in the page's layout for short, wide screens
+        boolean shortLandscape =
+            configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+            && configuration.screenHeightDp < 600;
+
+        if (shortLandscape) {
+            controller.setSystemBarsBehavior(
+                WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+            controller.hide(WindowInsets.Type.statusBars());
+        } else {
+            controller.show(WindowInsets.Type.statusBars());
+        }
+    }
+
+    // Rotating does not restart the activity (see the manifest)
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        updateSystemBars(newConfig);
     }
 
     @Override

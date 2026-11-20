@@ -30,3 +30,10 @@
     display: flex;
     align-items: center;
 }
+
+/* Smaller in the panel beside the board on short, wide screens */
+@media (orientation: landscape) and (max-height: 600px) {
+    .wrapper img {
+        width: 38px !important;
+    }
+}

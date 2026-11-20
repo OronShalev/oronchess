@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { CSSProperties, useMemo } from "react";
 import { Move } from "chess.js";
 import { Arrow } from "react-chessboard/dist/chessboard/types";
 import { useShallow } from "zustand/react/shallow";
@@ -115,9 +115,10 @@ function BoardArea() {
 
     return <Board
         className={styles.board}
+        // The stylesheet sizes the board around the evaluation bar
         style={{
-            maxWidth: `calc(100vh - ${evaluation ? 195 : 235}px)`
-        }}
+            "--evaluation-width": evaluation ? "40px" : "0px"
+        } as CSSProperties}
         profileClassName={styles.boardProfile}
         // Learning leaves out the players and clocks, so that what it
         // shows is close to the board on phones

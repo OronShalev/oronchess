@@ -12,6 +12,7 @@ import StateTreeTraverser from "@client/components/chess/StateTreeTraverser";
 import TabBar from "./TabBar";
 import AnalysisProgress from "./AnalysisProgress";
 import RealtimeEngineArea from "./RealtimeEngineArea";
+import PlayersStrip from "./PlayersStrip";
 
 import GameSelection from "./GameSelection";
 import GameReport from "./GameReport";
@@ -49,6 +50,13 @@ function AnalysisPanel({
             <div className={styles.title}>
                 {t("title")}
             </div>
+
+            {/* Only shown on short, wide screens, where the players are
+            not above and below the board */}
+            {gameAnalysisOpen
+                && activeTab != AnalysisTab.LEARNING
+                && <PlayersStrip/>
+            }
 
             <OptionsToolbar/>
 

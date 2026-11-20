@@ -72,7 +72,39 @@
 @media (max-width: 500px) {
     .panel {
         padding-top: 0;
-        
+
         border-radius: 0;
+    }
+}
+
+/* Short, wide screens, like phones on their side, put the board beside
+the panel, both as tall as the screen, so that the board never scrolls
+away. The same query is used wherever this layout needs changes, and
+comes after the rules that it overrides */
+@media (orientation: landscape) and (max-height: 600px) {
+    .wrapper,
+    .wrapper.withoutTraverser {
+        gap: 0;
+        padding: 0;
+    }
+
+    .analysisSection {
+        flex-direction: row;
+        justify-content: center;
+        align-items: stretch;
+        gap: 8px;
+        padding: 6px;
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .panel {
+        flex: 1 1 0;
+        min-width: 260px;
+        max-width: 460px;
+        width: auto;
+        height: 100%;
+
+        border-radius: 10px;
     }
 }

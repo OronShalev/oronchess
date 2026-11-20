@@ -82,3 +82,39 @@ and contained overscroll swallows touch swipes that start on it */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 }
+
+/* On short, wide screens the panel sits beside the board and is as tall
+as the screen: it scrolls by itself, with the move traverser at its foot
+(see Analysis.module.css) */
+@media (orientation: landscape) and (max-height: 600px) {
+    .wrapper {
+        overflow-x: hidden;
+    }
+
+    .components {
+        gap: 6px;
+        min-height: 0;
+        padding: 6px;
+
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .title {
+        display: none;
+    }
+
+    .traverserContainer {
+        position: static;
+        padding: 0;
+    }
+
+    .traverser {
+        width: 100%;
+        padding: 2px 5px;
+
+        border-radius: 0;
+        background-color: #1b1c1e;
+        box-shadow: none;
+    }
+}

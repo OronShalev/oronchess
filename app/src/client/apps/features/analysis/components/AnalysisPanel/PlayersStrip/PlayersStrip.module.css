@@ -1,0 +1,90 @@
+/* Only shown on short, wide screens (see Analysis.module.css) */
+.wrapper {
+    display: none;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+    .wrapper {
+        display: flex;
+        flex-shrink: 0;
+        gap: 6px;
+
+        container-type: inline-size;
+    }
+}
+
+/* Names come before ratings when there is little room for both */
+@container (max-width: 440px) {
+    .rating {
+        display: none;
+    }
+}
+
+.player {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 4px 4px 4px 8px;
+
+    border-radius: 8px;
+    background-color: var(--ui-shade-4);
+    color: white;
+    font-size: 0.9rem;
+}
+
+.whiteSwatch,
+.blackSwatch {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+
+    border: 1px solid #8b9098;
+    border-radius: 50%;
+}
+
+.whiteSwatch {
+    background-color: #f2f2f2;
+}
+
+.blackSwatch {
+    background-color: #0c0c0c;
+}
+
+.title {
+    flex-shrink: 0;
+    padding: 0 3px;
+
+    border-radius: 4px;
+    background-color: rgb(180, 20, 20);
+    font-size: 0.8rem;
+}
+
+.name {
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rating {
+    flex-shrink: 0;
+
+    color: grey;
+}
+
+/* The clock sits at the end of the row, a little smaller than beside the
+board */
+.clock {
+    display: flex;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.clock > * {
+    padding: 1px 6px;
+
+    font-size: 0.95rem;
+}

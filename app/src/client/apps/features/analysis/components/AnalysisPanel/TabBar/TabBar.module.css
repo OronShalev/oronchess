@@ -54,3 +54,12 @@
     border-radius: 0 10px 10px 0;
     border-left: 1px solid var(--ui-shade-4);
 }
+
+/* Smaller in the panel beside the board on short, wide screens */
+@media (orientation: landscape) and (max-height: 600px) {
+    .button {
+        padding: 6px;
+
+        font-size: 1rem;
+    }
+}

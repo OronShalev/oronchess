@@ -63,3 +63,20 @@ shrink on narrow screens rather than overflowing it */
 
     filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9));
 }
+
+/* Smaller in the panel beside the board on short, wide screens */
+@media (orientation: landscape) and (max-height: 600px) {
+    .backButton {
+        width: 42px;
+        height: 42px;
+    }
+
+    .options {
+        gap: 6px;
+    }
+
+    .optionButton {
+        flex-basis: 46px;
+        padding: 5px;
+    }
+}
