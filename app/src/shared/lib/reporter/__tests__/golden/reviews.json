@@ -103,7 +103,7 @@
         {
           "move": "d7d6",
           "classification": "theory",
-          "accuracy": 87.8705915303669,
+          "accuracy": 100,
           "lines": [
             {
               "depth": 16,
@@ -903,7 +903,7 @@
         {
           "move": "f2f3",
           "classification": "theory",
-          "accuracy": 6.318199108205833,
+          "accuracy": 100,
           "lines": [
             {
               "depth": 16,
@@ -1048,7 +1048,7 @@
         {
           "move": "d7d5",
           "classification": "theory",
-          "accuracy": 45.951946815303096,
+          "accuracy": 100,
           "lines": [
             {
               "depth": 16,
@@ -1418,7 +1418,7 @@
         {
           "move": "g1f3",
           "classification": "theory",
-          "accuracy": 99.52958022452684,
+          "accuracy": 100,
           "lines": [
             {
               "depth": 16,
@@ -1440,7 +1440,7 @@
         {
           "move": "g8f6",
           "classification": "theory",
-          "accuracy": 99.66730846246305,
+          "accuracy": 100,
           "lines": [
             {
               "depth": 16,
@@ -1506,7 +1506,7 @@
         {
           "move": "g1f3",
           "classification": "theory",
-          "accuracy": 99.97047937739721,
+          "accuracy": 100,
           "lines": [
             {
               "depth": 16,
@@ -1528,7 +1528,7 @@
         {
           "move": "g8f6",
           "classification": "theory",
-          "accuracy": 99.98575780972847,
+          "accuracy": 100,
           "lines": [
             {
               "depth": 16,
@@ -1614,7 +1614,7 @@
         {
           "move": "e2e3",
           "classification": "theory",
-          "accuracy": 99.52958022452684,
+          "accuracy": 100,
           "lines": [
             {
               "depth": 16,

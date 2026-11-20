@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 
 import { getAccuracyFromPointLoss } from "../accuracy";
 import { reporterConfig } from "../config";
+
+const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 import { analyseNode } from "../report";
 import {
     centipawns,
@@ -96,5 +98,40 @@ describe("per-move accuracy", () => {
         analyseNode(node, { includeTheory: false });
 
         assert.equal(node.state.accuracy, 100);
+    });
+
+    it("is 100 for a book move, labelled as theory or not", () => {
+        for (const includeTheory of [ true, false ]) {
+            // 1. e4 is in the book, though not the top move here
+            const node = createMovePair({
+                fen: startingFen,
+                playedSan: "e4",
+                topSan: "d4",
+                before: centipawns(50),
+                after: centipawns(-300)
+            });
+
+            analyseNode(node, { includeTheory });
+
+            assert.ok(node.state.opening, "1. e4 should be a book move");
+            assert.equal(node.state.accuracy, 100, `includeTheory: ${includeTheory}`);
+        }
+    });
+
+    it("is below 100 for the same loss outside the book", () => {
+        const [ played, top ] = quietMoves.white;
+
+        const node = createMovePair({
+            fen: whiteToMoveFen,
+            playedSan: played,
+            topSan: top,
+            before: centipawns(50),
+            after: centipawns(-300)
+        });
+
+        analyseNode(node, { includeTheory: false });
+
+        assert.equal(node.state.opening, undefined);
+        assert.ok(node.state.accuracy! < 100);
     });
 });

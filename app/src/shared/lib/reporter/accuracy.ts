@@ -7,6 +7,7 @@ import {
     ExtractedPreviousNode
 } from "./types/ExtractedNode";
 import { getExpectedPointsLoss } from "./expectedPoints";
+import { getOpeningName } from "./utils/opening";
 import { reporterConfig } from "./config";
 
 export interface SideAccuracy {
@@ -69,6 +70,9 @@ export function getMoveAccuracy(
     // The previous evaluation is that of the top move itself, so a drop
     // after it is the engine revising its search, not a player's error
     if (previous.topMove.san == current.playedMove.san) return 100;
+
+    // Book moves lose nothing, whether or not they are labelled as theory
+    if (getOpeningName(current.state.fen)) return 100;
 
     return getAccuracyFromPointLoss(getExpectedPointsLoss(
         previous.evaluation,
