@@ -1,6 +1,7 @@
 enum AnalysisTab {
     REPORT,
-    ANALYSIS
+    ANALYSIS,
+    LEARNING
 }
 
 export default AnalysisTab;

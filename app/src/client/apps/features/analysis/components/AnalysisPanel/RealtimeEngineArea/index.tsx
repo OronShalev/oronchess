@@ -61,7 +61,8 @@ function RealtimeEngineArea() {
                 : undefined
         }}
         cachedEngineLines={currentEngineLines}
-        paused={gameEvaluating}
+        // Learning searches moves itself, and must not give them away
+        paused={gameEvaluating || activeTab == AnalysisTab.LEARNING}
         onEngineLines={setDisplayedEngineLines}
         onEvaluationComplete={lines => {
             currentStateTreeNode.state.engineLines = uniqWith(
@@ -73,7 +74,7 @@ function RealtimeEngineArea() {
         }}
         style={{
             display: (
-                activeTab == AnalysisTab.REPORT
+                activeTab != AnalysisTab.ANALYSIS
                 || !settings.analysis.engine.enabled
             ) ? "none" : undefined
         }}

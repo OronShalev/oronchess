@@ -19,6 +19,8 @@ interface BoardProps {
     flipped?: boolean;
     evaluation?: Evaluation;
     arrows?: Arrow[];
+    // Whether arrows can be drawn by right-click dragging
+    arrowsAllowed?: boolean;
     theme?: {
         lightSquareColour?: string;
         darkSquareColour?: string;

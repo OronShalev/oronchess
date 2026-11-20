@@ -157,7 +157,53 @@
     },
     "analysisTabBar": {
         "report": "Report",
-        "analysis": "Analysis"
+        "analysis": "Analysis",
+        "learning": "Learning"
+    },
+    "learning": {
+        "reviewRunning": "Your mistakes will appear here once the review is done.",
+        "notReviewed": "Review the game to find mistakes to learn from.",
+        "noMistakes": "{{player}} made no inaccuracies, mistakes or blunders. Well played!",
+        "sides": "Whose mistakes to learn from",
+        "colours": {
+            "white": "White",
+            "black": "Black"
+        },
+        "mistakeCount_one": "{{count}} mistake to learn from",
+        "mistakeCount_other": "{{count}} mistakes to learn from",
+        "progress": "Your mistakes",
+        "progressSquare": "Mistake {{number}}: {{move}}",
+        "solved": "Solved",
+        "previous": "Previous mistake",
+        "next": "Next mistake",
+        "evaluation": "Evaluation",
+        "tryAgain": "Try again",
+        "showBest": "Show best",
+        "showLine": "Show line",
+        "line": {
+            "title": "Best play after {{move}}",
+            "ok": "OK"
+        },
+        "nextMistake": "Next mistake",
+        "findBetter": {
+            "white": "Find a better move for White",
+            "black": "Find a better move for Black"
+        },
+        "findBetterHint": "Play a move on the board instead of {{move}}.",
+        "checking": "Checking {{move}}...",
+        "checkFailed": "{{move}} could not be checked.",
+        "results": {
+            "best": "That's the best move!",
+            "theory": "That's a known opening move!",
+            "good": "Excellent! There was an even better move, though.",
+            "okay": "Not bad, but there's a better move. Try again.",
+            "bad": "Not quite. Try another move.",
+            "revealed": "This was the best move."
+        },
+        "lastMistake": "That was your last mistake.",
+        "away": "The board has moved away from this mistake.",
+        "backToMistake": "Back to the mistake",
+        "solvedCount": "{{solved}} of {{total}} solved"
     },
     "moveTimesGraph": {
         "title": "Move times",

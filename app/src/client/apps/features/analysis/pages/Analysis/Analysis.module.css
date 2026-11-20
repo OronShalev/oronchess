@@ -26,6 +26,12 @@
     }
 }
 
+@media (max-width: 900px) {
+    .wrapper.withoutTraverser {
+        padding-bottom: 0;
+    }
+}
+
 .analysisSection {
     display: flex;
     justify-content: space-evenly;

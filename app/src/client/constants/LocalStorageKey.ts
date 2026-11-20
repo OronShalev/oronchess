@@ -3,7 +3,8 @@ enum LocalStorageKey {
     LAST_GAME_SELECTOR_INPUTS = "oronchess_last_game_selector_inputs",
     SETTINGS = "oronchess_settings",
     PREFERRED_LANGUAGE = "oronchess_preferred_language",
-    MOVE_TIMES_OPEN = "oronchess_move_times_open"
+    MOVE_TIMES_OPEN = "oronchess_move_times_open",
+    LEARNING_MISTAKES_OPEN = "oronchess_learning_mistakes_open"
 }
 
 export default LocalStorageKey;

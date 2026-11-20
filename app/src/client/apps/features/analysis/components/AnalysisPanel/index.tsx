@@ -16,6 +16,7 @@ import RealtimeEngineArea from "./RealtimeEngineArea";
 import GameSelection from "./GameSelection";
 import GameReport from "./GameReport";
 import GameAnalysis from "./GameAnalysis";
+import GameLearning from "./GameLearning";
 
 import AnalysisPanelProps from "./AnalysisPanelProps";
 import * as styles from "./AnalysisPanel.module.css";
@@ -59,7 +60,9 @@ function AnalysisPanel({
                 && <RealtimeEngineArea/>
             }
 
+            {/* Learning shows its own card, without the best move */}
             {gameAnalysisOpen
+                && activeTab != AnalysisTab.LEARNING
                 && currentNode.state.move
                 && !settings.classifications.hide
                 && (
@@ -70,17 +73,21 @@ function AnalysisPanel({
             }
 
             {gameAnalysisOpen
-                ? (activeTab == AnalysisTab.REPORT
-                    ? <GameReport/>
-                    : <GameAnalysis/>
-                )
+                ? {
+                    [AnalysisTab.REPORT]: <GameReport/>,
+                    [AnalysisTab.ANALYSIS]: <GameAnalysis/>,
+                    [AnalysisTab.LEARNING]: <GameLearning/>
+                }[activeTab]
                 : <GameSelection/>
             }
         </div>
 
-        <div className={styles.traverserContainer}>
-            <StateTreeTraverser className={styles.traverser} />
-        </div>
+        {/* Learning moves between mistakes instead of moves */}
+        {!(gameAnalysisOpen && activeTab == AnalysisTab.LEARNING)
+            && <div className={styles.traverserContainer}>
+                <StateTreeTraverser className={styles.traverser} />
+            </div>
+        }
     </div>;
 }
 

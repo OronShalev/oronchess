@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Chessboard } from "react-chessboard";
 import { Piece, Square } from "react-chessboard/dist/chessboard/types";
 import { Chess, Move, PieceSymbol } from "chess.js";
@@ -38,6 +38,7 @@ function Board({
     flipped,
     evaluation,
     arrows,
+    arrowsAllowed = true,
     enableClassifications = true,
     onAddMove
 }: BoardProps) {
@@ -76,8 +77,23 @@ function Board({
         />;
     }
 
+    // A piece selected before moves were disabled can no longer move
+    useEffect(() => {
+        if (piecesDraggable) return;
+
+        squares.setSelected(undefined);
+        squares.clearPlayable();
+    }, [piecesDraggable]);
+
     function onSquareClick(square: Square, piece?: Piece) {
         squares.setHighlighted([]);
+
+        // Pieces that cannot be dragged cannot be moved by clicks either
+        if (!piecesDraggable) {
+            squares.setSelected(undefined);
+            squares.clearPlayable();
+            return;
+        }
 
         if (!piece || square == squares.selected) {
             squares.setSelected(undefined);
@@ -129,7 +145,7 @@ function Board({
 
             squares.setPieceDropFlag(drop || false);
 
-            return onAddMove?.(move) || true;
+            return onAddMove?.(move) ?? true;
         } catch {
             return false;
         }
@@ -173,6 +189,7 @@ function Board({
                     onPromotionPieceSelect={onPromotionPieceSelect}
                     customSquare={squareRenderer}
                     customArrows={arrows}
+                    areArrowsAllowed={arrowsAllowed}
                     arePiecesDraggable={piecesDraggable}
                     customLightSquareStyle={theme?.lightSquareColour
                         ? { backgroundColor: theme.lightSquareColour }

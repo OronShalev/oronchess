@@ -1,0 +1,460 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notice {
+    padding: 15px;
+    text-align: center;
+
+    border-radius: 10px;
+    background-color: var(--ui-shade-4);
+    color: #c8ccd2;
+}
+
+/* Sides */
+
+.sides {
+    display: flex;
+    gap: 5px;
+    padding: 5px;
+
+    border-radius: 10px;
+    background-color: var(--ui-shade-4);
+}
+
+.side {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 8px 10px;
+
+    border: none;
+    border-radius: 7px;
+    background: none;
+    color: #8b9098;
+    font: inherit;
+
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.side:hover:not(:disabled) {
+    color: white;
+}
+
+.selectedSide {
+    background-color: var(--ui-shade-6);
+    color: white;
+}
+
+.sideName {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sideCount {
+    min-width: 12px;
+    padding: 1px 7px;
+
+    border-radius: 10px;
+    background-color: var(--ui-shade-2);
+    color: #c8ccd2;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.sideToMoveWhite,
+.sideToMoveBlack {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+
+    border: 1px solid #8b9098;
+    border-radius: 50%;
+}
+
+.sideToMoveWhite {
+    background-color: #f2f2f2;
+}
+
+.sideToMoveBlack {
+    background-color: #0c0c0c;
+}
+
+/* Mistake */
+
+.card {
+    border-radius: 10px;
+    background-color: var(--ui-shade-4);
+
+    overflow: hidden;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px;
+
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* A square for each mistake, ticked once solved */
+.progress {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 4px 0;
+}
+
+.progressSquare {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    box-sizing: border-box;
+
+    border: 2px solid #5d636b;
+    border-radius: 5px;
+    background: none;
+
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.progressSquare:hover:not(:disabled) {
+    border-color: #8b9098;
+}
+
+.progressSquare > img {
+    width: 16px;
+    height: 16px;
+}
+
+.solvedSquare,
+.solvedSquare:hover:not(:disabled) {
+    border-color: #81b64c;
+    background-color: #81b64c;
+}
+
+.currentSquare {
+    outline: 2px solid var(--ui-blue);
+    outline-offset: 2px;
+}
+
+.stepButton {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 32px;
+    padding: 0;
+
+    border: none;
+    border-radius: 7px;
+    background: none;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.stepButton > img {
+    width: 22px;
+    height: 22px;
+}
+
+.stepButton:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.stepButton:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.stepButtonNext > img {
+    transform: scaleX(-1);
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 12px 12px;
+}
+
+.verdict {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.verdict > img {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.verdictText {
+    color: white;
+    font-size: 1.3rem;
+
+    overflow-wrap: anywhere;
+}
+
+.verdict > .sideToMoveWhite,
+.verdict > .sideToMoveBlack {
+    width: 22px;
+    height: 22px;
+    margin: 0 4px;
+}
+
+.hint {
+    color: #b4b8bf;
+}
+
+.resultGood,
+.resultBad {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.resultGood {
+    color: #98bc49;
+}
+
+.resultBad {
+    color: #f0a24a;
+}
+
+.evaluationChange {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #b4b8bf;
+    font-size: 0.9rem;
+}
+
+.evaluationWhite,
+.evaluationBlack {
+    padding: 2px 6px;
+
+    border-radius: 6px;
+    font-variant-numeric: tabular-nums;
+}
+
+.evaluationWhite {
+    background-color: #fff;
+    color: #0c0c0c;
+}
+
+.evaluationBlack {
+    background-color: #0c0c0c;
+    color: #fff;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.actions:empty {
+    display: none;
+}
+
+.primaryButton,
+.secondaryButton {
+    flex: 1 1 0;
+    gap: 4px;
+    min-width: max-content;
+    padding: 9px 6px;
+
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.primaryButton > img,
+.secondaryButton > img {
+    height: 18px;
+}
+
+/* Narrow phones, like 360px wide ones, still fit three in a row */
+@media (max-width: 400px) {
+    .actions {
+        gap: 6px;
+    }
+
+    .primaryButton,
+    .secondaryButton {
+        gap: 3px;
+        padding: 9px 4px;
+
+        font-size: 0.9rem;
+    }
+
+    .primaryButton > img,
+    .secondaryButton > img {
+        height: 16px;
+    }
+}
+
+.primaryButton {
+    background-color: var(--ui-blue);
+}
+
+.secondaryButton {
+    background-color: var(--ui-shade-6);
+}
+
+.solvedBadge {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    padding: 2px;
+    box-sizing: border-box;
+
+    border-radius: 50%;
+    background-color: #81b64c;
+}
+
+/* Every mistake */
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+
+    border-radius: 10px;
+    background-color: var(--ui-shade-4);
+}
+
+/* The title row opens and closes the list */
+.listToggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: -4px;
+    padding: 4px;
+
+    border: none;
+    border-radius: 6px;
+    background: none;
+    color: #c8ccd2;
+    font: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.listToggle:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.listToggleArrow {
+    transition: transform 0.2s ease;
+}
+
+/* The engine's line after a mistake */
+
+.line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 2px;
+
+    font-size: 1.05rem;
+}
+
+.lineMove {
+    padding: 2px 5px;
+
+    border-radius: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.linePlayed {
+    color: white;
+}
+
+.lineCurrent {
+    background-color: var(--ui-blue);
+    color: white;
+}
+
+.lineUpcoming {
+    color: #6b7078;
+}
+
+.listMoves {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.listMove {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px 3px 4px;
+
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background-color: var(--ui-shade-5);
+    color: white;
+    font: inherit;
+    font-size: 0.95rem;
+
+    cursor: pointer;
+    transition: filter 0.2s ease;
+}
+
+.listMove:disabled,
+.progressSquare:disabled,
+.side:disabled {
+    cursor: default;
+}
+
+.listMove:disabled,
+.side:disabled:not(.selectedSide) {
+    opacity: 0.5;
+}
+
+.listMove:hover:not(:disabled) {
+    filter: brightness(1.15);
+}
+
+.selectedListMove {
+    border-color: var(--ui-blue);
+    background-color: var(--ui-shade-6);
+}
+
+.listMoveIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.side:focus-visible,
+.stepButton:focus-visible,
+.progressSquare:focus-visible,
+.listToggle:focus-visible,
+.listMove:focus-visible {
+    outline: 2px solid var(--ui-blue);
+    outline-offset: 1px;
+}

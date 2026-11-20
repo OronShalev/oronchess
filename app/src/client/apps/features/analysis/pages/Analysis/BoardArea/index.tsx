@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import { Move } from "chess.js";
+import { Arrow } from "react-chessboard/dist/chessboard/types";
+import { useShallow } from "zustand/react/shallow";
 
 import { addChildMove } from "@shared/types/game/position/StateTreeNode";
 import {
@@ -13,12 +15,17 @@ import useSettingsStore from "@client/stores/SettingsStore";
 import useAnalysisGameStore from "@analysis/stores/AnalysisGameStore";
 import useAnalysisTabStore from "@analysis/stores/AnalysisTabStore";
 import useAnalysisBoardStore from "@analysis/stores/AnalysisBoardStore";
+import useLearningStore from "@analysis/stores/LearningStore";
 import Board from "@analysis/components/Board";
 import playBoardSound from "@client/lib/boardSounds";
 
 import useEvaluation from "./useEvaluation";
 import useSuggestionArrows from "./useSuggestionArrows";
 import * as styles from "./BoardArea.module.css";
+
+// The board only clears its arrows when given a list, so learning passes
+// an empty one rather than none
+const noArrows: Arrow[] = [];
 
 function BoardArea() {
     const settings = useSettingsStore(state => state.settings.analysis);
@@ -30,7 +37,22 @@ function BoardArea() {
         setGameAnalysisOpen
     } = useAnalysisGameStore();
 
-    const setActiveTab = useAnalysisTabStore(state => state.setActiveTab);
+    const {
+        activeTab,
+        setActiveTab
+    } = useAnalysisTabStore();
+
+    const {
+        mistake: learningMistake,
+        line: learningLine,
+        lineShown: learningLineShown
+    } = useLearningStore(
+        useShallow(state => ({
+            mistake: state.mistake,
+            line: state.line,
+            lineShown: state.lineShown
+        }))
+    );
 
     const {
         currentStateTreeNode,
@@ -52,7 +74,25 @@ function BoardArea() {
     const evaluation = useEvaluation();
     const suggestionArrows = useSuggestionArrows();
 
+    const learning = gameAnalysisOpen && activeTab == AnalysisTab.LEARNING;
+
+    // The engine's line after a mistake is played out on the board without
+    // being added to the game
+    const lineActive = learning && !!learningLine;
+
+    const boardNode = (lineActive && learningLineShown > 0)
+        ? learningLine![learningLineShown - 1]
+        : currentStateTreeNode;
+
+    // While learning, moves can only be tried in place of a mistake
+    const movesAllowed = !autoplayEnabled && !lineActive && (
+        !learning
+        || (!!learningMistake && currentStateTreeNode == learningMistake.parent)
+    );
+
     function addMove(move: Move) {
+        if (!movesAllowed) return false;
+
         if (!gameAnalysisOpen) {
             setGameAnalysisOpen(true);
             setActiveTab(AnalysisTab.ANALYSIS);
@@ -76,9 +116,11 @@ function BoardArea() {
             maxWidth: `calc(100vh - ${evaluation ? 195 : 235}px)`
         }}
         profileClassName={styles.boardProfile}
-        whiteProfile={analysisGame.players.white}
-        blackProfile={analysisGame.players.black}
-        clocks={gameHasClocks
+        // Learning leaves out the players and clocks, so that what it
+        // shows is close to the board on phones
+        whiteProfile={learning ? undefined : analysisGame.players.white}
+        blackProfile={learning ? undefined : analysisGame.players.black}
+        clocks={gameHasClocks && !learning
             ? getNodeClocks(currentStateTreeNode, timeControl)
             : undefined
         }
@@ -86,11 +128,12 @@ function BoardArea() {
             lightSquareColour: theme.board.lightSquareColour,
             darkSquareColour: theme.board.darkSquareColour
         }}
-        node={currentStateTreeNode}
+        node={boardNode}
         flipped={boardFlipped}
         evaluation={evaluation}
-        arrows={suggestionArrows}
-        piecesDraggable={!autoplayEnabled}
+        arrows={learning ? noArrows : suggestionArrows}
+        arrowsAllowed={!learning}
+        piecesDraggable={movesAllowed}
         enableClassifications={!settings.classifications.hide}
         onAddMove={addMove}
     />;

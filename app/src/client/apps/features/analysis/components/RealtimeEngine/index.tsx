@@ -134,6 +134,10 @@ function RealtimeEngine({
             : displayedLocalLines
     );
 
+    // Lines searched in another position are not shown for this one, as
+    // they would be while paused, when no new search replaces them
+    useEffect(() => setRealtimeEngineLines([]), [position]);
+
     useEffect(() => (
         onEngineLines?.(displayedLines)
     ), [displayedLines]);
