@@ -14,7 +14,7 @@ import {
     getAttemptResult,
     getBestMove,
     getLearningStep,
-    getMistakeLine,
+    getLineAfter,
     getMistakes,
     isGameReviewed,
     isSolvingResult
@@ -241,10 +241,8 @@ function GameLearning() {
         selectMistake(mistakesBySide[chosen].at(0));
     }
 
-    function showLine() {
-        if (!mistake) return;
-
-        const line = getMistakeLine(mistake);
+    function showLine(from: StateTreeNode) {
+        const line = getLineAfter(from);
         if (line.length > 0) learning.showLine(line);
     }
 
@@ -304,7 +302,13 @@ function GameLearning() {
     const bestShown = step == LearningStep.ATTEMPT
         && currentNode.state.move?.san == bestMove?.san;
 
-    const mistakeHasLine = !!mistake && getMistakeLine(mistake, 1).length > 0;
+    // The engine's line can be played out after the mistake, or after a
+    // move tried in its place
+    const lineStart = step == LearningStep.MISTAKE
+        ? mistake
+        : (step == LearningStep.ATTEMPT ? currentNode : undefined);
+
+    const lineAvailable = !!lineStart && getLineAfter(lineStart, 1).length > 0;
 
     return <div className={styles.wrapper}>
         {(mistake && step)
@@ -332,7 +336,10 @@ function GameLearning() {
                     }
                     onTryAgain={tryAgain}
                     onShowBest={bestMove && !bestShown ? showBest : undefined}
-                    onShowLine={mistakeHasLine ? showLine : undefined}
+                    onShowLine={lineStart && lineAvailable
+                        ? () => showLine(lineStart)
+                        : undefined
+                    }
                     onCloseLine={closeLine}
                     onReturn={() => goTo(mistake)}
                 />

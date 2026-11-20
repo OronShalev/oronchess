@@ -278,6 +278,11 @@
     display: none;
 }
 
+/* Four buttons sit two by two, as one row would not fit them */
+.actions:has(> :nth-child(4)) > * {
+    flex-basis: calc(50% - 8px);
+}
+
 .primaryButton,
 .secondaryButton {
     flex: 1 1 0;

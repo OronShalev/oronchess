@@ -18,7 +18,7 @@ import {
     getAttemptResult,
     getBestMove,
     getLearningStep,
-    getMistakeLine,
+    getLineAfter,
     getMistakes,
     getMoveLabel,
     isGameReviewed,
@@ -225,7 +225,7 @@ describe("lines after mistakes", () => {
 
         withLine(mistake, lineUcis);
 
-        const line = getMistakeLine(mistake);
+        const line = getLineAfter(mistake);
 
         assert.equal(line.length, 10);
         assert.deepEqual(
@@ -245,7 +245,7 @@ describe("lines after mistakes", () => {
         const children = [ ...mistake.children ];
 
         withLine(mistake, lineUcis);
-        getMistakeLine(mistake);
+        getLineAfter(mistake);
 
         assert.deepEqual(mistake.children, children);
         assert.equal(getNodeChain(game.stateTree).length, nodes.length);
@@ -255,10 +255,10 @@ describe("lines after mistakes", () => {
         const { nodes } = classifiedGame([]);
 
         withLine(nodes[3], [ "b8c6", "e1e8", "g8f6" ]);
-        assert.equal(getMistakeLine(nodes[3]).length, 1);
+        assert.equal(getLineAfter(nodes[3]).length, 1);
 
         nodes[3].state.engineLines = [];
-        assert.equal(getMistakeLine(nodes[3]).length, 0);
+        assert.equal(getLineAfter(nodes[3]).length, 0);
     });
 });
 

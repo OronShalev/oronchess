@@ -132,22 +132,23 @@ export function getBestMove(mistake: StateTreeNode) {
     }
 }
 
-// Moves for each side of the engine's line shown after a mistake
-export const mistakeLineMoveCount = 5;
+// Moves for each side of the engine's line shown after a move
+export const lineMoveCount = 5;
 
 /**
- * @description Returns the engine's best line after a mistake, up to five
- * moves for each side, as positions that are not added to the game.
+ * @description Returns the engine's best line after a move, like a mistake
+ * or a move tried in its place, up to five moves for each side, as
+ * positions that are not added to the game.
  */
-export function getMistakeLine(
-    mistake: StateTreeNode,
-    plyCount = mistakeLineMoveCount * 2
+export function getLineAfter(
+    node: StateTreeNode,
+    plyCount = lineMoveCount * 2
 ) {
-    const lineMoves = getTopEngineLine(mistake.state.engineLines)
+    const lineMoves = getTopEngineLine(node.state.engineLines)
         ?.moves.slice(0, plyCount) || [];
 
     const line: StateTreeNode[] = [];
-    let previous = mistake;
+    let previous = node;
 
     for (const lineMove of lineMoves) {
         try {

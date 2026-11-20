@@ -213,15 +213,19 @@ function MistakeCard({
     </Button>;
 
     function renderLine(lineNodes: StateTreeNode[]) {
+        // The mistake, or the move tried in its place, that the line follows
+        const start = lineNodes[0]?.parent || mistake;
+        const startClassification = start.state.classification;
+
         return <>
             <div className={styles.verdict}>
-                {mistake.state.classification && <img
-                    src={classificationImages[mistake.state.classification]}
+                {startClassification && <img
+                    src={classificationImages[startClassification]}
                 />}
 
                 <span className={styles.verdictText}>
                     {t("learning.line.title", {
-                        move: getMoveText(mistake, simpleNotation, initialPosition)
+                        move: getMoveText(start, simpleNotation, initialPosition)
                     })}
                 </span>
             </div>
@@ -360,6 +364,8 @@ function MistakeCard({
                             >
                                 {t("learning.tryAgain")}
                             </Button>
+
+                            {showLineButton}
                         </>
                     }
                 </div>}
