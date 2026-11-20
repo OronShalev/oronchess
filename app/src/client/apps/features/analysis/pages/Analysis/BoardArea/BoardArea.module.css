@@ -21,6 +21,15 @@
 
         border-radius: 0 !important;
     }
+
+    /* Learning hides the player row above the board, which on phones is
+    all that keeps a classification icon on the top rank from being cut
+    off at the top of the page: it stands out above its square by 15% of
+    a square (see Square.module.css). The board is at most as wide as the
+    screen, so this is always enough */
+    .learningBoard {
+        padding-top: calc(100vw / 8 * 0.15 + 2px);
+    }
 }
 
 /* On short, wide screens the board is as tall as the screen, and the

@@ -114,7 +114,7 @@ function BoardArea() {
     }
 
     return <Board
-        className={styles.board}
+        className={`${styles.board} ${learning ? styles.learningBoard : ""}`}
         // The stylesheet sizes the board around the evaluation bar
         style={{
             "--evaluation-width": evaluation ? "40px" : "0px"
