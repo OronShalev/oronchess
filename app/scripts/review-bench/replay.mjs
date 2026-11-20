@@ -12,7 +12,6 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import path from "node:path";
-import { Chess } from "chess.js";
 
 const { values: args } = parseArgs({
     options: {
@@ -52,58 +51,12 @@ const { getGameAnalysis } = await import(
 const { mightUseSecondLine } = await import(
     "../../src/shared/lib/reporter/utils/secondLine.ts"
 );
+const { buildStateTree } = await import("./recordedTree.mjs");
 const { getNodeChain } = await import(
     "../../src/shared/types/game/position/StateTreeNode.ts"
 );
 
 const results = JSON.parse(readFileSync(args.results, "utf8"));
-
-// Rebuilds a mainline state tree holding the recorded engine lines
-function buildStateTree(game, lineCount = 2) {
-    let parent;
-    let root;
-
-    for (const recordedNode of game.nodes) {
-        let move;
-
-        if (parent && recordedNode.move) {
-            const playedMove = new Chess(parent.state.fen).move(recordedNode.move);
-            move = { san: playedMove.san, uci: playedMove.lan };
-        }
-
-        const node = {
-            id: String(Math.random()),
-            mainline: true,
-            parent: parent,
-            children: [],
-            state: {
-                fen: recordedNode.fen,
-                move: move,
-                moveColour: move
-                    ? (parent.state.fen.split(" ")[1] == "w" ? "white" : "black")
-                    : undefined,
-                engineLines: structuredClone(recordedNode.lines)
-                    .slice(0, lineCount)
-            }
-        };
-
-        // Recorded lines only hold the first move, which is all that
-        // the classifier reads; give it the SAN as well
-        for (const line of node.state.engineLines) {
-            line.moves = line.moves.map(lineMove => {
-                const parsed = new Chess(node.state.fen).move(lineMove.uci);
-                return { san: parsed.san, uci: parsed.lan };
-            });
-        }
-
-        if (parent) parent.children.push(node);
-
-        root ||= node;
-        parent = node;
-    }
-
-    return root;
-}
 
 let movesChecked = 0;
 let classificationDifferences = 0;

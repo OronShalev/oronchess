@@ -15,12 +15,15 @@ export const reporterConfig = {
     // Expected points of a centipawn evaluation: 1 / (1 + e^(-k * cp))
     centipawnGradient: 0.0035,
 
-    // Accuracy of a move: scale * e^(-decay * point loss) + offset,
-    // limited to between 0 and 100
+    // Accuracy of a move: 100 / (1 + (point loss / halfLoss) ^ steepness),
+    // so 100 for no loss and 50 for a loss of halfLoss, falling faster
+    // around it the steeper it is. Fitted to Chess.com's game accuracies
+    // with scripts/review-bench/accuracy.mjs, at depths 16 and 20 alike:
+    // a loss of 0.01 still scores 99.6 and one of 0.02 scores 94, which
+    // also keeps engine noise out, while one of 0.06 scores 16
     accuracy: {
-        scale: 103.16,
-        decay: 4,
-        offset: -3.17
+        halfLoss: 0.04,
+        steepness: 4
     },
 
     pointLossBands: [

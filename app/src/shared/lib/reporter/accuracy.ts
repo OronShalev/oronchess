@@ -54,9 +54,12 @@ export function getGameAccuracy(rootNode: StateTreeNode) {
 export function getAccuracyFromPointLoss(pointLoss: number) {
     if (pointLoss <= 0) return 100;
 
-    const { scale, decay, offset } = reporterConfig.accuracy;
+    const { halfLoss, steepness } = reporterConfig.accuracy;
 
-    return clamp(scale * Math.exp(-decay * pointLoss) + offset, 0, 100);
+    return clamp(
+        100 / (1 + Math.pow(pointLoss / halfLoss, steepness)),
+        0, 100
+    );
 }
 
 export function getMoveAccuracy(

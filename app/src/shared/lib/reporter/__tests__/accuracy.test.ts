@@ -2,6 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
 import { getAccuracyFromPointLoss } from "../accuracy";
+import { reporterConfig } from "../config";
 import { analyseNode } from "../report";
 import {
     centipawns,
@@ -29,8 +30,26 @@ describe("per-move accuracy", () => {
         }
     });
 
-    it("is 0, not negative, for losing a forced mate", () => {
-        assert.equal(getAccuracyFromPointLoss(1), 0);
+    it("is next to nothing, not negative, for losing a forced mate", () => {
+        const accuracy = getAccuracyFromPointLoss(1);
+
+        assert.ok(accuracy >= 0 && accuracy < 0.01, String(accuracy));
+    });
+
+    it("is 50 for a loss of the configured half loss", () => {
+        const { halfLoss } = reporterConfig.accuracy;
+
+        assert.ok(Math.abs(getAccuracyFromPointLoss(halfLoss) - 50) < 1e-9);
+    });
+
+    // The shape fitted to Chess.com's game accuracies: small losses, which
+    // are also within engine noise, cost little, and mistakes cost nearly
+    // all of a move's accuracy
+    it("barely counts small losses and leaves little for mistakes", () => {
+        assert.ok(getAccuracyFromPointLoss(0.01) > 99);
+        assert.ok(getAccuracyFromPointLoss(0.02) > 90);
+        assert.ok(getAccuracyFromPointLoss(0.06) < 20);
+        assert.ok(getAccuracyFromPointLoss(0.12) < 2);
     });
 
     it("is finite for extreme and mate evaluations", () => {
