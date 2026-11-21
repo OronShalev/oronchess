@@ -1,18 +1,44 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
-import { getAccuracyFromPointLoss } from "../accuracy";
+import Evaluation from "@shared/types/game/position/Evaluation";
+import { getAccuracyFromPointLoss, getPositionValue } from "../accuracy";
+import { getExpectedPoints } from "../expectedPoints";
 import { reporterConfig } from "../config";
-
-const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 import { analyseNode } from "../report";
 import {
+    blackToMoveFen,
     centipawns,
     createMovePair,
     mate,
     quietMoves,
     whiteToMoveFen
 } from "./helpers";
+
+const startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+type Colour = "white" | "black";
+
+/**
+ * @description Analyses a quiet move that is not the top move, for one
+ * colour, with evaluations from that colour's point of view.
+ */
+function analyseQuietMove(colour: Colour, before: Evaluation, after: Evaluation) {
+    const [ played, top ] = quietMoves[colour];
+    const sign = colour == "white" ? 1 : -1;
+
+    const node = createMovePair({
+        fen: colour == "white" ? whiteToMoveFen : blackToMoveFen,
+        playedSan: played,
+        topSan: top,
+        before: { type: before.type, value: before.value * sign },
+        after: { type: after.type, value: after.value * sign }
+    });
+
+    analyseNode(node, { includeTheory: false });
+
+    return node.state;
+}
 
 describe("per-move accuracy", () => {
     it("is 100 for no point loss", () => {
@@ -49,9 +75,9 @@ describe("per-move accuracy", () => {
     // all of a move's accuracy
     it("barely counts small losses and leaves little for mistakes", () => {
         assert.ok(getAccuracyFromPointLoss(0.01) > 99);
-        assert.ok(getAccuracyFromPointLoss(0.02) > 90);
-        assert.ok(getAccuracyFromPointLoss(0.06) < 20);
-        assert.ok(getAccuracyFromPointLoss(0.12) < 2);
+        assert.ok(getAccuracyFromPointLoss(0.03) > 90);
+        assert.ok(getAccuracyFromPointLoss(0.08) < 25);
+        assert.ok(getAccuracyFromPointLoss(0.15) < 5);
     });
 
     it("is finite for extreme and mate evaluations", () => {
@@ -133,5 +159,78 @@ describe("per-move accuracy", () => {
 
         assert.equal(node.state.opening, undefined);
         assert.ok(node.state.accuracy! < 100);
+    });
+});
+
+describe("accuracy in decided positions", () => {
+    it("costs more for the same drop nearer equality", () => {
+        const lossOf = (from: number, to: number) => (
+            getPositionValue(getExpectedPoints(centipawns(from)))
+            - getPositionValue(getExpectedPoints(centipawns(to)))
+        );
+
+        // Drops of each size, sliding from deep in a won position, through
+        // equality and into a lost one, cost most when centred on equality
+        for (const drop of [ 20, 100, 200, 500 ]) {
+            for (let from = 2000; from > drop / 2; from -= 10) {
+                assert.ok(
+                    lossOf(from, from - drop) < lossOf(from - 10, from - 10 - drop),
+                    `${from} -> ${from - drop}`
+                );
+
+                // The same drop on the losing side costs the same
+                assert.ok(Math.abs(
+                    lossOf(from, from - drop) - lossOf(drop - from, -from)
+                ) < 1e-12);
+            }
+        }
+    });
+
+    for (const colour of [ "white", "black" ] as Colour[]) {
+        it(`ranks two-pawn drops by how decided the game was for ${colour}`, () => {
+            const accuracies = [
+                [ 1000, 800 ], [ 600, 400 ], [ 300, 100 ], [ 100, -100 ]
+            ].map(([ from, to ]) => analyseQuietMove(
+                colour, centipawns(from), centipawns(to)
+            ).accuracy!);
+
+            for (let index = 1; index < accuracies.length; index++) {
+                assert.ok(
+                    accuracies[index] < accuracies[index - 1],
+                    accuracies.join(", ")
+                );
+            }
+
+            // Barely a loss once the game is won
+            assert.ok(accuracies[0] > 99, String(accuracies[0]));
+        });
+    }
+
+    it("counts moves in decided positions less, but never not at all", () => {
+        const { weight } = reporterConfig.accuracy.decided;
+
+        const equal = analyseQuietMove("white", centipawns(0), centipawns(0));
+        const won = analyseQuietMove("white", centipawns(1000), centipawns(800));
+        const lost = analyseQuietMove("black", centipawns(-800), centipawns(-1000));
+        const mating = analyseQuietMove("white", mate(5), mate(6));
+
+        assert.equal(equal.accuracyWeight, 1);
+        assert.ok(won.accuracyWeight! < 0.5 && won.accuracyWeight! > weight);
+        assert.ok(Math.abs(lost.accuracyWeight! - won.accuracyWeight!) < 1e-9);
+        assert.equal(mating.accuracyWeight, weight);
+    });
+
+    it("charges throwing a won game away in full", () => {
+        const thrown = analyseQuietMove("black", centipawns(800), centipawns(-300));
+
+        assert.ok(thrown.accuracy! < 1, String(thrown.accuracy));
+        assert.ok(thrown.accuracyWeight! > 0.95, String(thrown.accuracyWeight));
+    });
+
+    it("counts a move out of a lost game in full", () => {
+        const saved = analyseQuietMove("white", centipawns(-900), centipawns(0));
+
+        assert.equal(saved.accuracy, 100);
+        assert.equal(saved.accuracyWeight, 1);
     });
 });

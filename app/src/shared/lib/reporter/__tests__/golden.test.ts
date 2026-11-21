@@ -15,6 +15,7 @@ interface GoldenGame {
         move?: string;
         classification?: string;
         accuracy?: number;
+        accuracyWeight?: number;
         lines: EngineLine[];
     }[];
 }
@@ -48,6 +49,7 @@ describe("golden reviews", () => {
 
                 assert.equal(node.state.classification, expected.classification, where);
                 assert.equal(node.state.accuracy, expected.accuracy, where);
+                assert.equal(node.state.accuracyWeight, expected.accuracyWeight, where);
             });
         });
     }

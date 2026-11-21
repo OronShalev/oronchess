@@ -12,6 +12,9 @@ export const boardStateSchema = z.object({
     engineLines: z.array(engineLineSchema),
     classification: z.enum(Classification).optional(),
     accuracy: z.number().optional(),
+    // How much the move's accuracy counts toward the game's, less once
+    // the game is decided
+    accuracyWeight: z.number().optional(),
     opening: z.string().optional(),
     // Seconds left on the mover's clock after the move
     clock: z.number().optional(),

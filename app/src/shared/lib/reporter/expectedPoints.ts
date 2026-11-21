@@ -29,6 +29,26 @@ export function getExpectedPoints(
     }
 }
 
+/**
+ * @description Returns the mover's expected points before and after their
+ * move, from the evaluations of the positions around it.
+ */
+export function getMoverExpectedPoints(
+    previousEvaluation: Evaluation,
+    currentEvaluation: Evaluation,
+    moveColour: PieceColour
+) {
+    const before = getExpectedPoints(previousEvaluation, {
+        moveColour: flipPieceColour(moveColour)
+    });
+
+    const after = getExpectedPoints(currentEvaluation, { moveColour });
+
+    return moveColour == PieceColour.WHITE
+        ? { before, after }
+        : { before: 1 - before, after: 1 - after };
+}
+
 export function getExpectedPointsLoss(
     previousEvaluation: Evaluation,
     currentEvaluation: Evaluation,

@@ -1,6 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
+import PieceColour from "@shared/constants/PieceColour";
 import parsePgn from "@client/lib/games/pgn";
 import parseStateTree from "@shared/lib/stateTree/parse";
 import { getNodeChain } from "@shared/types/game/position/StateTreeNode";
@@ -83,6 +84,52 @@ describe("game analysis", () => {
         assert.equal(accuracies.black.analysedMoves, 7);
         assert.equal(accuracies.black.totalMoves, 8);
         assert.equal(accuracies.black.accuracy, 100);
+    });
+
+    it("counts moves by how decided the game was when they were played", () => {
+        const { stateTree, nodes } = parseEvaluatedGame(specialMovesPgn);
+
+        // White's second move, e5, drops a pawn of an equal position
+        nodes[2].state.engineLines = [
+            createLine(centipawns(0), nodes[2].state.fen, "Nc3")
+        ];
+        nodes[3].state.engineLines[0].evaluation = centipawns(-100);
+
+        // From White's fifth move on, White is winning, and plays on with
+        // the top moves
+        for (const node of nodes.slice(9)) {
+            node.state.engineLines[0].evaluation = centipawns(900);
+        }
+
+        getGameAnalysis(stateTree);
+
+        const whiteNodes = nodes.filter(
+            node => node.state.moveColour == PieceColour.WHITE
+        );
+
+        const weightedMean = whiteNodes.reduce((sum, node) => (
+            sum + node.state.accuracy! * node.state.accuracyWeight!
+        ), 0) / whiteNodes.reduce((sum, node) => (
+            sum + node.state.accuracyWeight!
+        ), 0);
+
+        const plainMean = whiteNodes.reduce((sum, node) => (
+            sum + node.state.accuracy!
+        ), 0) / whiteNodes.length;
+
+        // The moves played once White was winning count less, so the
+        // dropped pawn counts for more
+        for (const index of [ 11, 13, 15 ]) {
+            assert.ok(nodes[index].state.accuracyWeight! < 0.5);
+        }
+
+        const accuracies = getGameAccuracy(stateTree);
+
+        assert.ok(Math.abs(accuracies.white.accuracy - weightedMean) < 1e-9);
+        assert.ok(accuracies.white.accuracy < plainMean - 1);
+
+        assert.equal(accuracies.white.analysedMoves, 8);
+        assert.equal(accuracies.white.totalMoves, 8);
     });
 
     it("reports no accuracy for a side without moves", () => {

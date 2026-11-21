@@ -15,15 +15,29 @@ export const reporterConfig = {
     // Expected points of a centipawn evaluation: 1 / (1 + e^(-k * cp))
     centipawnGradient: 0.0035,
 
-    // Accuracy of a move: 100 / (1 + (point loss / halfLoss) ^ steepness),
-    // so 100 for no loss and 50 for a loss of halfLoss, falling faster
-    // around it the steeper it is. Fitted to Chess.com's game accuracies
-    // with scripts/review-bench/accuracy.mjs, at depths 16 and 20 alike:
-    // a loss of 0.01 still scores 99.6 and one of 0.02 scores 94, which
-    // also keeps engine noise out, while one of 0.06 scores 16
+    // Fitted to Chess.com's game accuracies with
+    // scripts/review-bench/accuracy.mjs, at depths 16 and 20 alike
     accuracy: {
-        halfLoss: 0.04,
-        steepness: 4
+        // Accuracy of a move: 100 / (1 + (loss / halfLoss) ^ steepness),
+        // so 100 for no loss and 50 for a loss of halfLoss, falling faster
+        // around it the steeper it is. The loss is measured on a scale
+        // that flattens toward won and lost positions (see accuracy.ts):
+        // a loss of 0.02 still scores 98.5, which also keeps engine noise
+        // out, one of 0.05 scores 63 and one of 0.12 scores 5
+        halfLoss: 0.057,
+        steepness: 4,
+
+        // Moves count less toward a game's accuracy once the game is
+        // decided: a move whose positions before and after are both
+        // beyond decidedEvaluation (in centipawns, for either side)
+        // counts about half, falling toward decidedWeight, which mates
+        // count. A move that turns a decided game into an open one counts
+        // in full, as the positions around it are judged by the more open
+        decided: {
+            evaluation: 600,
+            weight: 0.25,
+            sharpness: 6
+        }
     },
 
     pointLossBands: [
