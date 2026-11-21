@@ -15,29 +15,28 @@ export const reporterConfig = {
     // Expected points of a centipawn evaluation: 1 / (1 + e^(-k * cp))
     centipawnGradient: 0.0035,
 
-    // Fitted to Chess.com's game accuracies with
-    // scripts/review-bench/accuracy.mjs, at depths 16 and 20 alike
+    // Fitted to Chess.com's game accuracies for 100 games of club players
+    // around 1750 with scripts/review-bench/accuracy.mjs, by 10-fold
+    // cross-validation, at depths 16 and 20 alike
     accuracy: {
-        // Accuracy of a move: 100 / (1 + (loss / halfLoss) ^ steepness),
-        // so 100 for no loss and 50 for a loss of halfLoss, falling faster
-        // around it the steeper it is. The loss is measured on a scale
-        // that flattens toward won and lost positions (see accuracy.ts):
-        // a loss of 0.02 still scores 98.5, which also keeps engine noise
-        // out, one of 0.05 scores 63 and one of 0.12 scores 5
-        halfLoss: 0.057,
-        steepness: 4,
+        // Expected points of the accuracies have a gradient of their own,
+        // flatter than that of classifications, as Chess.com's depend on
+        // the players' rating. The same drop in evaluation costs less the
+        // further it is from equality: two pawns from +10 to +8 cost half
+        // of a move's accuracy, from +1 to -1 three quarters
+        centipawnGradient: 0.00215,
 
-        // Moves count less toward a game's accuracy once the game is
-        // decided: a move whose positions before and after are both
-        // beyond decidedEvaluation (in centipawns, for either side)
-        // counts about half, falling toward decidedWeight, which mates
-        // count. A move that turns a decided game into an open one counts
-        // in full, as the positions around it are judged by the more open
-        decided: {
-            evaluation: 600,
-            weight: 0.25,
-            sharpness: 6
-        }
+        // Accuracy of a move: 100 / (1 + (loss / halfLoss) ^ steepness),
+        // so 100 for no loss and 50 for a loss of halfLoss: a loss of 0.01
+        // scores 91, one of 0.05 scores 48 and one of 0.2 scores 11
+        halfLoss: 0.048,
+        steepness: 1.5,
+
+        // A side's accuracy is the power mean of its moves' accuracies
+        // with this exponent, between the geometric mean (0) and the
+        // ordinary mean (1). Every move counts equally, but bad moves
+        // weigh more than in an ordinary mean
+        meanExponent: 0.25
     },
 
     pointLossBands: [

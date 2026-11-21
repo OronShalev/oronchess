@@ -31,18 +31,24 @@ export function getExpectedPoints(
 
 /**
  * @description Returns the mover's expected points before and after their
- * move, from the evaluations of the positions around it.
+ * move, from the evaluations of the positions around it, optionally with
+ * a gradient of its own.
  */
 export function getMoverExpectedPoints(
     previousEvaluation: Evaluation,
     currentEvaluation: Evaluation,
-    moveColour: PieceColour
+    moveColour: PieceColour,
+    centipawnGradient = reporterConfig.centipawnGradient
 ) {
     const before = getExpectedPoints(previousEvaluation, {
-        moveColour: flipPieceColour(moveColour)
+        moveColour: flipPieceColour(moveColour),
+        centipawnGradient
     });
 
-    const after = getExpectedPoints(currentEvaluation, { moveColour });
+    const after = getExpectedPoints(currentEvaluation, {
+        moveColour,
+        centipawnGradient
+    });
 
     return moveColour == PieceColour.WHITE
         ? { before, after }

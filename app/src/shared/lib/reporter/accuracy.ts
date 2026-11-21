@@ -1,4 +1,4 @@
-import { clamp, sumBy } from "lodash-es";
+import { clamp, meanBy } from "lodash-es";
 
 import { getNodeChain, StateTreeNode } from "@shared/types/game/position/StateTreeNode";
 import PieceColour, { adaptPieceColour } from "@shared/constants/PieceColour";
@@ -11,11 +11,24 @@ import { getOpeningName } from "./utils/opening";
 import { reporterConfig } from "./config";
 
 export interface SideAccuracy {
-    // Mean accuracy of the analysed moves, each counted by its weight,
-    // NaN if there are none
+    // Power mean of the analysed moves' accuracies, NaN if there are none
     accuracy: number;
     analysedMoves: number;
     totalMoves: number;
+}
+
+/**
+ * @description Returns the power mean of accuracies with the configured
+ * exponent, taken over fractions of 100 so that all 100s give exactly
+ * 100. NaN for no accuracies.
+ */
+export function getMeanAccuracy(accuracies: number[]) {
+    const { meanExponent } = reporterConfig.accuracy;
+
+    return 100 * Math.pow(
+        meanBy(accuracies, accuracy => Math.pow(accuracy / 100, meanExponent)),
+        1 / meanExponent
+    );
 }
 
 function getSideAccuracy(
@@ -26,19 +39,13 @@ function getSideAccuracy(
         node => node.state.moveColour == colour
     );
 
-    const accuracyHolders = sideNodes.filter(
-        node => node.state.accuracy != undefined
-    );
-
-    const getWeight = (node: StateTreeNode) => (
-        node.state.accuracyWeight ?? 1
-    );
+    const accuracies = sideNodes
+        .map(node => node.state.accuracy)
+        .filter(accuracy => accuracy != undefined);
 
     return {
-        accuracy: sumBy(accuracyHolders,
-            node => node.state.accuracy! * getWeight(node)
-        ) / sumBy(accuracyHolders, getWeight),
-        analysedMoves: accuracyHolders.length,
+        accuracy: getMeanAccuracy(accuracies),
+        analysedMoves: accuracies.length,
         totalMoves: sideNodes.length
     };
 }
@@ -71,66 +78,33 @@ export function getAccuracyFromPointLoss(pointLoss: number) {
 }
 
 /**
- * @description Places expected points p on a scale that flattens toward
- * won and lost positions, 3p^2 - 2p^3. Its slope, 6p(1 - p), is 1.5 at
- * equality and next to nothing once a game is decided, so the same drop
- * in evaluation costs less the more decided the game already was, while
- * a drop through equality pays for all of the scale it crosses.
+ * @description Returns the expected points that a move lost for its
+ * mover, with the gradient of accuracies.
  */
-export function getPositionValue(expectedPoints: number) {
-    return expectedPoints * expectedPoints * (3 - 2 * expectedPoints);
-}
-
-/**
- * @description Returns how much a move with the given expected points
- * around it counts toward its side's accuracy: in full while the game is
- * open, and less once both positions are decided (see the config).
- */
-export function getAccuracyWeight(before: number, after: number) {
-    const { evaluation, weight, sharpness } = reporterConfig.accuracy.decided;
-
-    // The position nearer equality, so that a move out of an open game,
-    // or into one, counts in full
-    const open = Math.abs(before - 0.5) < Math.abs(after - 0.5)
-        ? before
-        : after;
-
-    // Its evaluation in centipawns, infinite for a mate
-    const centipawns = Math.abs(Math.log(open / (1 - open)))
-        / reporterConfig.centipawnGradient;
-
-    return weight + (1 - weight) / (
-        1 + Math.pow(centipawns / evaluation, sharpness)
-    );
-}
-
-export function getMoveAccuracy(
+export function getAccuracyPointLoss(
     previous: ExtractedPreviousNode,
     current: ExtractedCurrentNode
 ) {
     const { before, after } = getMoverExpectedPoints(
         previous.evaluation,
         current.evaluation,
-        adaptPieceColour(current.playedMove.color)
+        adaptPieceColour(current.playedMove.color),
+        reporterConfig.accuracy.centipawnGradient
     );
 
-    const weight = getAccuracyWeight(before, after);
+    return Math.max(0, before - after);
+}
 
+export function getMoveAccuracy(
+    previous: ExtractedPreviousNode,
+    current: ExtractedCurrentNode
+) {
     // The previous evaluation is that of the top move itself, so a drop
-    // after it is the engine revising its search, not a player's error.
-    // Book moves lose nothing either, whether or not they are labelled
-    // as theory
-    if (
-        previous.topMove.san == current.playedMove.san
-        || getOpeningName(current.state.fen)
-    ) {
-        return { accuracy: 100, weight };
-    }
+    // after it is the engine revising its search, not a player's error
+    if (previous.topMove.san == current.playedMove.san) return 100;
 
-    return {
-        accuracy: getAccuracyFromPointLoss(
-            getPositionValue(before) - getPositionValue(after)
-        ),
-        weight
-    };
+    // Book moves lose nothing, whether or not they are labelled as theory
+    if (getOpeningName(current.state.fen)) return 100;
+
+    return getAccuracyFromPointLoss(getAccuracyPointLoss(previous, current));
 }

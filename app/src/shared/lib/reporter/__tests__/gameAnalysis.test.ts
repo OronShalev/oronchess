@@ -6,7 +6,7 @@ import parsePgn from "@client/lib/games/pgn";
 import parseStateTree from "@shared/lib/stateTree/parse";
 import { getNodeChain } from "@shared/types/game/position/StateTreeNode";
 import { getGameAnalysis } from "../report";
-import { getGameAccuracy } from "../accuracy";
+import { getGameAccuracy, getMeanAccuracy } from "../accuracy";
 import { centipawns, createLine } from "./helpers";
 
 // Castling on both sides, en passant and a promotion with capture
@@ -86,7 +86,7 @@ describe("game analysis", () => {
         assert.equal(accuracies.black.accuracy, 100);
     });
 
-    it("counts moves by how decided the game was when they were played", () => {
+    it("takes the power mean of each side's move accuracies", () => {
         const { stateTree, nodes } = parseEvaluatedGame(specialMovesPgn);
 
         // White's second move, e5, drops a pawn of an equal position
@@ -95,37 +95,22 @@ describe("game analysis", () => {
         ];
         nodes[3].state.engineLines[0].evaluation = centipawns(-100);
 
-        // From White's fifth move on, White is winning, and plays on with
-        // the top moves
-        for (const node of nodes.slice(9)) {
-            node.state.engineLines[0].evaluation = centipawns(900);
-        }
-
         getGameAnalysis(stateTree);
 
-        const whiteNodes = nodes.filter(
-            node => node.state.moveColour == PieceColour.WHITE
-        );
+        const whiteAccuracies = nodes
+            .filter(node => node.state.moveColour == PieceColour.WHITE)
+            .map(node => node.state.accuracy!);
 
-        const weightedMean = whiteNodes.reduce((sum, node) => (
-            sum + node.state.accuracy! * node.state.accuracyWeight!
-        ), 0) / whiteNodes.reduce((sum, node) => (
-            sum + node.state.accuracyWeight!
-        ), 0);
-
-        const plainMean = whiteNodes.reduce((sum, node) => (
-            sum + node.state.accuracy!
-        ), 0) / whiteNodes.length;
-
-        // The moves played once White was winning count less, so the
-        // dropped pawn counts for more
-        for (const index of [ 11, 13, 15 ]) {
-            assert.ok(nodes[index].state.accuracyWeight! < 0.5);
-        }
+        const plainMean = whiteAccuracies.reduce((sum, accuracy) => (
+            sum + accuracy
+        ), 0) / whiteAccuracies.length;
 
         const accuracies = getGameAccuracy(stateTree);
 
-        assert.ok(Math.abs(accuracies.white.accuracy - weightedMean) < 1e-9);
+        assert.ok(nodes[3].state.accuracy! < 50);
+        assert.equal(accuracies.white.accuracy, getMeanAccuracy(whiteAccuracies));
+
+        // The dropped pawn weighs more than in an ordinary mean
         assert.ok(accuracies.white.accuracy < plainMean - 1);
 
         assert.equal(accuracies.white.analysedMoves, 8);

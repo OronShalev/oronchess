@@ -1,8 +1,9 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
+import PieceColour from "@shared/constants/PieceColour";
 import Evaluation from "@shared/types/game/position/Evaluation";
-import { getAccuracyFromPointLoss, getPositionValue } from "../accuracy";
+import { getAccuracyFromPointLoss, getMeanAccuracy } from "../accuracy";
 import { getExpectedPoints } from "../expectedPoints";
 import { reporterConfig } from "../config";
 import { analyseNode } from "../report";
@@ -61,7 +62,7 @@ describe("per-move accuracy", () => {
     it("is next to nothing, not negative, for losing a forced mate", () => {
         const accuracy = getAccuracyFromPointLoss(1);
 
-        assert.ok(accuracy >= 0 && accuracy < 0.01, String(accuracy));
+        assert.ok(accuracy >= 0 && accuracy < 2, String(accuracy));
     });
 
     it("is 50 for a loss of the configured half loss", () => {
@@ -70,14 +71,13 @@ describe("per-move accuracy", () => {
         assert.ok(Math.abs(getAccuracyFromPointLoss(halfLoss) - 50) < 1e-9);
     });
 
-    // The shape fitted to Chess.com's game accuracies: small losses, which
-    // are also within engine noise, cost little, and mistakes cost nearly
-    // all of a move's accuracy
-    it("barely counts small losses and leaves little for mistakes", () => {
-        assert.ok(getAccuracyFromPointLoss(0.01) > 99);
-        assert.ok(getAccuracyFromPointLoss(0.03) > 90);
-        assert.ok(getAccuracyFromPointLoss(0.08) < 25);
-        assert.ok(getAccuracyFromPointLoss(0.15) < 5);
+    // The shape fitted to Chess.com's game accuracies: partial credit that
+    // falls away gradually, with mistakes left little
+    it("gives partial credit that falls away with the loss", () => {
+        assert.ok(getAccuracyFromPointLoss(0.01) > 85);
+        assert.ok(getAccuracyFromPointLoss(0.05) > 40);
+        assert.ok(getAccuracyFromPointLoss(0.05) < 60);
+        assert.ok(getAccuracyFromPointLoss(0.2) < 15);
     });
 
     it("is finite for extreme and mate evaluations", () => {
@@ -164,9 +164,14 @@ describe("per-move accuracy", () => {
 
 describe("accuracy in decided positions", () => {
     it("costs more for the same drop nearer equality", () => {
+        const options = {
+            moveColour: PieceColour.WHITE,
+            centipawnGradient: reporterConfig.accuracy.centipawnGradient
+        };
+
         const lossOf = (from: number, to: number) => (
-            getPositionValue(getExpectedPoints(centipawns(from)))
-            - getPositionValue(getExpectedPoints(centipawns(to)))
+            getExpectedPoints(centipawns(from), options)
+            - getExpectedPoints(centipawns(to), options)
         );
 
         // Drops of each size, sliding from deep in a won position, through
@@ -201,36 +206,45 @@ describe("accuracy in decided positions", () => {
                 );
             }
 
-            // Barely a loss once the game is won
-            assert.ok(accuracies[0] > 99, String(accuracies[0]));
+            // A drop within a won game still leaves a fair share
+            assert.ok(accuracies[0] > 40, String(accuracies[0]));
         });
     }
 
-    it("counts moves in decided positions less, but never not at all", () => {
-        const { weight } = reporterConfig.accuracy.decided;
-
-        const equal = analyseQuietMove("white", centipawns(0), centipawns(0));
-        const won = analyseQuietMove("white", centipawns(1000), centipawns(800));
-        const lost = analyseQuietMove("black", centipawns(-800), centipawns(-1000));
-        const mating = analyseQuietMove("white", mate(5), mate(6));
-
-        assert.equal(equal.accuracyWeight, 1);
-        assert.ok(won.accuracyWeight! < 0.5 && won.accuracyWeight! > weight);
-        assert.ok(Math.abs(lost.accuracyWeight! - won.accuracyWeight!) < 1e-9);
-        assert.equal(mating.accuracyWeight, weight);
-    });
-
-    it("charges throwing a won game away in full", () => {
+    it("charges throwing a won game away nearly all of a move", () => {
         const thrown = analyseQuietMove("black", centipawns(800), centipawns(-300));
 
-        assert.ok(thrown.accuracy! < 1, String(thrown.accuracy));
-        assert.ok(thrown.accuracyWeight! > 0.95, String(thrown.accuracyWeight));
+        assert.ok(thrown.accuracy! < 5, String(thrown.accuracy));
     });
 
-    it("counts a move out of a lost game in full", () => {
+    it("costs nothing for a move out of a lost game", () => {
         const saved = analyseQuietMove("white", centipawns(-900), centipawns(0));
 
         assert.equal(saved.accuracy, 100);
-        assert.equal(saved.accuracyWeight, 1);
+    });
+});
+
+describe("game accuracy", () => {
+    it("is 100 for nothing but perfect moves", () => {
+        assert.equal(getMeanAccuracy([ 100, 100, 100 ]), 100);
+    });
+
+    it("weighs a bad move more than an ordinary mean, never below it", () => {
+        const accuracies = [ ...Array(19).fill(100), 20 ];
+        const accuracy = getMeanAccuracy(accuracies);
+
+        // The ordinary mean is 96
+        assert.ok(accuracy < 95 && accuracy > 90, String(accuracy));
+    });
+
+    it("lies between the lowest and the highest move", () => {
+        const accuracies = [ 35, 80, 92, 100, 61 ];
+        const accuracy = getMeanAccuracy(accuracies);
+
+        assert.ok(accuracy > 35 && accuracy < 100);
+    });
+
+    it("is not a number for no moves", () => {
+        assert.ok(Number.isNaN(getMeanAccuracy([])));
     });
 });

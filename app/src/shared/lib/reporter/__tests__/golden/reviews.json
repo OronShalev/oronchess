@@ -38,7 +38,6 @@
           "move": "e2e4",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999960754143,
           "lines": [
             {
               "depth": 16,
@@ -61,7 +60,6 @@
           "move": "e7e5",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999960754143,
           "lines": [
             {
               "depth": 16,
@@ -84,7 +82,6 @@
           "move": "g1f3",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999960754143,
           "lines": [
             {
               "depth": 16,
@@ -107,7 +104,6 @@
           "move": "d7d6",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999960754143,
           "lines": [
             {
               "depth": 16,
@@ -130,7 +126,6 @@
           "move": "d2d4",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999996437057838,
           "lines": [
             {
               "depth": 16,
@@ -152,8 +147,7 @@
         {
           "move": "c8g4",
           "classification": "okay",
-          "accuracy": 34.67663433625548,
-          "accuracyWeight": 0.9999996014194618,
+          "accuracy": 68.8736548748807,
           "lines": [
             {
               "depth": 16,
@@ -191,7 +185,6 @@
           "move": "d4e5",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.9999758763811548,
           "lines": [
             {
               "depth": 16,
@@ -213,8 +206,7 @@
         {
           "move": "g4f3",
           "classification": "excellent",
-          "accuracy": 86.33069595478841,
-          "accuracyWeight": 0.9999758763811548,
+          "accuracy": 84.051909171538,
           "lines": [
             {
               "depth": 16,
@@ -237,7 +229,6 @@
           "move": "d1f3",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.9999027028705283,
           "lines": [
             {
               "depth": 16,
@@ -260,7 +251,6 @@
           "move": "d6e5",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.9999027028705283,
           "lines": [
             {
               "depth": 16,
@@ -282,8 +272,7 @@
         {
           "move": "f1c4",
           "classification": "excellent",
-          "accuracy": 96.37520383010529,
-          "accuracyWeight": 0.9998737023420766,
+          "accuracy": 89.48637560620321,
           "lines": [
             {
               "depth": 16,
@@ -305,8 +294,7 @@
         {
           "move": "g8f6",
           "classification": "inaccuracy",
-          "accuracy": 1.8500900649909169,
-          "accuracyWeight": 0.9998737023420766,
+          "accuracy": 31.851825192579643,
           "lines": [
             {
               "depth": 16,
@@ -344,7 +332,6 @@
           "move": "f3b3",
           "classification": "critical",
           "accuracy": 100,
-          "accuracyWeight": 0.9942208773068114,
           "lines": [
             {
               "depth": 16,
@@ -366,8 +353,7 @@
         {
           "move": "d8e7",
           "classification": "excellent",
-          "accuracy": 91.38841385867538,
-          "accuracyWeight": 0.9942208773068114,
+          "accuracy": 79.94643798547585,
           "lines": [
             {
               "depth": 16,
@@ -389,8 +375,7 @@
         {
           "move": "b1c3",
           "classification": "excellent",
-          "accuracy": 87.4965464770813,
-          "accuracyWeight": 0.9947177531155983,
+          "accuracy": 77.4624123498556,
           "lines": [
             {
               "depth": 16,
@@ -413,7 +398,6 @@
           "move": "c7c6",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.9947177531155983,
           "lines": [
             {
               "depth": 16,
@@ -451,7 +435,6 @@
           "move": "c1g5",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.9958077946993176,
           "lines": [
             {
               "depth": 16,
@@ -473,8 +456,7 @@
         {
           "move": "b7b5",
           "classification": "mistake",
-          "accuracy": 3.1667352370659327,
-          "accuracyWeight": 0.9958077946993176,
+          "accuracy": 25.447081131667545,
           "lines": [
             {
               "depth": 16,
@@ -512,7 +494,6 @@
           "move": "c3b5",
           "classification": "brilliant",
           "accuracy": 100,
-          "accuracyWeight": 0.86643377764769,
           "lines": [
             {
               "depth": 16,
@@ -534,8 +515,7 @@
         {
           "move": "c6b5",
           "classification": "okay",
-          "accuracy": 68.18903017830405,
-          "accuracyWeight": 0.86643377764769,
+          "accuracy": 36.34125554070147,
           "lines": [
             {
               "depth": 16,
@@ -558,7 +538,6 @@
           "move": "c4b5",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.5415749292731804,
           "lines": [
             {
               "depth": 16,
@@ -581,7 +560,6 @@
           "move": "b8d7",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.4722840551786468,
           "lines": [
             {
               "depth": 16,
@@ -619,7 +597,6 @@
           "move": "e1c1",
           "classification": "critical",
           "accuracy": 100,
-          "accuracyWeight": 0.4629697818082228,
           "lines": [
             {
               "depth": 16,
@@ -642,7 +619,6 @@
           "move": "a8d8",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.4629697818082228,
           "lines": [
             {
               "depth": 16,
@@ -680,7 +656,6 @@
           "move": "d1d7",
           "classification": "brilliant",
           "accuracy": 100,
-          "accuracyWeight": 0.43815931022302146,
           "lines": [
             {
               "depth": 16,
@@ -702,8 +677,7 @@
         {
           "move": "d8d7",
           "classification": "excellent",
-          "accuracy": 99.98595279505241,
-          "accuracyWeight": 0.43815931022302146,
+          "accuracy": 75.15432652304081,
           "lines": [
             {
               "depth": 16,
@@ -741,7 +715,6 @@
           "move": "h1d1",
           "classification": "critical",
           "accuracy": 100,
-          "accuracyWeight": 0.36476838237988524,
           "lines": [
             {
               "depth": 16,
@@ -763,8 +736,7 @@
         {
           "move": "e7e6",
           "classification": "excellent",
-          "accuracy": 99.99090677626059,
-          "accuracyWeight": 0.3251638779371974,
+          "accuracy": 39.05563918560096,
           "lines": [
             {
               "depth": 16,
@@ -787,7 +759,6 @@
           "move": "b5d7",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.26142549457987707,
           "lines": [
             {
               "depth": 16,
@@ -809,8 +780,7 @@
         {
           "move": "f6d7",
           "classification": "excellent",
-          "accuracy": 99.99999882850278,
-          "accuracyWeight": 0.2608265247051214,
+          "accuracy": 36.90578443113157,
           "lines": [
             {
               "depth": 16,
@@ -848,7 +818,6 @@
           "move": "b3b8",
           "classification": "brilliant",
           "accuracy": 100,
-          "accuracyWeight": 0.25,
           "lines": [
             {
               "depth": 16,
@@ -871,7 +840,6 @@
           "move": "d7b8",
           "classification": "forced",
           "accuracy": 100,
-          "accuracyWeight": 0.25,
           "lines": [
             {
               "depth": 16,
@@ -894,7 +862,6 @@
           "move": "d1d8",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.25,
           "lines": [
             {
               "depth": 0,
@@ -937,7 +904,6 @@
           "move": "f2f3",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999960754143,
           "lines": [
             {
               "depth": 16,
@@ -975,7 +941,6 @@
           "move": "e7e5",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.9999987876355338,
           "lines": [
             {
               "depth": 16,
@@ -997,8 +962,7 @@
         {
           "move": "g2g4",
           "classification": "blunder",
-          "accuracy": 0.03543311172089081,
-          "accuracyWeight": 0.9999987876355338,
+          "accuracy": 3.20886157388512,
           "lines": [
             {
               "depth": 16,
@@ -1021,7 +985,6 @@
           "move": "d8h4",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.25,
           "lines": [
             {
               "depth": 0,
@@ -1064,7 +1027,6 @@
           "move": "e2e4",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999960754143,
           "lines": [
             {
               "depth": 16,
@@ -1087,7 +1049,6 @@
           "move": "d7d5",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999950341472,
           "lines": [
             {
               "depth": 16,
@@ -1109,8 +1070,7 @@
         {
           "move": "e4e5",
           "classification": "okay",
-          "accuracy": 10.511589308187384,
-          "accuracyWeight": 1,
+          "accuracy": 56.584692212587775,
           "lines": [
             {
               "depth": 16,
@@ -1132,8 +1092,7 @@
         {
           "move": "f7f5",
           "classification": "okay",
-          "accuracy": 5.461060492628449,
-          "accuracyWeight": 1,
+          "accuracy": 49.82107766592491,
           "lines": [
             {
               "depth": 16,
@@ -1155,8 +1114,7 @@
         {
           "move": "e5f6",
           "classification": "inaccuracy",
-          "accuracy": 2.7837607367993003,
-          "accuracyWeight": 0.99999999945325,
+          "accuracy": 43.35522418933207,
           "lines": [
             {
               "depth": 16,
@@ -1178,8 +1136,7 @@
         {
           "move": "b8c6",
           "classification": "okay",
-          "accuracy": 6.846966918579092,
-          "accuracyWeight": 0.99999999945325,
+          "accuracy": 52.34406020657659,
           "lines": [
             {
               "depth": 16,
@@ -1217,7 +1174,6 @@
           "move": "f6g7",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.9999991718055962,
           "lines": [
             {
               "depth": 16,
@@ -1239,8 +1195,7 @@
         {
           "move": "g8f6",
           "classification": "blunder",
-          "accuracy": 0.034026567399481185,
-          "accuracyWeight": 0.9999991718055962,
+          "accuracy": 4.140443337582546,
           "lines": [
             {
               "depth": 16,
@@ -1263,7 +1218,6 @@
           "move": "g7h8q",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.2646033767586141,
           "lines": [
             {
               "depth": 16,
@@ -1286,7 +1240,6 @@
           "move": "c8f5",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.2629996384214904,
           "lines": [
             {
               "depth": 16,
@@ -1308,8 +1261,7 @@
         {
           "move": "g1f3",
           "classification": "best",
-          "accuracy": 99.99999999986076,
-          "accuracyWeight": 0.26041363649086857,
+          "accuracy": 98.98489143213392,
           "lines": [
             {
               "depth": 16,
@@ -1331,8 +1283,7 @@
         {
           "move": "e7e6",
           "classification": "best",
-          "accuracy": 99.99999934073642,
-          "accuracyWeight": 0.26041363649086857,
+          "accuracy": 61.683423879412146,
           "lines": [
             {
               "depth": 16,
@@ -1354,8 +1305,7 @@
         {
           "move": "f1e2",
           "classification": "excellent",
-          "accuracy": 99.99999452834544,
-          "accuracyWeight": 0.2649049602588243,
+          "accuracy": 52.1110707533173,
           "lines": [
             {
               "depth": 16,
@@ -1377,8 +1327,7 @@
         {
           "move": "d8d7",
           "classification": "excellent",
-          "accuracy": 99.99999323565757,
-          "accuracyWeight": 0.2649049602588243,
+          "accuracy": 35.40071644832716,
           "lines": [
             {
               "depth": 16,
@@ -1400,8 +1349,7 @@
         {
           "move": "e1g1",
           "classification": "excellent",
-          "accuracy": 99.99999965149755,
-          "accuracyWeight": 0.25876699153446653,
+          "accuracy": 43.89157356824474,
           "lines": [
             {
               "depth": 16,
@@ -1423,8 +1371,7 @@
         {
           "move": "e8c8",
           "classification": "excellent",
-          "accuracy": 99.99999965179431,
-          "accuracyWeight": 0.25876699153446653,
+          "accuracy": 44.38763538393839,
           "lines": [
             {
               "depth": 16,
@@ -1472,7 +1419,6 @@
           "move": "g1f3",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999999224086,
           "lines": [
             {
               "depth": 16,
@@ -1495,7 +1441,6 @@
           "move": "g8f6",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999999224086,
           "lines": [
             {
               "depth": 16,
@@ -1517,8 +1462,7 @@
         {
           "move": "f3g1",
           "classification": "inaccuracy",
-          "accuracy": 2.101383745469,
-          "accuracyWeight": 0.999999996928,
+          "accuracy": 40.72101201650505,
           "lines": [
             {
               "depth": 16,
@@ -1540,8 +1484,7 @@
         {
           "move": "f6g8",
           "classification": "inaccuracy",
-          "accuracy": 2.1752255539174756,
-          "accuracyWeight": 0.9999999976203079,
+          "accuracy": 41.03823963277879,
           "lines": [
             {
               "depth": 16,
@@ -1564,7 +1507,6 @@
           "move": "g1f3",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.999999999611986,
           "lines": [
             {
               "depth": 16,
@@ -1587,7 +1529,6 @@
           "move": "g8f6",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.999999999611986,
           "lines": [
             {
               "depth": 16,
@@ -1609,8 +1550,7 @@
         {
           "move": "f3g1",
           "classification": "inaccuracy",
-          "accuracy": 1.9133002410536848,
-          "accuracyWeight": 0.9999999981774065,
+          "accuracy": 39.80460554330179,
           "lines": [
             {
               "depth": 16,
@@ -1632,8 +1572,7 @@
         {
           "move": "f6g8",
           "classification": "inaccuracy",
-          "accuracy": 4.317207158812157,
-          "accuracyWeight": 1,
+          "accuracy": 47.42305865842298,
           "lines": [
             {
               "depth": 0,
@@ -1676,7 +1615,6 @@
           "move": "e2e3",
           "classification": "theory",
           "accuracy": 100,
-          "accuracyWeight": 0.9999999999224086,
           "lines": [
             {
               "depth": 16,
@@ -1698,8 +1636,7 @@
         {
           "move": "a7a5",
           "classification": "excellent",
-          "accuracy": 88.7953557482643,
-          "accuracyWeight": 0.9999999999224086,
+          "accuracy": 86.43811636514238,
           "lines": [
             {
               "depth": 16,
@@ -1721,8 +1658,7 @@
         {
           "move": "d1h5",
           "classification": "okay",
-          "accuracy": 6.195080559414783,
-          "accuracyWeight": 0.9999999434358362,
+          "accuracy": 51.43999840076944,
           "lines": [
             {
               "depth": 16,
@@ -1744,8 +1680,7 @@
         {
           "move": "a8a6",
           "classification": "blunder",
-          "accuracy": 0.057728910574969004,
-          "accuracyWeight": 0.9999998267230447,
+          "accuracy": 13.569046224660687,
           "lines": [
             {
               "depth": 16,
@@ -1767,8 +1702,7 @@
         {
           "move": "h5a5",
           "classification": "blunder",
-          "accuracy": 0.002620580427006346,
-          "accuracyWeight": 0.9942208773068114,
+          "accuracy": 2.9990358124207854,
           "lines": [
             {
               "depth": 16,
@@ -1790,8 +1724,7 @@
         {
           "move": "h7h5",
           "classification": "blunder",
-          "accuracy": 0.0022108247591094356,
-          "accuracyWeight": 0.9859996064821783,
+          "accuracy": 2.8201152242223,
           "lines": [
             {
               "depth": 16,
@@ -1813,8 +1746,7 @@
         {
           "move": "h2h4",
           "classification": "blunder",
-          "accuracy": 0.0022871423521972395,
-          "accuracyWeight": 0.9859996064821783,
+          "accuracy": 3.039137196966635,
           "lines": [
             {
               "depth": 16,
@@ -1836,8 +1768,7 @@
         {
           "move": "a6h6",
           "classification": "blunder",
-          "accuracy": 0.003691247567978876,
-          "accuracyWeight": 0.998808794745177,
+          "accuracy": 3.588704111682889,
           "lines": [
             {
               "depth": 16,
@@ -1859,8 +1790,7 @@
         {
           "move": "a5c7",
           "classification": "blunder",
-          "accuracy": 0.0040711366581095325,
-          "accuracyWeight": 0.998808794745177,
+          "accuracy": 4.133107630138393,
           "lines": [
             {
               "depth": 16,
@@ -1882,8 +1812,7 @@
         {
           "move": "f7f6",
           "classification": "blunder",
-          "accuracy": 0.0012636822790593656,
-          "accuracyWeight": 0.6363032028586005,
+          "accuracy": 2.063337894450767,
           "lines": [
             {
               "depth": 16,
@@ -1905,8 +1834,7 @@
         {
           "move": "c7d7",
           "classification": "blunder",
-          "accuracy": 0.0012725828989457843,
-          "accuracyWeight": 0.6515167702757192,
+          "accuracy": 2.0776144572112787,
           "lines": [
             {
               "depth": 16,
@@ -1928,8 +1856,7 @@
         {
           "move": "e8f7",
           "classification": "blunder",
-          "accuracy": 0.0012223027148119323,
-          "accuracyWeight": 0.6515167702757192,
+          "accuracy": 1.530991927869795,
           "lines": [
             {
               "depth": 16,
@@ -1951,8 +1878,7 @@
         {
           "move": "d7b7",
           "classification": "blunder",
-          "accuracy": 0.0011909355494504198,
-          "accuracyWeight": 0.5918332376062789,
+          "accuracy": 1.4975199943119217,
           "lines": [
             {
               "depth": 16,
@@ -1974,8 +1900,7 @@
         {
           "move": "d8d3",
           "classification": "blunder",
-          "accuracy": 0.0011928349722847389,
-          "accuracyWeight": 0.5918332376062794,
+          "accuracy": 1.6579770528697226,
           "lines": [
             {
               "depth": 16,
@@ -1997,8 +1922,7 @@
         {
           "move": "b7b8",
           "classification": "excellent",
-          "accuracy": 99.9999426084796,
-          "accuracyWeight": 0.2769699252981096,
+          "accuracy": 60.26985061901074,
           "lines": [
             {
               "depth": 16,
@@ -2020,8 +1944,7 @@
         {
           "move": "d3h7",
           "classification": "excellent",
-          "accuracy": 99.9998633154149,
-          "accuracyWeight": 0.2769699252981096,
+          "accuracy": 32.27746499929545,
           "lines": [
             {
               "depth": 16,
@@ -2044,7 +1967,6 @@
           "move": "b8c8",
           "classification": "best",
           "accuracy": 100,
-          "accuracyWeight": 0.250977558049432,
           "lines": [
             {
               "depth": 16,
@@ -2066,8 +1988,7 @@
         {
           "move": "f7g6",
           "classification": "best",
-          "accuracy": 99.99999999999993,
-          "accuracyWeight": 0.250977558049432,
+          "accuracy": 81.58533262313718,
           "lines": [
             {
               "depth": 15,
@@ -2089,8 +2010,7 @@
         {
           "move": "c8e6",
           "classification": "blunder",
-          "accuracy": 0.016886750163476537,
-          "accuracyWeight": 1,
+          "accuracy": 2.905466699588451,
           "lines": [
             {
               "depth": 0,

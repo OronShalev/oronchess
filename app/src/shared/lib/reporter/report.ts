@@ -26,7 +26,6 @@ export function analyseNode(
     if (!previous || !current) {
         node.state.classification = undefined;
         node.state.accuracy = undefined;
-        node.state.accuracyWeight = undefined;
         return;
     }
 
@@ -38,10 +37,7 @@ export function analyseNode(
         node.state.classification = undefined;
     }
 
-    const { accuracy, weight } = getMoveAccuracy(previous, current);
-
-    node.state.accuracy = accuracy;
-    node.state.accuracyWeight = weight;
+    node.state.accuracy = getMoveAccuracy(previous, current);
 }
 
 export function getGameAnalysis(
